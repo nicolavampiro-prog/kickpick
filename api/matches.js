@@ -68,7 +68,7 @@ module.exports = async function handler(req, res) {
   // ── STEP 1: OddsAPI con tutti e tre i mercati ─────────────────────────────
   for (const sport of SPORTS) {
     try {
-      const url = `https://api.the-odds-api.com/v4/sports/${sport.key}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=h2h,totals,btts&oddsFormat=decimal`;
+     const url = `https://api.the-odds-api.com/v4/sports/${sport.key}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=h2h&oddsFormat=decimal`;
       const resp = await fetch(url);
       if (!resp.ok) continue;
       const events = await resp.json();
