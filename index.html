@@ -22,8 +22,6 @@
 }
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
-
-/* Nav */
 .nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:env(safe-area-inset-top) 0 0}
 .nav-inner{max-width:760px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-0.3px}
@@ -33,24 +31,18 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:
 .nav-pill{display:inline-flex;align-items:center;gap:5px;background:var(--green-bg);color:var(--green-dk);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
 .nav-pill::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:livepulse 2s ease-in-out infinite}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-
-/* Hero */
 .hero{max-width:760px;margin:0 auto;padding:24px 16px 0}
 .hero-label{font-family:var(--font-data);font-size:11px;font-weight:500;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
 .hero-title{font-size:clamp(22px,5vw,28px);font-weight:600;color:var(--ink);letter-spacing:-0.5px;line-height:1.2;margin-bottom:20px}
 .hero-title span{color:var(--green)}
-
-/* Date selector tabs */
 .date-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px;box-shadow:var(--shadow)}
 .date-tab{flex:1;padding:8px 4px;border-radius:10px;border:none;background:transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center}
 .date-tab.active{background:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
-.date-tab-label{display:block;font-size:12px;font-weight:600;color:var(--ink3);line-height:1.2;transition:color .2s}
+.date-tab-label{display:block;font-size:12px;font-weight:600;color:var(--ink3);transition:color .2s}
 .date-tab-date{display:block;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:2px;transition:color .2s}
 .date-tab.active .date-tab-label{color:var(--white)}
 .date-tab.active .date-tab-date{color:rgba(255,255,255,.6)}
 .date-tab:hover:not(.active) .date-tab-label{color:var(--ink2)}
-
-/* Threshold */
 .threshold-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px;box-shadow:var(--shadow)}
 .threshold-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .threshold-label{font-size:13px;font-weight:500;color:var(--ink2)}
@@ -63,20 +55,14 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .threshold-hints{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:8px}
 .match-count-line{font-size:12px;color:var(--ink3);margin-top:8px}
 .match-count-line strong{color:var(--ink);font-weight:600}
-
-/* League pills */
 .summary-row{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
 .summary-row::-webkit-scrollbar{display:none}
 .sum-pill{flex-shrink:0;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap;box-shadow:var(--shadow);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .sum-pill.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
 .sum-pill .pill-count{background:var(--border);color:var(--ink3);font-family:var(--font-data);font-size:10px;padding:1px 6px;border-radius:10px}
 .sum-pill.active .pill-count{background:rgba(255,255,255,.2);color:var(--white)}
-
-/* Feed */
 .feed{max-width:760px;margin:0 auto;padding:0 16px 100px}
 .feed-section-label{font-family:var(--font-data);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--ink4);margin-bottom:10px;padding-top:4px}
-
-/* Match card */
 .match-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;-webkit-tap-highlight-color:transparent}
 .card-header{padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;cursor:pointer;user-select:none}
 .card-left{min-width:0}
@@ -90,8 +76,6 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .verdict-reason{font-size:12px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .verdict-loading{font-size:12px;color:var(--ink4);font-family:var(--font-data);animation:fadepulse 1.2s ease-in-out infinite}
 @keyframes fadepulse{0%,100%{opacity:.4}50%{opacity:1}}
-
-/* Confidence ring */
 .conf-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
 .conf-ring{width:52px;height:52px;position:relative}
 .conf-ring svg{width:52px;height:52px;transform:rotate(-90deg)}
@@ -101,8 +85,6 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .conf-label-sm{font-family:var(--font-data);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px}
 .ring-skeleton{width:52px;height:52px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* Card body */
 .card-body{border-top:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
 .card-body.open{max-height:900px}
 .card-body-inner{padding:16px}
@@ -134,14 +116,11 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .odd-label{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
 .odd-value{font-family:var(--font-data);font-size:16px;font-weight:500;color:var(--ink)}
 .odd-btn.best .odd-value{color:var(--green-dk)}
+.odds-source{font-size:10px;color:var(--ink4);text-align:center;margin-top:6px;font-family:var(--font-data)}
 .ai-strip{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;display:flex;align-items:flex-start;gap:8px}
 .ai-icon{font-size:14px;flex-shrink:0;margin-top:1px}
 .ai-text{font-size:12px;color:var(--blue-dk);line-height:1.5}
-
-/* Early pick note for future dates */
 .early-note{background:var(--amber-bg);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber-dk);display:flex;align-items:center;gap:6px}
-
-/* States */
 .global-loading{text-align:center;padding:60px 24px}
 .global-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -151,19 +130,13 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .no-matches-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:16px}
 .no-matches-box h3{font-size:18px;font-weight:600;margin-bottom:8px}
 .no-matches-box p{font-size:13px;color:var(--ink3);line-height:1.7}
-
-/* Verdict colours */
 .verdict-high{background:var(--green-bg);color:var(--green-dk)}
 .verdict-mid{background:var(--amber-bg);color:var(--amber-dk)}
 .verdict-low{background:#F3F4F6;color:var(--ink3)}
-
-/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:200}
 .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;color:var(--ink4);font-size:10px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s}
 .bn-item.active{color:var(--green-dk)}
 .bn-icon{font-size:20px;line-height:1}
-
-/* Desktop */
 @media(min-width:900px){
   .layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:24px;padding:0 24px;align-items:start}
   .hero,.feed{max-width:none;padding-left:0;padding-right:0}
@@ -204,11 +177,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   <header class="hero">
     <div class="hero-label">Football predictions</div>
     <h1 class="hero-title">Where should you<br><span>put your money?</span></h1>
-
-    <!-- Date selector -->
-    <div class="date-tabs" id="date-tabs" role="tablist"></div>
-
-    <!-- Threshold -->
+    <div class="date-tabs" id="date-tabs"></div>
     <div class="threshold-bar">
       <div class="threshold-top">
         <span class="threshold-label">Show picks above</span>
@@ -225,16 +194,10 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
       </div>
       <div class="match-count-line" id="match-count-line"></div>
     </div>
-
-    <!-- League pills -->
     <div class="summary-row" id="filter-pills"></div>
   </header>
-
   <main class="feed" id="feed">
-    <div class="global-loading">
-      <div class="spinner"></div>
-      <p>Loading matches...</p>
-    </div>
+    <div class="global-loading"><div class="spinner"></div><p>Loading matches...</p></div>
   </main>
 </div>
 
@@ -248,7 +211,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   <div class="side-widget">
     <div class="side-widget-head">ℹ️ How we predict</div>
     <div class="side-widget-body">
-      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Real matches from football-data.org · AI analysis by Claude · Sorted by confidence.</p>
+      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Real matches · Claude AI · Live bookmaker odds · Sorted by confidence.</p>
     </div>
   </div>
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:11px;color:var(--ink4);line-height:1.6;box-shadow:var(--shadow)">
@@ -267,61 +230,65 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 <script>
 // ── State ─────────────────────────────────────────────────────────────────────
 let MATCHES = [];
+let ODDS_MAP = {}; // key: "home_team::away_team" → odds data
 let threshold = 50;
 let activeLeague = 'all';
-let activeOffset = 0; // 0=today, 1=tomorrow, 2=+2days
+let activeOffset = 0;
 let openCards = new Set();
-let loadingDates = new Set();
 
 // ── Date helpers ──────────────────────────────────────────────────────────────
 function getDateStr(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
+  const d = new Date(); d.setDate(d.getDate() + offset);
   return d.toISOString().split('T')[0];
 }
-
 function formatTabDate(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
+  const d = new Date(); d.setDate(d.getDate() + offset);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 }
-
 function tabLabel(offset) {
   if (offset === 0) return 'Today';
   if (offset === 1) return 'Tomorrow';
-  return d_plus(offset);
-}
-
-function d_plus(offset) {
-  const d = new Date();
-  d.setDate(d.getDate() + offset);
+  const d = new Date(); d.setDate(d.getDate() + offset);
   return d.toLocaleDateString('en-GB', { weekday: 'short' });
 }
 
-// ── Render date tabs ──────────────────────────────────────────────────────────
 function renderDateTabs() {
-  const container = document.getElementById('date-tabs');
-  container.innerHTML = [0, 1, 2].map(offset => `
-    <button class="date-tab${activeOffset===offset?' active':''}"
-      role="tab" aria-selected="${activeOffset===offset}"
-      onclick="selectDate(${offset})">
-      <span class="date-tab-label">${tabLabel(offset)}</span>
-      <span class="date-tab-date">${formatTabDate(offset)}</span>
+  document.getElementById('date-tabs').innerHTML = [0,1,2].map(o => `
+    <button class="date-tab${activeOffset===o?' active':''}" onclick="selectDate(${o})">
+      <span class="date-tab-label">${tabLabel(o)}</span>
+      <span class="date-tab-date">${formatTabDate(o)}</span>
     </button>`).join('');
 }
 
 function selectDate(offset) {
   if (activeOffset === offset) return;
-  activeOffset = offset;
-  activeLeague = 'all';
-  openCards.clear();
-  renderDateTabs();
-  loadMatches();
+  activeOffset = offset; activeLeague = 'all'; openCards.clear();
+  renderDateTabs(); loadAll();
 }
 
-// ── Fetch matches from /api/matches?date=YYYY-MM-DD ───────────────────────────
-async function loadMatches() {
-  MATCHES = [];
+// ── Match name normalizer for odds matching ───────────────────────────────────
+function normalize(str) {
+  return str.toLowerCase()
+    .replace(/fc|afc|cf|sc|ac|as|ss|us |cd |rc |rcd |ud |sd |ca |cp |sv |vfb |bsc |tsv |tsg /g, '')
+    .replace(/[^a-z0-9]/g, '').trim();
+}
+
+function findOdds(home, away) {
+  const nh = normalize(home), na = normalize(away);
+  for (const key of Object.keys(ODDS_MAP)) {
+    const [kh, ka] = key.split('::');
+    if (normalize(kh).includes(nh) || nh.includes(normalize(kh))) {
+      if (normalize(ka).includes(na) || na.includes(normalize(ka))) {
+        return ODDS_MAP[key];
+      }
+    }
+  }
+  return null;
+}
+
+// ── Load matches + odds in parallel ──────────────────────────────────────────
+async function loadAll() {
+  MATCHES = []; ODDS_MAP = {};
   document.getElementById('feed').innerHTML = `
     <div class="global-loading"><div class="spinner"></div>
     <p>Loading ${tabLabel(activeOffset).toLowerCase()}'s matches...</p></div>`;
@@ -331,47 +298,59 @@ async function loadMatches() {
 
   const date = getDateStr(activeOffset);
 
-  try {
-    const res = await fetch(`/api/matches?date=${date}`);
-    if (!res.ok) throw new Error('API error');
-    const data = await res.json();
-    MATCHES = data.matches || [];
+  // Fetch matches e odds in parallelo
+  const [matchRes, oddsRes] = await Promise.allSettled([
+    fetch(`/api/matches?date=${date}`).then(r => r.json()),
+    fetch('/api/odds').then(r => r.json())
+  ]);
 
-    if (!MATCHES.length) {
-      showNoMatches();
-      return;
+  // Processa odds
+  if (oddsRes.status === 'fulfilled' && oddsRes.value.odds) {
+    for (const o of oddsRes.value.odds) {
+      ODDS_MAP[`${o.homeTeam}::${o.awayTeam}`] = o;
     }
-
-    renderPills();
-    renderFeed();
-
-    // AI picks in parallelo
-    MATCHES.forEach(async m => {
-      const result = await fetchAIPick(m);
-      applyAIResult(m, result);
-    });
-
-  } catch(e) {
-    document.getElementById('feed').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <p>Could not load matches.<br>Please try again later.</p>
-      </div>`;
   }
+
+  // Processa partite
+  if (matchRes.status === 'rejected' || !matchRes.value?.matches) {
+    document.getElementById('feed').innerHTML = `
+      <div class="empty-state"><div class="empty-icon">⚠️</div>
+      <p>Could not load matches.<br>Please try again later.</p></div>`;
+    return;
+  }
+
+  MATCHES = matchRes.value.matches || [];
+
+  // Arricchisci con odds reali dove disponibili
+  for (const m of MATCHES) {
+    const o = findOdds(m.home, m.away);
+    if (o) {
+      m.predictions.market = { pick: o.pick, sub: o.consensus };
+      m.odds = o.odds;
+      m.hasRealOdds = true;
+    }
+  }
+
+  if (!MATCHES.length) { showNoMatches(); return; }
+
+  renderPills(); renderFeed();
+
+  // AI picks in parallelo
+  MATCHES.forEach(async m => {
+    const result = await fetchAIPick(m);
+    applyAIResult(m, result);
+  });
 }
 
 function showNoMatches() {
   const msgs = {
-    0: { icon: '☀️', title: 'No matches today', sub: 'No European fixtures scheduled today. Try tomorrow.' },
-    1: { icon: '📅', title: 'No fixtures tomorrow', sub: 'Nothing scheduled yet. Check back later.' },
-    2: { icon: '🔭', title: 'Nothing in 2 days', sub: 'Fixtures are published closer to the date.' }
+    0: { icon: '☀️', title: 'No matches today', sub: 'No European fixtures today. Try tomorrow.' },
+    1: { icon: '📅', title: 'No fixtures tomorrow', sub: 'Nothing scheduled yet.' },
+    2: { icon: '🔭', title: 'Nothing in 2 days', sub: 'Check back closer to the date.' }
   };
   const m = msgs[activeOffset];
   document.getElementById('feed').innerHTML = `
-    <div class="no-matches-box">
-      <h3>${m.icon} ${m.title}</h3>
-      <p>${m.sub}</p>
-    </div>`;
+    <div class="no-matches-box"><h3>${m.icon} ${m.title}</h3><p>${m.sub}</p></div>`;
   document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> scheduled`;
 }
 
@@ -379,11 +358,9 @@ function showNoMatches() {
 async function fetchAIPick(m) {
   try {
     const res = await fetch('/api/ai-pick', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        home: m.home, away: m.away,
-        league: m.league, stage: 'Match',
+        home: m.home, away: m.away, league: m.league, stage: 'Match',
         homeForm: m.homeForm, awayForm: m.awayForm,
         homeGoals: m.stats.homeGoals, awayGoals: m.stats.awayGoals,
         h2hHome: m.stats.homeH2H, h2hAway: m.stats.awayH2H
@@ -392,7 +369,7 @@ async function fetchAIPick(m) {
     if (!res.ok) throw new Error('AI error');
     return await res.json();
   } catch(e) {
-    return { pick: 'Analysis N/A', confidence: 50, insight: 'AI unavailable.', verdictLevel: 'low' };
+    return { pick: 'N/A', confidence: 50, insight: 'AI unavailable.', verdictLevel: 'low' };
   }
 }
 
@@ -409,8 +386,7 @@ function applyAIResult(m, result) {
     <div class="signal-pick">${result.pick}</div>
     <div class="signal-sub">${result.confidence}% confidence</div>`;
   if (aiStripEl) aiStripEl.querySelector('.ai-text').textContent = result.insight;
-  renderFeed();
-  updateSidebar();
+  renderFeed(); updateSidebar();
 }
 
 // ── Render helpers ────────────────────────────────────────────────────────────
@@ -447,7 +423,6 @@ function renderCard(m) {
   const s  = m.stats;
   const isLive = ['IN_PLAY','PAUSED','LIVE'].includes(m.status);
   const isFuture = activeOffset > 0;
-
   const ringHTML = ai
     ? buildRing(ai.confidence, ai.verdictLevel)
     : `<div class="ring-skeleton"></div><span class="conf-label-sm">loading</span>`;
@@ -462,9 +437,7 @@ function renderCard(m) {
       <div class="card-left">
         <div class="card-meta">
           <span class="league-badge" style="background:${m.leagueBg};color:${m.leagueColor}">${m.league}</span>
-          ${isLive
-            ? `<span class="status-live">● LIVE</span>`
-            : `<span class="kickoff-tag">${m.kickoff}</span>`}
+          ${isLive ? `<span class="status-live">● LIVE</span>` : `<span class="kickoff-tag">${m.kickoff}</span>`}
         </div>
         <div class="teams-line">${m.home} vs ${m.away}</div>
         <div class="verdict-line" id="verdict-${m.id}">${verdictHTML}</div>
@@ -485,13 +458,12 @@ function renderCard(m) {
             <div class="signal-sub">${m.predictions.stats.sub}</div>
           </div>
           <div class="signal-col" id="ai-pick-${m.id}">
-            <div class="signal-src">🤖 AI</div>
-            ${ai
-              ? `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`
-              : `<div class="signal-loading">Thinking...</div>`}
+            <div class="signal-src">🤖 AI pick</div>
+            ${ai ? `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`
+                 : `<div class="signal-loading">Thinking...</div>`}
           </div>
           <div class="signal-col">
-            <div class="signal-src">👥 Market</div>
+            <div class="signal-src">👥 ${m.hasRealOdds ? 'Market' : 'Signal'}</div>
             <div class="signal-pick">${m.predictions.market.pick}</div>
             <div class="signal-sub">${m.predictions.market.sub}</div>
           </div>
@@ -509,17 +481,17 @@ function renderCard(m) {
           <div class="odd-btn${m.odds.best==='away'?' best':''}">
             <span class="odd-label">Away</span><span class="odd-value">${m.odds.away}</span></div>
         </div>
+        ${m.hasRealOdds ? `<div class="odds-source">📊 Live odds from bookmakers · ${m.predictions.market.sub}</div>` : ''}
         <div class="ai-strip" id="ai-strip-${m.id}">
           <span class="ai-icon">🤖</span>
           <span class="ai-text">${ai ? ai.insight : 'AI analysis loading...'}</span>
         </div>
-        ${isFuture ? `<div class="early-note">⚠️ Early prediction — odds and lineups may change before kickoff.</div>` : ''}
+        ${isFuture ? `<div class="early-note">⚠️ Early prediction — odds may change before kickoff.</div>` : ''}
       </div>
     </div>
   </article>`;
 }
 
-// ── Toggle ────────────────────────────────────────────────────────────────────
 function toggleCard(id) {
   openCards.has(id) ? openCards.delete(id) : openCards.add(id);
   const body = document.getElementById('body-'+id);
@@ -528,7 +500,6 @@ function toggleCard(id) {
   hdr.setAttribute('aria-expanded', openCards.has(id));
 }
 
-// ── Render feed ───────────────────────────────────────────────────────────────
 function renderFeed() {
   const filtered = MATCHES
     .filter(m => activeLeague==='all' || m.league===activeLeague)
@@ -537,14 +508,11 @@ function renderFeed() {
 
   const feed = document.getElementById('feed');
   if (!filtered.length) {
-    feed.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">🔍</div>
-      <p>No matches above <strong>${threshold}%</strong>.<br>Lower the threshold to see more.</p>
-    </div>`;
+    feed.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div>
+      <p>No matches above <strong>${threshold}%</strong>.<br>Lower the threshold to see more.</p></div>`;
     document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> above threshold`;
     return;
   }
-
   const high = filtered.filter(m => m.aiResult?.verdictLevel==='high');
   const rest  = filtered.filter(m => !m.aiResult || m.aiResult.verdictLevel!=='high');
   let html = '';
@@ -557,16 +525,12 @@ function renderFeed() {
     html += rest.map(renderCard).join('');
   }
   feed.innerHTML = html;
-  openCards.forEach(id => {
-    const b = document.getElementById('body-'+id);
-    if (b) b.classList.add('open');
-  });
+  openCards.forEach(id => { const b=document.getElementById('body-'+id); if(b) b.classList.add('open'); });
   const highCount = MATCHES.filter(m => m.aiResult?.verdictLevel==='high').length;
   document.getElementById('match-count-line').innerHTML =
     `Showing <strong>${filtered.length} match${filtered.length!==1?'es':''}</strong> · ${highCount} high confidence`;
 }
 
-// ── Pills ─────────────────────────────────────────────────────────────────────
 function renderPills() {
   const leagues = ['all', ...new Set(MATCHES.map(m=>m.league))];
   document.getElementById('filter-pills').innerHTML = leagues.map(l => {
@@ -578,7 +542,6 @@ function renderPills() {
 
 function setLeague(l) { activeLeague=l; renderPills(); renderFeed(); }
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
 function updateSidebar() {
   const best = MATCHES.filter(m=>m.aiResult).sort((a,b)=>b.aiResult.confidence-a.aiResult.confidence).slice(0,5);
   if (!best.length) return;
@@ -590,7 +553,6 @@ function updateSidebar() {
     </div>`).join('');
 }
 
-// ── Slider ────────────────────────────────────────────────────────────────────
 const slider = document.getElementById('thresh-slider');
 const fill   = document.getElementById('thresh-fill');
 const disp   = document.getElementById('thresh-display');
@@ -603,10 +565,9 @@ function updateSlider(val) {
 slider.addEventListener('input', e => updateSlider(e.target.value));
 updateSlider(50);
 
-// ── Init ──────────────────────────────────────────────────────────────────────
 document.getElementById('nav-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
 renderDateTabs();
-loadMatches();
+loadAll();
 </script>
 </body>
 </html>
