@@ -7,721 +7,152 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ── Reset & tokens ─────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --white:   #ffffff;
-  --bg:      #F7F8FA;
-  --surface: #ffffff;
-  --border:  #EAECF0;
-  --border2: #D0D5DD;
-  --ink:     #111318;
-  --ink2:    #3D4350;
-  --ink3:    #6B7280;
-  --ink4:    #9CA3AF;
-  --green:   #00C853;
-  --green-bg:#E8FAF0;
-  --green-dk:#007A32;
-  --amber:   #FF9500;
-  --amber-bg:#FFF4E0;
-  --amber-dk:#8A5100;
-  --red:     #F04438;
-  --red-bg:  #FEF3F2;
-  --red-dk:  #912018;
-  --blue:    #2563EB;
-  --blue-bg: #EFF6FF;
-  --blue-dk: #1E40AF;
-  --radius:  14px;
-  --radius-sm: 8px;
-  --shadow:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
-  --font-ui: 'DM Sans', system-ui, sans-serif;
-  --font-data: 'DM Mono', monospace;
-}
-
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: var(--font-ui);
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 15px;
-  line-height: 1.5;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── Nav ─────────────────────────────────────────────────── */
-.nav {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 200;
-  padding: env(safe-area-inset-top) 0 0;
-}
-.nav-inner {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 16px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-logo {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  letter-spacing: -0.3px;
-}
-.nav-logo .dot { color: var(--green); }
-.nav-right { display: flex; align-items: center; gap: 8px; }
-.nav-date {
-  font-family: var(--font-data);
-  font-size: 11px;
-  color: var(--ink4);
-  letter-spacing: 0.2px;
-}
-.nav-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--green-bg);
-  color: var(--green-dk);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.2px;
-}
-.nav-pill::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-  animation: livepulse 2s ease-in-out infinite;
-}
-@keyframes livepulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.7); }
-}
-
-/* ── Hero ────────────────────────────────────────────────── */
-.hero {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 28px 16px 0;
-}
-.hero-label {
-  font-family: var(--font-data);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--ink4);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 6px;
-}
-.hero-title {
-  font-size: clamp(22px, 5vw, 28px);
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: -0.5px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-}
-.hero-title span { color: var(--green); }
-
-/* ── Confidence threshold control ───────────────────────── */
-.threshold-bar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  box-shadow: var(--shadow);
-}
-.threshold-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.threshold-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink2);
-}
-.threshold-value {
-  font-family: var(--font-data);
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--green-dk);
-  background: var(--green-bg);
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-.threshold-track {
-  position: relative;
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-  margin-bottom: 6px;
-}
-.threshold-fill {
-  position: absolute;
-  left: 0; top: 0; height: 100%;
-  background: var(--green);
-  border-radius: 2px;
-  transition: width 0.1s;
-  pointer-events: none;
-}
-input[type=range].slider {
-  -webkit-appearance: none;
-  appearance: none;
-  position: absolute;
-  top: -8px; left: 0;
-  width: 100%; height: 20px;
-  background: transparent;
-  cursor: pointer;
-}
-input[type=range].slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 2px solid var(--green);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-}
-input[type=range].slider::-moz-range-thumb {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 2px solid var(--green);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-}
-.threshold-hints {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-data);
-  font-size: 10px;
-  color: var(--ink4);
-  margin-top: 8px;
-}
-.match-count-line {
-  font-size: 12px;
-  color: var(--ink3);
-  margin-top: 8px;
-}
-.match-count-line strong { color: var(--ink); font-weight: 600; }
-
-/* ── Summary pills row ───────────────────────────────────── */
-.summary-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 2px;
-}
-.summary-row::-webkit-scrollbar { display: none; }
-.sum-pill {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink2);
-  white-space: nowrap;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-.sum-pill.active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--white);
-}
-.sum-pill .pill-count {
-  background: var(--border);
-  color: var(--ink3);
-  font-family: var(--font-data);
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 10px;
-}
-.sum-pill.active .pill-count {
-  background: rgba(255,255,255,0.2);
-  color: var(--white);
-}
-
-/* ── Match feed ──────────────────────────────────────────── */
-.feed {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 16px 100px;
-}
-.feed-section-label {
-  font-family: var(--font-data);
-  font-size: 10px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--ink4);
-  margin-bottom: 10px;
-  padding-top: 4px;
-}
-
-/* ── Match card ──────────────────────────────────────────── */
-.match-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 10px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  transition: box-shadow 0.2s, border-color 0.2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.match-card:active { box-shadow: none; }
-
-/* Collapsed header — always visible */
-.card-header {
-  padding: 14px 16px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-}
-.card-left { min-width: 0; }
-.card-meta {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-.league-badge {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 5px;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
-.kickoff-tag {
-  font-family: var(--font-data);
-  font-size: 11px;
-  color: var(--ink4);
-}
-.teams-line {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: -0.2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-bottom: 4px;
-}
-.verdict-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.verdict-chip {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 6px;
-}
-.verdict-reason {
-  font-size: 12px;
-  color: var(--ink3);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Confidence ring */
-.conf-ring-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  flex-shrink: 0;
-}
-.conf-ring {
-  width: 52px;
-  height: 52px;
-  position: relative;
-}
-.conf-ring svg {
-  width: 52px;
-  height: 52px;
-  transform: rotate(-90deg);
-}
-.conf-ring .ring-bg {
-  fill: none;
-  stroke: var(--border);
-  stroke-width: 4;
-}
-.conf-ring .ring-fill {
-  fill: none;
-  stroke-width: 4;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1);
-}
-.conf-ring .ring-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-data);
-  font-size: 12px;
-  font-weight: 500;
-  transform: none;
-}
-.conf-label-sm {
-  font-family: var(--font-data);
-  font-size: 9px;
-  color: var(--ink4);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-}
-
-/* Expand chevron */
-.chevron {
-  display: none; /* hidden — ring acts as the expand affordance */
-}
-
-/* ── Expanded body ───────────────────────────────────────── */
-.card-body {
-  border-top: 1px solid var(--border);
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
-}
-.card-body.open { max-height: 900px; }
-.card-body-inner { padding: 16px; }
-
-/* Three-signal row */
-.signals {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.signal-col {
-  background: var(--bg);
-  border-radius: var(--radius-sm);
-  padding: 10px 10px 8px;
-  border: 1px solid var(--border);
-}
-.signal-src {
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--ink4);
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.signal-pick {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.1;
-  margin-bottom: 3px;
-}
-.signal-sub {
-  font-family: var(--font-data);
-  font-size: 10px;
-  color: var(--ink3);
-}
-
-/* Stats bars */
-.stats-block { margin-bottom: 16px; }
-.stat-row {
-  display: grid;
-  grid-template-columns: 72px 1fr 72px;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-.stat-val-left {
-  font-family: var(--font-data);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink2);
-  text-align: right;
-}
-.stat-val-right {
-  font-family: var(--font-data);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink2);
-  text-align: left;
-}
-.stat-bar-wrap {
-  position: relative;
-  height: 6px;
-  background: var(--border);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.stat-bar-home {
-  position: absolute;
-  left: 0; top: 0; height: 100%;
-  background: var(--blue);
-  border-radius: 3px;
-  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
-}
-.stat-bar-away {
-  position: absolute;
-  right: 0; top: 0; height: 100%;
-  background: var(--amber);
-  border-radius: 3px;
-  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
-}
-.stat-name {
-  text-align: center;
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--ink4);
-  margin-bottom: 3px;
-}
-
-/* Form dots */
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.form-dots {
-  display: flex;
-  gap: 4px;
-}
-.form-dots.right { justify-content: flex-end; }
-.form-dot {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.fd-w { background: var(--green-bg); color: var(--green-dk); }
-.fd-d { background: #F3F4F6; color: var(--ink3); }
-.fd-l { background: var(--red-bg); color: var(--red-dk); }
-.form-vs {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--ink4);
-  text-align: center;
-}
-
-/* Odds row */
-.odds-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
-}
-.odd-btn {
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px 4px 7px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-.odd-btn:active { transform: scale(0.97); }
-.odd-btn.best {
-  background: var(--green-bg);
-  border-color: var(--green);
-}
-.odd-label {
-  display: block;
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  color: var(--ink4);
-  margin-bottom: 3px;
-}
-.odd-value {
-  font-family: var(--font-data);
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--ink);
-}
-.odd-btn.best .odd-value { color: var(--green-dk); }
-
-/* AI insight strip */
-.ai-strip {
-  background: var(--blue-bg);
-  border: 1px solid #BFDBFE;
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  margin-top: 10px;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-.ai-icon {
-  font-size: 14px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.ai-text {
-  font-size: 12px;
-  color: var(--blue-dk);
-  line-height: 1.5;
-}
-
-/* ── Empty state ─────────────────────────────────────────── */
-.empty-state {
-  text-align: center;
-  padding: 48px 24px;
-  color: var(--ink3);
-}
-.empty-state .empty-icon { font-size: 36px; margin-bottom: 12px; }
-.empty-state p { font-size: 14px; line-height: 1.6; }
-.empty-state strong { color: var(--ink2); }
-
-/* ── Bottom nav (mobile) ─────────────────────────────────── */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--white);
-  border-top: 1px solid var(--border);
-  display: flex;
-  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-  z-index: 200;
-}
-.bn-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  padding: 4px 0;
-  color: var(--ink4);
-  font-size: 10px;
-  font-weight: 500;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: color 0.15s;
-}
-.bn-item.active { color: var(--green-dk); }
-.bn-icon { font-size: 20px; line-height: 1; }
-
-/* ── Desktop sidebar ─────────────────────────────────────── */
-@media (min-width: 900px) {
-  body { background: var(--bg); }
-  .layout {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 24px;
-    padding: 0 24px;
-    align-items: start;
-  }
-  .hero, .feed { max-width: none; padding-left: 0; padding-right: 0; }
-  .hero { padding-top: 28px; }
-  .bottom-nav { display: none; }
-  .feed { padding-bottom: 40px; }
-
-  .sidebar-panel {
-    position: sticky;
-    top: 68px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding-top: 28px;
-  }
-  .side-widget {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
-  .side-widget-head {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ink2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .side-widget-body { padding: 14px 16px; }
-  .side-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .side-row:last-child { border-bottom: none; }
-  .side-match { color: var(--ink3); font-size: 11px; margin-bottom: 1px; }
-  .side-pick { font-weight: 600; color: var(--ink); }
-  .side-conf {
-    font-family: var(--font-data);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 2px 8px;
-    border-radius: 6px;
-  }
-  .sc-high { background: var(--green-bg); color: var(--green-dk); }
-  .sc-mid  { background: var(--amber-bg); color: var(--amber-dk); }
-}
-@media (max-width: 899px) {
-  .sidebar-panel { display: none; }
-}
-
-/* ── Confidence colour helpers ───────────────────────────── */
-.conf-high { color: var(--green-dk); }
-.conf-mid  { color: var(--amber-dk); }
-.conf-low  { color: var(--ink3); }
-.verdict-high { background: var(--green-bg); color: var(--green-dk); }
-.verdict-mid  { background: var(--amber-bg); color: var(--amber-dk); }
-.verdict-low  { background: #F3F4F6; color: var(--ink3); }
-
-/* ── Micro-interactions ──────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#ffffff;--bg:#F7F8FA;--surface:#ffffff;--border:#EAECF0;
+  --ink:#111318;--ink2:#3D4350;--ink3:#6B7280;--ink4:#9CA3AF;
+  --green:#00C853;--green-bg:#E8FAF0;--green-dk:#007A32;
+  --amber:#FF9500;--amber-bg:#FFF4E0;--amber-dk:#8A5100;
+  --red:#F04438;--red-bg:#FEF3F2;--red-dk:#912018;
+  --blue:#2563EB;--blue-bg:#EFF6FF;--blue-dk:#1E40AF;
+  --radius:14px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --font-ui:'DM Sans',system-ui,sans-serif;
+  --font-data:'DM Mono',monospace;
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+.nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:env(safe-area-inset-top) 0 0}
+.nav-inner{max-width:760px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-0.3px}
+.nav-logo .dot{color:var(--green)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-date{font-family:var(--font-data);font-size:11px;color:var(--ink4)}
+.nav-pill{display:inline-flex;align-items:center;gap:5px;background:var(--green-bg);color:var(--green-dk);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
+.nav-pill::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:livepulse 2s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero{max-width:760px;margin:0 auto;padding:28px 16px 0}
+.hero-label{font-family:var(--font-data);font-size:11px;font-weight:500;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.hero-title{font-size:clamp(22px,5vw,28px);font-weight:600;color:var(--ink);letter-spacing:-0.5px;line-height:1.2;margin-bottom:20px}
+.hero-title span{color:var(--green)}
+.threshold-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px;box-shadow:var(--shadow)}
+.threshold-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.threshold-label{font-size:13px;font-weight:500;color:var(--ink2)}
+.threshold-value{font-family:var(--font-data);font-size:14px;font-weight:500;color:var(--green-dk);background:var(--green-bg);padding:2px 8px;border-radius:6px}
+.threshold-track{position:relative;height:4px;background:var(--border);border-radius:2px;margin-bottom:6px}
+.threshold-fill{position:absolute;left:0;top:0;height:100%;background:var(--green);border-radius:2px;transition:width .1s;pointer-events:none}
+input[type=range].slider{-webkit-appearance:none;appearance:none;position:absolute;top:-8px;left:0;width:100%;height:20px;background:transparent;cursor:pointer}
+input[type=range].slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--white);border:2px solid var(--green);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--white);border:2px solid var(--green);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.threshold-hints{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:8px}
+.match-count-line{font-size:12px;color:var(--ink3);margin-top:8px}
+.match-count-line strong{color:var(--ink);font-weight:600}
+.summary-row{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.summary-row::-webkit-scrollbar{display:none}
+.sum-pill{flex-shrink:0;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap;box-shadow:var(--shadow);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.sum-pill.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.sum-pill .pill-count{background:var(--border);color:var(--ink3);font-family:var(--font-data);font-size:10px;padding:1px 6px;border-radius:10px}
+.sum-pill.active .pill-count{background:rgba(255,255,255,.2);color:var(--white)}
+.feed{max-width:760px;margin:0 auto;padding:0 16px 100px}
+.feed-section-label{font-family:var(--font-data);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--ink4);margin-bottom:10px;padding-top:4px}
+.match-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.card-header{padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;cursor:pointer;user-select:none}
+.card-left{min-width:0}
+.card-meta{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.league-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;letter-spacing:.3px;white-space:nowrap}
+.kickoff-tag{font-family:var(--font-data);font-size:11px;color:var(--ink4)}
+.status-live{font-family:var(--font-data);font-size:10px;font-weight:600;color:var(--red);background:var(--red-bg);padding:2px 7px;border-radius:5px;animation:livepulse 1.5s ease-in-out infinite}
+.teams-line{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.verdict-line{display:flex;align-items:center;gap:6px}
+.verdict-chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px}
+.verdict-reason{font-size:12px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.verdict-loading{font-size:12px;color:var(--ink4);font-family:var(--font-data);animation:fadepulse 1.2s ease-in-out infinite}
+@keyframes fadepulse{0%,100%{opacity:.4}50%{opacity:1}}
+.conf-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
+.conf-ring{width:52px;height:52px;position:relative}
+.conf-ring svg{width:52px;height:52px;transform:rotate(-90deg)}
+.conf-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:4}
+.conf-ring .ring-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
+.conf-ring .ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-data);font-size:12px;font-weight:500}
+.conf-label-sm{font-family:var(--font-data);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px}
+.ring-skeleton{width:52px;height:52px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.card-body{border-top:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+.card-body.open{max-height:900px}
+.card-body-inner{padding:16px}
+.signals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.signal-col{background:var(--bg);border-radius:var(--radius-sm);padding:10px 10px 8px;border:1px solid var(--border)}
+.signal-src{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:5px}
+.signal-pick{font-size:14px;font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:3px}
+.signal-sub{font-family:var(--font-data);font-size:10px;color:var(--ink3)}
+.signal-loading{font-family:var(--font-data);font-size:11px;color:var(--ink4);animation:fadepulse 1.2s ease-in-out infinite}
+.stats-block{margin-bottom:16px}
+.stat-row{display:grid;grid-template-columns:72px 1fr 72px;align-items:center;gap:8px;margin-bottom:6px}
+.stat-val-left{font-family:var(--font-data);font-size:12px;font-weight:500;color:var(--ink2);text-align:right}
+.stat-val-right{font-family:var(--font-data);font-size:12px;font-weight:500;color:var(--ink2);text-align:left}
+.stat-bar-wrap{position:relative;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.stat-bar-home{position:absolute;left:0;top:0;height:100%;background:var(--blue);border-radius:3px}
+.stat-bar-away{position:absolute;right:0;top:0;height:100%;background:var(--amber);border-radius:3px}
+.stat-name{text-align:center;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:3px}
+.form-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:16px}
+.form-dots{display:flex;gap:4px}
+.form-dots.right{justify-content:flex-end}
+.form-dot{width:20px;height:20px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.fd-w{background:var(--green-bg);color:var(--green-dk)}
+.fd-d{background:#F3F4F6;color:var(--ink3)}
+.fd-l{background:var(--red-bg);color:var(--red-dk)}
+.form-vs{font-size:10px;font-weight:600;color:var(--ink4);text-align:center}
+.odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.odd-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px 7px;text-align:center;cursor:pointer;transition:all .15s}
+.odd-btn.best{background:var(--green-bg);border-color:var(--green)}
+.odd-label{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
+.odd-value{font-family:var(--font-data);font-size:16px;font-weight:500;color:var(--ink)}
+.odd-btn.best .odd-value{color:var(--green-dk)}
+.ai-strip{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;display:flex;align-items:flex-start;gap:8px}
+.ai-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.ai-text{font-size:12px;color:var(--blue-dk);line-height:1.5}
+.empty-state{text-align:center;padding:48px 24px;color:var(--ink3)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.global-loading{text-align:center;padding:60px 24px}
+.global-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.global-loading p{font-size:14px;color:var(--ink3)}
+.no-matches-today{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:16px}
+.no-matches-today h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.no-matches-today p{font-size:13px;color:var(--ink3);line-height:1.7}
+.verdict-high{background:var(--green-bg);color:var(--green-dk)}
+.verdict-mid{background:var(--amber-bg);color:var(--amber-dk)}
+.verdict-low{background:#F3F4F6;color:var(--ink3)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:200}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;color:var(--ink4);font-size:10px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bn-item.active{color:var(--green-dk)}
+.bn-icon{font-size:20px;line-height:1}
+@media(min-width:900px){
+  .layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:24px;padding:0 24px;align-items:start}
+  .hero,.feed{max-width:none;padding-left:0;padding-right:0}
+  .hero{padding-top:28px}
+  .bottom-nav{display:none}
+  .feed{padding-bottom:40px}
+  .sidebar-panel{position:sticky;top:68px;display:flex;flex-direction:column;gap:16px;padding-top:28px}
+  .side-widget{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .side-widget-head{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--ink2)}
+  .side-widget-body{padding:14px 16px}
+  .side-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .side-row:last-child{border-bottom:none}
+  .side-match{color:var(--ink3);font-size:11px;margin-bottom:1px}
+  .side-pick{font-weight:600;color:var(--ink)}
+  .side-conf{font-family:var(--font-data);font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px}
+  .sc-high{background:var(--green-bg);color:var(--green-dk)}
+  .sc-mid{background:var(--amber-bg);color:var(--amber-dk)}
+}
+@media(max-width:899px){.sidebar-panel{display:none}}
+@media(max-width:600px){.signals{grid-template-columns:1fr}.hero-title{font-size:22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
-<!-- Nav -->
-<nav class="nav" role="banner">
+<nav class="nav">
   <div class="nav-inner">
     <div class="nav-logo">⚽ Kick<span class="dot">Pick</span></div>
     <div class="nav-right">
@@ -731,27 +162,19 @@ input[type=range].slider::-moz-range-thumb {
   </div>
 </nav>
 
-<!-- Desktop layout wrapper -->
 <div class="layout">
-
-<!-- Main column -->
 <div>
-  <!-- Hero -->
-  <header class="hero" role="main">
+  <header class="hero">
     <div class="hero-label">Today's predictions</div>
     <h1 class="hero-title">Where should you<br><span>put your money?</span></h1>
-
-    <!-- Confidence threshold -->
-    <div class="threshold-bar" role="region" aria-label="Confidence filter">
+    <div class="threshold-bar">
       <div class="threshold-top">
         <span class="threshold-label">Show picks above</span>
         <span class="threshold-value" id="thresh-display">50% confidence</span>
       </div>
       <div class="threshold-track">
         <div class="threshold-fill" id="thresh-fill"></div>
-        <input type="range" class="slider" id="thresh-slider"
-               min="50" max="90" value="50" step="5"
-               aria-label="Minimum confidence threshold">
+        <input type="range" class="slider" id="thresh-slider" min="50" max="90" value="50" step="5">
       </div>
       <div class="threshold-hints">
         <span>50% — show all</span>
@@ -760,271 +183,205 @@ input[type=range].slider::-moz-range-thumb {
       </div>
       <div class="match-count-line" id="match-count-line"></div>
     </div>
-
-    <!-- Filter pills -->
-    <div class="summary-row" id="filter-pills" role="tablist" aria-label="Filter by league">
-    </div>
+    <div class="summary-row" id="filter-pills"></div>
   </header>
-
-  <!-- Feed -->
-  <main class="feed" id="feed" role="feed" aria-label="Match predictions"></main>
+  <main class="feed" id="feed">
+    <div class="global-loading">
+      <div class="spinner"></div>
+      <p>Loading today's matches...</p>
+    </div>
+  </main>
 </div>
 
-<!-- Sidebar (desktop only) -->
-<aside class="sidebar-panel" aria-label="Best picks today">
+<aside class="sidebar-panel">
   <div class="side-widget">
     <div class="side-widget-head">⭐ Best picks today</div>
-    <div class="side-widget-body" id="side-best"></div>
+    <div class="side-widget-body" id="side-best">
+      <div style="font-size:12px;color:var(--ink4);font-family:var(--font-data)">Loading...</div>
+    </div>
   </div>
   <div class="side-widget">
-    <div class="side-widget-head">📊 How we predict</div>
+    <div class="side-widget-head">ℹ️ How we predict</div>
     <div class="side-widget-body">
-      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Stats model + Claude AI + market consensus. Cards sorted by confidence — highest first.</p>
+      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Real matches from football-data.org · AI analysis by Claude · Sorted by confidence.</p>
     </div>
   </div>
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:11px;color:var(--ink4);line-height:1.6;box-shadow:var(--shadow)">
     ⚠ For entertainment only. Please gamble responsibly. 18+
   </div>
 </aside>
+</div>
 
-</div><!-- /layout -->
-
-<!-- Bottom nav (mobile) -->
-<nav class="bottom-nav" aria-label="Main navigation">
-  <div class="bn-item active" aria-current="page">
-    <span class="bn-icon">⚽</span>
-    <span>Today</span>
-  </div>
-  <div class="bn-item">
-    <span class="bn-icon">📅</span>
-    <span>Tomorrow</span>
-  </div>
-  <div class="bn-item">
-    <span class="bn-icon">🏆</span>
-    <span>Leagues</span>
-  </div>
-  <div class="bn-item">
-    <span class="bn-icon">📈</span>
-    <span>Track record</span>
-  </div>
+<nav class="bottom-nav">
+  <div class="bn-item active"><span class="bn-icon">⚽</span><span>Today</span></div>
+  <div class="bn-item"><span class="bn-icon">📅</span><span>Tomorrow</span></div>
+  <div class="bn-item"><span class="bn-icon">🏆</span><span>Leagues</span></div>
+  <div class="bn-item"><span class="bn-icon">📈</span><span>Track record</span></div>
 </nav>
 
 <script>
-// ── Data ─────────────────────────────────────────────────────────────────────
-// This array is the only thing that changes when real data is wired in.
-// Shape matches what api/matches.js will return.
-const MATCHES = [
-  {
-    id:'m1', league:'Champions League', leagueColor:'#7C3AED', leagueBg:'#F5F3FF',
-    kickoff:'20:45', home:'Arsenal', away:'PSG', featured:true,
-    homeForm:'WWWDW', awayForm:'WWWWL',
-    stats:{ homePoss:58, awayPoss:42, homeGoals:2.4, awayGoals:2.1, homeH2H:4, awayH2H:3 },
-    predictions:{
-      stats:  { pick:'Home win',   sub:'52% probability' },
-      ai:     { pick:'Over 2.5',   sub:'71% confidence',  insight:'Both attacks in form — expect goals from both ends.' },
-      market: { pick:'Home win',   sub:'58% implied' }
-    },
-    confidence:78, verdict:'Over 2.5', verdictLevel:'high',
-    odds:{ home:'2.10', draw:'3.50', away:'3.30', best:'home' }
-  },
-  {
-    id:'m2', league:'Premier League', leagueColor:'#059669', leagueBg:'#ECFDF5',
-    kickoff:'21:00', home:'Manchester City', away:'Liverpool', featured:false,
-    homeForm:'WWLWW', awayForm:'WWWWD',
-    stats:{ homePoss:62, awayPoss:38, homeGoals:2.2, awayGoals:2.0, homeH2H:7, awayH2H:5 },
-    predictions:{
-      stats:  { pick:'Home win',   sub:'51% probability' },
-      ai:     { pick:'BTTS Yes',   sub:'69% confidence',  insight:'Two of the league\'s best attacks — goals guaranteed on both sides.' },
-      market: { pick:'BTTS Yes',   sub:'73% implied' }
-    },
-    confidence:71, verdict:'BTTS Yes', verdictLevel:'high',
-    odds:{ home:'1.95', draw:'3.60', away:'3.90', best:'home' }
-  },
-  {
-    id:'m3', league:'La Liga', leagueColor:'#DC2626', leagueBg:'#FEF2F2',
-    kickoff:'21:00', home:'Barcelona', away:'Atletico Madrid', featured:false,
-    homeForm:'WWWWW', awayForm:'WLWWW',
-    stats:{ homePoss:64, awayPoss:36, homeGoals:2.6, awayGoals:1.7, homeH2H:9, awayH2H:6 },
-    predictions:{
-      stats:  { pick:'Home win',   sub:'55% probability' },
-      ai:     { pick:'Home & O 1.5', sub:'74% confidence', insight:'Barcelona dominant at home — Atletico press likely to leave gaps.' },
-      market: { pick:'Home win',   sub:'68% implied' }
-    },
-    confidence:74, verdict:'Home & O 1.5', verdictLevel:'high',
-    odds:{ home:'1.75', draw:'3.70', away:'4.80', best:'home' }
-  },
-  {
-    id:'m4', league:'Serie A', leagueColor:'#D97706', leagueBg:'#FFFBEB',
-    kickoff:'18:00', home:'Inter Milan', away:'Juventus', featured:false,
-    homeForm:'WDWWW', awayForm:'LWDWW',
-    stats:{ homePoss:55, awayPoss:45, homeGoals:1.9, awayGoals:1.4, homeH2H:6, awayH2H:8 },
-    predictions:{
-      stats:  { pick:'Draw',        sub:'36% probability' },
-      ai:     { pick:'Under 2.5',   sub:'62% confidence',  insight:'Derby tension tends to suppress goals — defensive setup expected.' },
-      market: { pick:'Draw',        sub:'49% implied' }
-    },
-    confidence:62, verdict:'Under 2.5', verdictLevel:'mid',
-    odds:{ home:'2.30', draw:'3.10', away:'3.20', best:'draw' }
-  },
-  {
-    id:'m5', league:'Bundesliga', leagueColor:'#D97706', leagueBg:'#FFF7ED',
-    kickoff:'15:30', home:'Borussia Dortmund', away:'RB Leipzig', featured:false,
-    homeForm:'WDWLW', awayForm:'WWWDL',
-    stats:{ homePoss:51, awayPoss:49, homeGoals:2.1, awayGoals:2.0, homeH2H:5, awayH2H:6 },
-    predictions:{
-      stats:  { pick:'Over 2.5',  sub:'61% probability' },
-      ai:     { pick:'Over 2.5',  sub:'66% confidence', insight:'Two high-press teams — this fixture has gone over in 7 of last 8.' },
-      market: { pick:'Away win',  sub:'52% implied' }
-    },
-    confidence:66, verdict:'Over 2.5', verdictLevel:'mid',
-    odds:{ home:'2.60', draw:'3.30', away:'2.70', best:'away' }
-  },
-  {
-    id:'m6', league:'Ligue 1', leagueColor:'#2563EB', leagueBg:'#EFF6FF',
-    kickoff:'20:00', home:'Marseille', away:'Monaco', featured:false,
-    homeForm:'WDWWL', awayForm:'WWWDW',
-    stats:{ homePoss:49, awayPoss:51, homeGoals:1.8, awayGoals:2.0, homeH2H:5, awayH2H:7 },
-    predictions:{
-      stats:  { pick:'Away win',  sub:'42% probability' },
-      ai:     { pick:'Away win',  sub:'60% confidence', insight:'Monaco\'s away record this season is exceptional — five straight wins.' },
-      market: { pick:'Away win',  sub:'61% implied' }
-    },
-    confidence:60, verdict:'Away win', verdictLevel:'mid',
-    odds:{ home:'2.80', draw:'3.20', away:'2.50', best:'away' }
-  },
-  {
-    id:'m7', league:'Premier League', leagueColor:'#059669', leagueBg:'#ECFDF5',
-    kickoff:'14:00', home:'Tottenham', away:'Newcastle', featured:false,
-    homeForm:'WLWDW', awayForm:'WDWWL',
-    stats:{ homePoss:52, awayPoss:48, homeGoals:1.9, awayGoals:1.8, homeH2H:6, awayH2H:5 },
-    predictions:{
-      stats:  { pick:'Home win',  sub:'46% probability' },
-      ai:     { pick:'Home win',  sub:'54% confidence', insight:'Slight home advantage — too close to call with high confidence.' },
-      market: { pick:'Home win',  sub:'50% implied' }
-    },
-    confidence:54, verdict:'Home win', verdictLevel:'low',
-    odds:{ home:'2.20', draw:'3.40', away:'3.10', best:'home' }
-  },
-  {
-    id:'m8', league:'La Liga', leagueColor:'#DC2626', leagueBg:'#FEF2F2',
-    kickoff:'16:15', home:'Sevilla', away:'Villarreal', featured:false,
-    homeForm:'LLWDL', awayForm:'WWWWW',
-    stats:{ homePoss:48, awayPoss:52, homeGoals:1.3, awayGoals:2.1, homeH2H:4, awayH2H:7 },
-    predictions:{
-      stats:  { pick:'Away win',  sub:'53% probability' },
-      ai:     { pick:'Away win',  sub:'68% confidence', insight:'Sevilla in freefall — Villarreal arrive with momentum and superior H2H.' },
-      market: { pick:'Away win',  sub:'65% implied' }
-    },
-    confidence:68, verdict:'Away win', verdictLevel:'high',
-    odds:{ home:'3.10', draw:'3.20', away:'2.20', best:'away' }
-  }
-];
-
-// Sort by confidence descending — this is the core UX decision
-MATCHES.sort((a,b) => b.confidence - a.confidence);
-
 // ── State ─────────────────────────────────────────────────────────────────────
+let MATCHES = [];
 let threshold = 50;
 let activeLeague = 'all';
 let openCards = new Set();
 
-// ── Confidence ring SVG ───────────────────────────────────────────────────────
-function confRing(pct, level) {
-  const r = 20, circ = 2 * Math.PI * r;
-  const offset = circ - (pct / 100) * circ;
-  const color = level === 'high' ? 'var(--green)' : level === 'mid' ? 'var(--amber)' : '#D1D5DB';
-  const textColor = level === 'high' ? 'var(--green-dk)' : level === 'mid' ? 'var(--amber-dk)' : 'var(--ink3)';
-  return `
-    <div class="conf-ring" aria-label="${pct}% confidence">
-      <svg viewBox="0 0 52 52">
-        <circle class="ring-bg" cx="26" cy="26" r="${r}"/>
-        <circle class="ring-fill" cx="26" cy="26" r="${r}"
-          stroke="${color}"
-          stroke-dasharray="${circ}"
-          stroke-dashoffset="${offset}"/>
-      </svg>
-      <div class="ring-text" style="color:${textColor}">${pct}%</div>
-    </div>
-    <span class="conf-label-sm">conf.</span>`;
+// ── Fetch partite reali da /api/matches ───────────────────────────────────────
+async function loadMatches() {
+  try {
+    const res = await fetch('/api/matches');
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    MATCHES = data.matches || [];
+
+    if (MATCHES.length === 0) {
+      showNoMatches();
+      return;
+    }
+
+    renderPills();
+    renderFeed();
+
+    // Carica AI picks in parallelo per tutte le partite
+    MATCHES.forEach(async m => {
+      const result = await fetchAIPick(m);
+      applyAIResult(m, result);
+    });
+
+  } catch(e) {
+    document.getElementById('feed').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <p>Could not load matches.<br>Please try again later.</p>
+      </div>`;
+  }
 }
 
-// ── Form dots ─────────────────────────────────────────────────────────────────
-function formDots(str, align) {
-  const dots = str.split('').map(c => {
-    const cls = c==='W'?'fd-w':c==='D'?'fd-d':'fd-l';
-    return `<span class="form-dot ${cls}" aria-label="${c==='W'?'Win':c==='D'?'Draw':'Loss'}">${c}</span>`;
-  }).join('');
-  return `<div class="form-dots${align==='right'?' right':''}">${dots}</div>`;
-}
-
-// ── Stat bar ──────────────────────────────────────────────────────────────────
-function statBar(homeVal, awayVal, label, unit='') {
-  const total = homeVal + awayVal;
-  const homePct = Math.round(homeVal / total * 100);
-  const awayPct = 100 - homePct;
-  return `
-    <div class="stat-row">
-      <div class="stat-val-left">${homeVal}${unit}</div>
-      <div>
-        <div class="stat-name">${label}</div>
-        <div class="stat-bar-wrap" role="img" aria-label="${label}: home ${homeVal}${unit}, away ${awayVal}${unit}">
-          <div class="stat-bar-home" style="width:${homePct}%"></div>
-          <div class="stat-bar-away" style="width:${awayPct}%"></div>
-        </div>
-      </div>
-      <div class="stat-val-right">${awayVal}${unit}</div>
+function showNoMatches() {
+  document.getElementById('feed').innerHTML = `
+    <div class="no-matches-today">
+      <h3>☀️ No matches today</h3>
+      <p>No European fixtures scheduled today.<br>
+      Check back tomorrow — or try the summer leagues below.</p>
     </div>`;
+  document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> today`;
 }
 
-// ── Single match card ─────────────────────────────────────────────────────────
-function renderCard(m) {
-  const isOpen = openCards.has(m.id);
-  const vClass = `verdict-${m.verdictLevel}`;
-  const s = m.stats;
+// ── Fetch AI pick ─────────────────────────────────────────────────────────────
+async function fetchAIPick(m) {
+  try {
+    const res = await fetch('/api/ai-pick', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        home: m.home, away: m.away,
+        league: m.league, stage: 'Match',
+        homeForm: m.homeForm, awayForm: m.awayForm,
+        homeGoals: m.stats.homeGoals, awayGoals: m.stats.awayGoals,
+        h2hHome: m.stats.homeH2H, h2hAway: m.stats.awayH2H
+      })
+    });
+    if (!res.ok) throw new Error('AI error');
+    return await res.json();
+  } catch(e) {
+    return { pick: 'Analysis N/A', confidence: 50, insight: 'AI unavailable.', verdictLevel: 'low' };
+  }
+}
 
-  return `
-  <article class="match-card" id="card-${m.id}" data-id="${m.id}">
+// ── Apply AI result al card ───────────────────────────────────────────────────
+function applyAIResult(m, result) {
+  m.aiResult = result;
+  const ringEl    = document.getElementById('ring-'+m.id);
+  const verdictEl = document.getElementById('verdict-'+m.id);
+  const aiPickEl  = document.getElementById('ai-pick-'+m.id);
+  const aiStripEl = document.getElementById('ai-strip-'+m.id);
+
+  if (ringEl)    ringEl.innerHTML    = buildRing(result.confidence, result.verdictLevel);
+  if (verdictEl) verdictEl.innerHTML = `<span class="verdict-chip verdict-${result.verdictLevel}">${result.pick}</span>
+    <span class="verdict-reason">${result.insight}</span>`;
+  if (aiPickEl)  aiPickEl.innerHTML  = `<div class="signal-src">🤖 AI pick</div>
+    <div class="signal-pick">${result.pick}</div>
+    <div class="signal-sub">${result.confidence}% confidence</div>`;
+  if (aiStripEl) aiStripEl.querySelector('.ai-text').textContent = result.insight;
+
+  rerenderFeedOrder();
+  updateSidebar();
+}
+
+// ── Render helpers ────────────────────────────────────────────────────────────
+function buildRing(pct, level) {
+  const r=20, circ=2*Math.PI*r, offset=circ-(pct/100)*circ;
+  const color=level==='high'?'var(--green)':level==='mid'?'var(--amber)':'#D1D5DB';
+  const tc=level==='high'?'var(--green-dk)':level==='mid'?'var(--amber-dk)':'var(--ink3)';
+  return `<div class="conf-ring"><svg viewBox="0 0 52 52">
+    <circle class="ring-bg" cx="26" cy="26" r="${r}"/>
+    <circle class="ring-fill" cx="26" cy="26" r="${r}" stroke="${color}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+  </svg><div class="ring-text" style="color:${tc}">${pct}%</div></div>
+  <span class="conf-label-sm">conf.</span>`;
+}
+
+function formDots(str, align) {
+  return `<div class="form-dots${align==='right'?' right':''}">` +
+    str.split('').map(c=>`<span class="form-dot ${c==='W'?'fd-w':c==='D'?'fd-d':'fd-l'}">${c}</span>`).join('') +
+  `</div>`;
+}
+
+function statBar(hv, av, label, unit='') {
+  const t=hv+av, hp=Math.round(hv/t*100);
+  return `<div class="stat-row">
+    <div class="stat-val-left">${hv}${unit}</div>
+    <div><div class="stat-name">${label}</div>
+    <div class="stat-bar-wrap"><div class="stat-bar-home" style="width:${hp}%"></div>
+    <div class="stat-bar-away" style="width:${100-hp}%"></div></div></div>
+    <div class="stat-val-right">${av}${unit}</div>
+  </div>`;
+}
+
+function renderCard(m) {
+  const ai = m.aiResult;
+  const s  = m.stats;
+  const isLive = ['IN_PLAY','PAUSED','LIVE'].includes(m.status);
+  const ringHTML = ai
+    ? buildRing(ai.confidence, ai.verdictLevel)
+    : `<div class="ring-skeleton"></div><span class="conf-label-sm">loading</span>`;
+  const verdictHTML = ai
+    ? `<span class="verdict-chip verdict-${ai.verdictLevel}">${ai.pick}</span><span class="verdict-reason">${ai.insight}</span>`
+    : `<span class="verdict-loading">AI analysing...</span>`;
+
+  return `<article class="match-card" id="card-${m.id}" data-id="${m.id}" data-league="${m.league}">
     <div class="card-header" role="button" tabindex="0"
-         aria-expanded="${isOpen}"
-         aria-controls="body-${m.id}"
          onclick="toggleCard('${m.id}')"
-         onkeydown="if(event.key==='Enter'||event.key===' '){toggleCard('${m.id}');event.preventDefault()}">
+         onkeydown="if(event.key==='Enter'){toggleCard('${m.id}');event.preventDefault()}">
       <div class="card-left">
         <div class="card-meta">
           <span class="league-badge" style="background:${m.leagueBg};color:${m.leagueColor}">${m.league}</span>
-          <span class="kickoff-tag">${m.kickoff}</span>
+          ${isLive
+            ? `<span class="status-live">● LIVE</span>`
+            : `<span class="kickoff-tag">${m.kickoff}</span>`}
         </div>
         <div class="teams-line">${m.home} vs ${m.away}</div>
-        <div class="verdict-line">
-          <span class="verdict-chip ${vClass}">${m.verdict}</span>
-          <span class="verdict-reason">${m.predictions.ai.insight}</span>
-        </div>
+        <div class="verdict-line" id="verdict-${m.id}">${verdictHTML}</div>
       </div>
-      <div class="conf-ring-wrap">
-        ${confRing(m.confidence, m.verdictLevel)}
-      </div>
+      <div class="conf-ring-wrap" id="ring-${m.id}">${ringHTML}</div>
     </div>
-    <div class="card-body${isOpen?' open':''}" id="body-${m.id}">
+    <div class="card-body" id="body-${m.id}">
       <div class="card-body-inner">
-
-        <!-- Form -->
-        <div class="form-row" aria-label="Recent form">
-          ${formDots(m.homeForm, 'left')}
+        <div class="form-row">
+          ${formDots(m.homeForm,'left')}
           <div class="form-vs">Last 5</div>
-          ${formDots(m.awayForm, 'right')}
+          ${formDots(m.awayForm,'right')}
         </div>
-
-        <!-- Three signals -->
-        <div class="signals" role="region" aria-label="Prediction signals">
+        <div class="signals">
           <div class="signal-col">
             <div class="signal-src">📊 Stats</div>
             <div class="signal-pick">${m.predictions.stats.pick}</div>
             <div class="signal-sub">${m.predictions.stats.sub}</div>
           </div>
-          <div class="signal-col">
+          <div class="signal-col" id="ai-pick-${m.id}">
             <div class="signal-src">🤖 AI</div>
-            <div class="signal-pick">${m.predictions.ai.pick}</div>
-            <div class="signal-sub">${m.predictions.ai.sub}</div>
+            ${ai
+              ? `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`
+              : `<div class="signal-loading">Thinking...</div>`}
           </div>
           <div class="signal-col">
             <div class="signal-src">👥 Market</div>
@@ -1032,78 +389,56 @@ function renderCard(m) {
             <div class="signal-sub">${m.predictions.market.sub}</div>
           </div>
         </div>
-
-        <!-- Stats -->
-        <div class="stats-block" role="region" aria-label="Match statistics">
+        <div class="stats-block">
           ${statBar(s.homePoss, s.awayPoss, 'Possession', '%')}
           ${statBar(s.homeGoals, s.awayGoals, 'Avg goals')}
           ${statBar(s.homeH2H, s.awayH2H, 'H2H wins')}
         </div>
-
-        <!-- Odds -->
-        <div class="odds-row" role="group" aria-label="Match odds">
-          <div class="odd-btn${m.odds.best==='home'?' best':''}" tabindex="0">
-            <span class="odd-label">Home</span>
-            <span class="odd-value">${m.odds.home}</span>
-          </div>
-          <div class="odd-btn${m.odds.best==='draw'?' best':''}" tabindex="0">
-            <span class="odd-label">Draw</span>
-            <span class="odd-value">${m.odds.draw}</span>
-          </div>
-          <div class="odd-btn${m.odds.best==='away'?' best':''}" tabindex="0">
-            <span class="odd-label">Away</span>
-            <span class="odd-value">${m.odds.away}</span>
-          </div>
+        <div class="odds-row">
+          <div class="odd-btn${m.odds.best==='home'?' best':''}">
+            <span class="odd-label">Home</span><span class="odd-value">${m.odds.home}</span></div>
+          <div class="odd-btn${m.odds.best==='draw'?' best':''}">
+            <span class="odd-label">Draw</span><span class="odd-value">${m.odds.draw}</span></div>
+          <div class="odd-btn${m.odds.best==='away'?' best':''}">
+            <span class="odd-label">Away</span><span class="odd-value">${m.odds.away}</span></div>
         </div>
-
-        <!-- AI insight -->
-        <div class="ai-strip" role="note" aria-label="AI insight">
+        <div class="ai-strip" id="ai-strip-${m.id}">
           <span class="ai-icon">🤖</span>
-          <span class="ai-text">${m.predictions.ai.insight}</span>
+          <span class="ai-text">${ai ? ai.insight : 'AI analysis loading...'}</span>
         </div>
-
       </div>
     </div>
   </article>`;
 }
 
-// ── Toggle card expand ────────────────────────────────────────────────────────
+// ── Toggle card ───────────────────────────────────────────────────────────────
 function toggleCard(id) {
-  if (openCards.has(id)) openCards.delete(id);
-  else openCards.add(id);
+  openCards.has(id) ? openCards.delete(id) : openCards.add(id);
   const body = document.getElementById('body-'+id);
-  const header = body.previousElementSibling;
-  if (body) body.classList.toggle('open', openCards.has(id));
-  if (header) header.setAttribute('aria-expanded', openCards.has(id));
+  const hdr  = body.previousElementSibling;
+  body.classList.toggle('open', openCards.has(id));
+  hdr.setAttribute('aria-expanded', openCards.has(id));
 }
 
-// ── Filter + render ───────────────────────────────────────────────────────────
-function getFiltered() {
-  return MATCHES.filter(m => {
-    const passThresh = m.confidence >= threshold;
-    const passLeague = activeLeague === 'all' || m.league === activeLeague;
-    return passThresh && passLeague;
-  });
-}
-
+// ── Render feed ───────────────────────────────────────────────────────────────
 function renderFeed() {
-  const filtered = getFiltered();
-  const feed = document.getElementById('feed');
+  const filtered = MATCHES
+    .filter(m => activeLeague==='all' || m.league===activeLeague)
+    .sort((a,b) => (b.aiResult?.confidence||0) - (a.aiResult?.confidence||0))
+    .filter(m => !m.aiResult || m.aiResult.confidence >= threshold);
 
+  const feed = document.getElementById('feed');
   if (!filtered.length) {
-    feed.innerHTML = `
-      <div class="empty-state" role="status">
-        <div class="empty-icon">🔍</div>
-        <p>No matches above <strong>${threshold}% confidence</strong> right now.<br>
-        Lower the threshold to see more picks.</p>
-      </div>`;
-    document.getElementById('match-count-line').innerHTML =
-      `<strong>0 matches</strong> meet this threshold today`;
+    feed.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <p>No matches above <strong>${threshold}%</strong>.<br>Lower the threshold to see more.</p>
+    </div>`;
+    document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> above threshold`;
     return;
   }
 
-  const high = filtered.filter(m => m.verdictLevel === 'high');
-  const rest  = filtered.filter(m => m.verdictLevel !== 'high');
+  const high = filtered.filter(m => m.aiResult?.verdictLevel==='high');
+  const rest  = filtered.filter(m => !m.aiResult || m.aiResult.verdictLevel!=='high');
   let html = '';
   if (high.length) {
     html += `<div class="feed-section-label">High confidence · ${high.length} pick${high.length!==1?'s':''}</div>`;
@@ -1114,70 +449,58 @@ function renderFeed() {
     html += rest.map(renderCard).join('');
   }
   feed.innerHTML = html;
+  openCards.forEach(id => {
+    const b = document.getElementById('body-'+id);
+    if (b) b.classList.add('open');
+  });
 
+  const highCount = MATCHES.filter(m => m.aiResult?.verdictLevel==='high').length;
   document.getElementById('match-count-line').innerHTML =
-    `Showing <strong>${filtered.length} match${filtered.length!==1?'es':''}</strong> · ${high.length} high confidence`;
+    `Showing <strong>${filtered.length} match${filtered.length!==1?'es':''}</strong> · ${highCount} high confidence`;
 }
 
-// ── Filter pills ──────────────────────────────────────────────────────────────
+function rerenderFeedOrder() { renderFeed(); }
+
+// ── Pills ─────────────────────────────────────────────────────────────────────
 function renderPills() {
-  const leagues = ['all', ...new Set(MATCHES.map(m => m.league))];
-  const container = document.getElementById('filter-pills');
-  container.innerHTML = leagues.map(l => {
-    const count = l === 'all' ? MATCHES.length : MATCHES.filter(m=>m.league===l).length;
-    const label = l === 'all' ? 'All' : l;
-    return `<button class="sum-pill${activeLeague===l?' active':''}"
-      role="tab" aria-selected="${activeLeague===l}"
-      onclick="setLeague('${l}')">${label}<span class="pill-count">${count}</span></button>`;
+  const leagues = ['all', ...new Set(MATCHES.map(m=>m.league))];
+  document.getElementById('filter-pills').innerHTML = leagues.map(l => {
+    const count = l==='all' ? MATCHES.length : MATCHES.filter(m=>m.league===l).length;
+    return `<button class="sum-pill${activeLeague===l?' active':''}" onclick="setLeague('${l}')">
+      ${l==='all'?'All':l}<span class="pill-count">${count}</span></button>`;
   }).join('');
 }
 
-function setLeague(l) {
-  activeLeague = l;
-  renderPills();
-  renderFeed();
+function setLeague(l) { activeLeague=l; renderPills(); renderFeed(); }
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+function updateSidebar() {
+  const best = MATCHES.filter(m=>m.aiResult).sort((a,b)=>b.aiResult.confidence-a.aiResult.confidence).slice(0,5);
+  if (!best.length) return;
+  document.getElementById('side-best').innerHTML = best.map(m=>`
+    <div class="side-row">
+      <div><div class="side-match">${m.home} vs ${m.away}</div>
+      <div class="side-pick">${m.aiResult.pick}</div></div>
+      <span class="side-conf ${m.aiResult.verdictLevel==='high'?'sc-high':'sc-mid'}">${m.aiResult.confidence}%</span>
+    </div>`).join('');
 }
 
-// ── Sidebar best picks ────────────────────────────────────────────────────────
-function renderSidebar() {
-  const best = [...MATCHES].slice(0, 5);
-  document.getElementById('side-best').innerHTML = best.map(m => {
-    const cls = m.verdictLevel === 'high' ? 'sc-high' : 'sc-mid';
-    return `<div class="side-row">
-      <div>
-        <div class="side-match">${m.home} vs ${m.away}</div>
-        <div class="side-pick">${m.verdict}</div>
-      </div>
-      <span class="side-conf ${cls}">${m.confidence}%</span>
-    </div>`;
-  }).join('');
-}
-
-// ── Threshold slider ──────────────────────────────────────────────────────────
+// ── Slider ────────────────────────────────────────────────────────────────────
 const slider = document.getElementById('thresh-slider');
 const fill   = document.getElementById('thresh-fill');
 const disp   = document.getElementById('thresh-display');
-
 function updateSlider(val) {
   threshold = parseInt(val);
-  const pct = ((val - 50) / (90 - 50)) * 100;
-  fill.style.width = pct + '%';
-  disp.textContent = val + '% confidence';
+  fill.style.width = ((val-50)/(90-50)*100)+'%';
+  disp.textContent = val+'% confidence';
   renderFeed();
 }
-
 slider.addEventListener('input', e => updateSlider(e.target.value));
 updateSlider(50);
 
-// ── Date ──────────────────────────────────────────────────────────────────────
-document.getElementById('nav-date').textContent = new Date().toLocaleDateString('en-GB', {
-  weekday:'short', day:'numeric', month:'short'
-});
-
 // ── Init ──────────────────────────────────────────────────────────────────────
-renderPills();
-renderFeed();
-renderSidebar();
+document.getElementById('nav-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+loadMatches();
 </script>
 </body>
 </html>
