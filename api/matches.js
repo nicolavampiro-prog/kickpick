@@ -1,7 +1,6 @@
 // api/matches.js — Vercel serverless function
-// Step 1: OddsAPI h2h → partite base
-// Step 2: OddsAPI totals + btts → mercati aggiuntivi (separati, non bloccanti)
-// Step 3: football-data.org → form + H2H stats
+// Una sola chiamata per sport con h2h,totals,btts
+// Se i mercati aggiuntivi non sono disponibili, usa solo h2h
  
 const SPORTS = [
   { key: 'soccer_fifa_world_cup',         name: 'World Cup',        color: '#B91C1C', bg: '#FFF1F2' },
@@ -44,6 +43,20 @@ function impliedProb(bookmakers, marketKey, outcomeName) {
   return Math.round((1/avg) * 100);
 }
  
+function extractMarkets(bk) {
+  const o25  = { prob: impliedProb(bk,'totals','Over 2.5'),  odd: bestOdd(bk,'totals','Over 2.5')  };
+  const u25  = { prob: impliedProb(bk,'totals','Under 2.5'), odd: bestOdd(bk,'totals','Under 2.5') };
+  const o15  = { prob: impliedProb(bk,'totals','Over 1.5'),  odd: bestOdd(bk,'totals','Over 1.5')  };
+  const u15  = { prob: impliedProb(bk,'totals','Under 1.5'), odd: bestOdd(bk,'totals','Under 1.5') };
+  const byes = { prob: impliedProb(bk,'btts','Yes'),         odd: bestOdd(bk,'btts','Yes')         };
+  const bno  = { prob: impliedProb(bk,'btts','No'),          odd: bestOdd(bk,'btts','No')          };
+ 
+  // Restituisce null se nessun dato disponibile
+  if (!o25.prob && !u25.prob && !byes.prob) return null;
+ 
+  return { over25: o25, under25: u25, over15: o15, under15: u15, bttsYes: byes, bttsNo: bno };
+}
+ 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -64,22 +77,42 @@ module.exports = async function handler(req, res) {
  
   const allMatches = [];
  
-  // ── STEP 1: h2h — partite base ────────────────────────────────────────────
   for (const sport of SPORTS) {
     try {
-      const url = `https://api.the-odds-api.com/v4/sports/${sport.key}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=h2h&oddsFormat=decimal`;
-      const resp = await fetch(url);
-      if (!resp.ok) continue;
-      const events = await resp.json();
-      if (!Array.isArray(events)) continue;
+      // Prova prima con tutti e tre i mercati
+      let events = null;
+      let usedAllMarkets = false;
+ 
+      try {
+        const urlAll = `https://api.the-odds-api.com/v4/sports/${sport.key}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=h2h,totals,btts&oddsFormat=decimal`;
+        const respAll = await fetch(urlAll);
+        if (respAll.ok) {
+          const data = await respAll.json();
+          if (Array.isArray(data) && data.length > 0) {
+            events = data;
+            usedAllMarkets = true;
+          }
+        }
+      } catch(e) { /* fallback */ }
+ 
+      // Fallback: solo h2h
+      if (!events) {
+        const urlH2h = `https://api.the-odds-api.com/v4/sports/${sport.key}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=h2h&oddsFormat=decimal`;
+        const respH2h = await fetch(urlH2h);
+        if (!respH2h.ok) continue;
+        const data = await respH2h.json();
+        if (!Array.isArray(data)) continue;
+        events = data;
+      }
  
       for (const event of events) {
         const eventTime = new Date(event.commence_time).getTime();
         if (eventTime < dayStart || eventTime > dayEnd) continue;
  
         const bk = event.bookmakers || [];
-        let sumHome=0, sumDraw=0, sumAway=0, count=0;
  
+        // 1X2
+        let sumHome=0, sumDraw=0, sumAway=0, count=0;
         for (const b of bk) {
           const h2h = b.markets?.find(m => m.key === 'h2h');
           if (!h2h) continue;
@@ -114,7 +147,6 @@ module.exports = async function handler(req, res) {
           league: sport.name,
           leagueColor: sport.color,
           leagueBg: sport.bg,
-          commenceTime: event.commence_time,
           kickoff: new Date(event.commence_time).toLocaleTimeString('en-GB', {
             hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome'
           }),
@@ -129,12 +161,12 @@ module.exports = async function handler(req, res) {
             market: { pick: mktPick, sub: `${mktPct}% implied` }
           },
           odds: {
-            home: bestOdd(bk, 'h2h', event.home_team) || '—',
+            home: bestOdd(bk,'h2h',event.home_team) || '—',
             draw: drawPrices.length ? Math.max(...drawPrices).toFixed(2) : '—',
-            away: bestOdd(bk, 'h2h', event.away_team) || '—',
+            away: bestOdd(bk,'h2h',event.away_team) || '—',
             best: bestSide
           },
-          markets: null, // popolato nel Step 2
+          markets: usedAllMarkets ? extractMarkets(bk) : null,
           hasRealOdds: true,
           probHome: pHome,
           probDraw: pDraw,
@@ -142,73 +174,19 @@ module.exports = async function handler(req, res) {
         });
       }
     } catch(err) {
-      console.error(`h2h ${sport.key}:`, err.message);
+      console.error(`${sport.key}:`, err.message);
     }
   }
  
-  if (!allMatches.length) {
-    return res.status(200).json({ date: requestedDate, matches: [], total: 0 });
-  }
- 
-  // ── STEP 2: totals + btts — mercati aggiuntivi (non bloccanti) ────────────
-  const sportKeys = [...new Set(allMatches.map(m => m.sportKey))];
- 
-  await Promise.allSettled(sportKeys.map(async sportKey => {
-    try {
-      // totals
-      const totalsUrl = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=totals&oddsFormat=decimal`;
-      const totalsResp = await fetch(totalsUrl);
-      if (!totalsResp.ok) return;
-      const totalsEvents = await totalsResp.json();
-      if (!Array.isArray(totalsEvents)) return;
- 
-      // btts
-      const bttsUrl = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=btts&oddsFormat=decimal`;
-      const bttsResp = await fetch(bttsUrl);
-      const bttsEvents = bttsResp.ok ? await bttsResp.json() : [];
- 
-      // Crea mappe per lookup rapido
-      const totalsMap = {};
-      if (Array.isArray(totalsEvents)) {
-        for (const e of totalsEvents) totalsMap[e.id] = e.bookmakers || [];
-      }
-      const bttsMap = {};
-      if (Array.isArray(bttsEvents)) {
-        for (const e of bttsEvents) bttsMap[e.id] = e.bookmakers || [];
-      }
- 
-      // Arricchisci le partite corrispondenti
-      for (const match of allMatches) {
-        if (match.sportKey !== sportKey) continue;
-        const tBk = totalsMap[match.id] || [];
-        const bBk = bttsMap[match.id]   || [];
- 
-        if (!tBk.length && !bBk.length) continue;
- 
-        match.markets = {
-          over25:  { prob: impliedProb(tBk,'totals','Over 2.5'),  odd: bestOdd(tBk,'totals','Over 2.5')  },
-          under25: { prob: impliedProb(tBk,'totals','Under 2.5'), odd: bestOdd(tBk,'totals','Under 2.5') },
-          over15:  { prob: impliedProb(tBk,'totals','Over 1.5'),  odd: bestOdd(tBk,'totals','Over 1.5')  },
-          under15: { prob: impliedProb(tBk,'totals','Under 1.5'), odd: bestOdd(tBk,'totals','Under 1.5') },
-          bttsYes: { prob: impliedProb(bBk,'btts','Yes'),         odd: bestOdd(bBk,'btts','Yes')         },
-          bttsNo:  { prob: impliedProb(bBk,'btts','No'),          odd: bestOdd(bBk,'btts','No')          },
-        };
-      }
-    } catch(err) {
-      console.error(`totals/btts ${sportKey}:`, err.message);
-    }
-  }));
- 
-  // ── STEP 3: football-data.org — form + H2H (non bloccante) ───────────────
-  if (FD_KEY) {
+  // ── STEP 2: football-data.org — form + H2H ────────────────────────────────
+  if (FD_KEY && allMatches.length > 0) {
     try {
       const fdResp = await fetch(
         `https://api.football-data.org/v4/matches?dateFrom=${requestedDate}&dateTo=${requestedDate}`,
         { headers: { 'X-Auth-Token': FD_KEY } }
       );
       if (fdResp.ok) {
-        const fdData  = await fdResp.json();
-        const fdMatches = fdData.matches || [];
+        const fdMatches = (await fdResp.json()).matches || [];
  
         for (const match of allMatches) {
           const fd = fdMatches.find(f =>
@@ -223,24 +201,20 @@ module.exports = async function handler(req, res) {
           match._fdId = fd.id;
         }
  
-        // H2H per le prime 6 con match trovato
         const withFd = allMatches.filter(m => m._fdId).slice(0, 6);
         await Promise.allSettled(withFd.map(async match => {
           try {
-            const h2hResp = await fetch(
+            const r = await fetch(
               `https://api.football-data.org/v4/matches/${match._fdId}/head2head?limit=10`,
               { headers: { 'X-Auth-Token': FD_KEY } }
             );
-            if (!h2hResp.ok) return;
-            const h2hData = await h2hResp.json();
-            const h2h = h2hData.matches || [];
+            if (!r.ok) return;
+            const h2h = (await r.json()).matches || [];
             if (!h2h.length) return;
- 
             let hw=0, aw=0, hg=0, ag=0;
             for (const hm of h2h) {
               if (hm.score?.fullTime?.home == null) continue;
-              hg += hm.score.fullTime.home;
-              ag += hm.score.fullTime.away;
+              hg += hm.score.fullTime.home; ag += hm.score.fullTime.away;
               if (hm.score.fullTime.home > hm.score.fullTime.away) hw++;
               else if (hm.score.fullTime.away > hm.score.fullTime.home) aw++;
             }
@@ -250,7 +224,7 @@ module.exports = async function handler(req, res) {
               homeGoals: +(hg/n).toFixed(1), awayGoals: +(ag/n).toFixed(1),
               homeH2H: hw, awayH2H: aw, hasRealStats: true
             };
-          } catch(e) { /* skip */ }
+          } catch(e) {}
         }));
       }
     } catch(err) {
@@ -258,9 +232,8 @@ module.exports = async function handler(req, res) {
     }
   }
  
-  // Ordina per orario e rimuovi campi interni
   allMatches.sort((a,b) => a.kickoff.localeCompare(b.kickoff));
-  allMatches.forEach(m => { delete m.sportKey; delete m._fdId; delete m.commenceTime; });
+  allMatches.forEach(m => { delete m.sportKey; delete m._fdId; });
  
   const payload = { date: requestedDate, matches: allMatches, total: allMatches.length };
   cache[requestedDate] = { ts: Date.now(), data: payload };
