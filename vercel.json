@@ -1,18 +1,3 @@
 {
-  "version": 2,
-  "buildCommand": "echo 'Static site — no build step'",
-  "outputDirectory": ".",
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" }
-  ],
-  "crons": [
-    {
-      "path": "/api/refresh",
-      "schedule": "0 7 * * *"
-    }
-  ],
-  "env": {
-    "API_FOOTBALL_KEY": "@api_football_key",
-    "ANTHROPIC_API_KEY": "@anthropic_api_key"
-  }
+  "version": 2
 }
