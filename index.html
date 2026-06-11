@@ -22,6 +22,8 @@
 }
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* Nav */
 .nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:env(safe-area-inset-top) 0 0}
 .nav-inner{max-width:760px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-0.3px}
@@ -31,10 +33,24 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:
 .nav-pill{display:inline-flex;align-items:center;gap:5px;background:var(--green-bg);color:var(--green-dk);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
 .nav-pill::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:livepulse 2s ease-in-out infinite}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.hero{max-width:760px;margin:0 auto;padding:28px 16px 0}
+
+/* Hero */
+.hero{max-width:760px;margin:0 auto;padding:24px 16px 0}
 .hero-label{font-family:var(--font-data);font-size:11px;font-weight:500;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
 .hero-title{font-size:clamp(22px,5vw,28px);font-weight:600;color:var(--ink);letter-spacing:-0.5px;line-height:1.2;margin-bottom:20px}
 .hero-title span{color:var(--green)}
+
+/* Date selector tabs */
+.date-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px;box-shadow:var(--shadow)}
+.date-tab{flex:1;padding:8px 4px;border-radius:10px;border:none;background:transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center}
+.date-tab.active{background:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.date-tab-label{display:block;font-size:12px;font-weight:600;color:var(--ink3);line-height:1.2;transition:color .2s}
+.date-tab-date{display:block;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:2px;transition:color .2s}
+.date-tab.active .date-tab-label{color:var(--white)}
+.date-tab.active .date-tab-date{color:rgba(255,255,255,.6)}
+.date-tab:hover:not(.active) .date-tab-label{color:var(--ink2)}
+
+/* Threshold */
 .threshold-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px;box-shadow:var(--shadow)}
 .threshold-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .threshold-label{font-size:13px;font-weight:500;color:var(--ink2)}
@@ -47,14 +63,20 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .threshold-hints{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:8px}
 .match-count-line{font-size:12px;color:var(--ink3);margin-top:8px}
 .match-count-line strong{color:var(--ink);font-weight:600}
+
+/* League pills */
 .summary-row{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
 .summary-row::-webkit-scrollbar{display:none}
 .sum-pill{flex-shrink:0;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap;box-shadow:var(--shadow);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .sum-pill.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
 .sum-pill .pill-count{background:var(--border);color:var(--ink3);font-family:var(--font-data);font-size:10px;padding:1px 6px;border-radius:10px}
 .sum-pill.active .pill-count{background:rgba(255,255,255,.2);color:var(--white)}
+
+/* Feed */
 .feed{max-width:760px;margin:0 auto;padding:0 16px 100px}
 .feed-section-label{font-family:var(--font-data);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--ink4);margin-bottom:10px;padding-top:4px}
+
+/* Match card */
 .match-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;-webkit-tap-highlight-color:transparent}
 .card-header{padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;cursor:pointer;user-select:none}
 .card-left{min-width:0}
@@ -68,6 +90,8 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .verdict-reason{font-size:12px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .verdict-loading{font-size:12px;color:var(--ink4);font-family:var(--font-data);animation:fadepulse 1.2s ease-in-out infinite}
 @keyframes fadepulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* Confidence ring */
 .conf-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
 .conf-ring{width:52px;height:52px;position:relative}
 .conf-ring svg{width:52px;height:52px;transform:rotate(-90deg)}
@@ -77,6 +101,8 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .conf-label-sm{font-family:var(--font-data);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px}
 .ring-skeleton{width:52px;height:52px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Card body */
 .card-body{border-top:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
 .card-body.open{max-height:900px}
 .card-body-inner{padding:16px}
@@ -111,22 +137,33 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .ai-strip{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;display:flex;align-items:flex-start;gap:8px}
 .ai-icon{font-size:14px;flex-shrink:0;margin-top:1px}
 .ai-text{font-size:12px;color:var(--blue-dk);line-height:1.5}
-.empty-state{text-align:center;padding:48px 24px;color:var(--ink3)}
-.empty-icon{font-size:36px;margin-bottom:12px}
+
+/* Early pick note for future dates */
+.early-note{background:var(--amber-bg);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber-dk);display:flex;align-items:center;gap:6px}
+
+/* States */
 .global-loading{text-align:center;padding:60px 24px}
 .global-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .global-loading p{font-size:14px;color:var(--ink3)}
-.no-matches-today{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:16px}
-.no-matches-today h3{font-size:18px;font-weight:600;margin-bottom:8px}
-.no-matches-today p{font-size:13px;color:var(--ink3);line-height:1.7}
+.empty-state{text-align:center;padding:48px 24px;color:var(--ink3)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.no-matches-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:16px}
+.no-matches-box h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.no-matches-box p{font-size:13px;color:var(--ink3);line-height:1.7}
+
+/* Verdict colours */
 .verdict-high{background:var(--green-bg);color:var(--green-dk)}
 .verdict-mid{background:var(--amber-bg);color:var(--amber-dk)}
 .verdict-low{background:#F3F4F6;color:var(--ink3)}
+
+/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:200}
-.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;color:var(--ink4);font-size:10px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;color:var(--ink4);font-size:10px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s}
 .bn-item.active{color:var(--green-dk)}
 .bn-icon{font-size:20px;line-height:1}
+
+/* Desktop */
 @media(min-width:900px){
   .layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:24px;padding:0 24px;align-items:start}
   .hero,.feed{max-width:none;padding-left:0;padding-right:0}
@@ -165,8 +202,13 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 <div class="layout">
 <div>
   <header class="hero">
-    <div class="hero-label">Today's predictions</div>
+    <div class="hero-label">Football predictions</div>
     <h1 class="hero-title">Where should you<br><span>put your money?</span></h1>
+
+    <!-- Date selector -->
+    <div class="date-tabs" id="date-tabs" role="tablist"></div>
+
+    <!-- Threshold -->
     <div class="threshold-bar">
       <div class="threshold-top">
         <span class="threshold-label">Show picks above</span>
@@ -183,19 +225,22 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
       </div>
       <div class="match-count-line" id="match-count-line"></div>
     </div>
+
+    <!-- League pills -->
     <div class="summary-row" id="filter-pills"></div>
   </header>
+
   <main class="feed" id="feed">
     <div class="global-loading">
       <div class="spinner"></div>
-      <p>Loading today's matches...</p>
+      <p>Loading matches...</p>
     </div>
   </main>
 </div>
 
 <aside class="sidebar-panel">
   <div class="side-widget">
-    <div class="side-widget-head">⭐ Best picks today</div>
+    <div class="side-widget-head">⭐ Best picks</div>
     <div class="side-widget-body" id="side-best">
       <div style="font-size:12px;color:var(--ink4);font-family:var(--font-data)">Loading...</div>
     </div>
@@ -213,10 +258,10 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </div>
 
 <nav class="bottom-nav">
-  <div class="bn-item active"><span class="bn-icon">⚽</span><span>Today</span></div>
-  <div class="bn-item"><span class="bn-icon">📅</span><span>Tomorrow</span></div>
+  <div class="bn-item active"><span class="bn-icon">⚽</span><span>Matches</span></div>
   <div class="bn-item"><span class="bn-icon">🏆</span><span>Leagues</span></div>
   <div class="bn-item"><span class="bn-icon">📈</span><span>Track record</span></div>
+  <div class="bn-item"><span class="bn-icon">⚙️</span><span>Settings</span></div>
 </nav>
 
 <script>
@@ -224,17 +269,75 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 let MATCHES = [];
 let threshold = 50;
 let activeLeague = 'all';
+let activeOffset = 0; // 0=today, 1=tomorrow, 2=+2days
 let openCards = new Set();
+let loadingDates = new Set();
 
-// ── Fetch partite reali da /api/matches ───────────────────────────────────────
+// ── Date helpers ──────────────────────────────────────────────────────────────
+function getDateStr(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().split('T')[0];
+}
+
+function formatTabDate(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+function tabLabel(offset) {
+  if (offset === 0) return 'Today';
+  if (offset === 1) return 'Tomorrow';
+  return d_plus(offset);
+}
+
+function d_plus(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toLocaleDateString('en-GB', { weekday: 'short' });
+}
+
+// ── Render date tabs ──────────────────────────────────────────────────────────
+function renderDateTabs() {
+  const container = document.getElementById('date-tabs');
+  container.innerHTML = [0, 1, 2].map(offset => `
+    <button class="date-tab${activeOffset===offset?' active':''}"
+      role="tab" aria-selected="${activeOffset===offset}"
+      onclick="selectDate(${offset})">
+      <span class="date-tab-label">${tabLabel(offset)}</span>
+      <span class="date-tab-date">${formatTabDate(offset)}</span>
+    </button>`).join('');
+}
+
+function selectDate(offset) {
+  if (activeOffset === offset) return;
+  activeOffset = offset;
+  activeLeague = 'all';
+  openCards.clear();
+  renderDateTabs();
+  loadMatches();
+}
+
+// ── Fetch matches from /api/matches?date=YYYY-MM-DD ───────────────────────────
 async function loadMatches() {
+  MATCHES = [];
+  document.getElementById('feed').innerHTML = `
+    <div class="global-loading"><div class="spinner"></div>
+    <p>Loading ${tabLabel(activeOffset).toLowerCase()}'s matches...</p></div>`;
+  document.getElementById('filter-pills').innerHTML = '';
+  document.getElementById('match-count-line').innerHTML = '';
+  document.getElementById('side-best').innerHTML = `<div style="font-size:12px;color:var(--ink4);font-family:var(--font-data)">Loading...</div>`;
+
+  const date = getDateStr(activeOffset);
+
   try {
-    const res = await fetch('/api/matches');
+    const res = await fetch(`/api/matches?date=${date}`);
     if (!res.ok) throw new Error('API error');
     const data = await res.json();
     MATCHES = data.matches || [];
 
-    if (MATCHES.length === 0) {
+    if (!MATCHES.length) {
       showNoMatches();
       return;
     }
@@ -242,7 +345,7 @@ async function loadMatches() {
     renderPills();
     renderFeed();
 
-    // Carica AI picks in parallelo per tutte le partite
+    // AI picks in parallelo
     MATCHES.forEach(async m => {
       const result = await fetchAIPick(m);
       applyAIResult(m, result);
@@ -258,16 +361,21 @@ async function loadMatches() {
 }
 
 function showNoMatches() {
+  const msgs = {
+    0: { icon: '☀️', title: 'No matches today', sub: 'No European fixtures scheduled today. Try tomorrow.' },
+    1: { icon: '📅', title: 'No fixtures tomorrow', sub: 'Nothing scheduled yet. Check back later.' },
+    2: { icon: '🔭', title: 'Nothing in 2 days', sub: 'Fixtures are published closer to the date.' }
+  };
+  const m = msgs[activeOffset];
   document.getElementById('feed').innerHTML = `
-    <div class="no-matches-today">
-      <h3>☀️ No matches today</h3>
-      <p>No European fixtures scheduled today.<br>
-      Check back tomorrow — or try the summer leagues below.</p>
+    <div class="no-matches-box">
+      <h3>${m.icon} ${m.title}</h3>
+      <p>${m.sub}</p>
     </div>`;
-  document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> today`;
+  document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> scheduled`;
 }
 
-// ── Fetch AI pick ─────────────────────────────────────────────────────────────
+// ── AI pick ───────────────────────────────────────────────────────────────────
 async function fetchAIPick(m) {
   try {
     const res = await fetch('/api/ai-pick', {
@@ -288,14 +396,12 @@ async function fetchAIPick(m) {
   }
 }
 
-// ── Apply AI result al card ───────────────────────────────────────────────────
 function applyAIResult(m, result) {
   m.aiResult = result;
   const ringEl    = document.getElementById('ring-'+m.id);
   const verdictEl = document.getElementById('verdict-'+m.id);
   const aiPickEl  = document.getElementById('ai-pick-'+m.id);
   const aiStripEl = document.getElementById('ai-strip-'+m.id);
-
   if (ringEl)    ringEl.innerHTML    = buildRing(result.confidence, result.verdictLevel);
   if (verdictEl) verdictEl.innerHTML = `<span class="verdict-chip verdict-${result.verdictLevel}">${result.pick}</span>
     <span class="verdict-reason">${result.insight}</span>`;
@@ -303,8 +409,7 @@ function applyAIResult(m, result) {
     <div class="signal-pick">${result.pick}</div>
     <div class="signal-sub">${result.confidence}% confidence</div>`;
   if (aiStripEl) aiStripEl.querySelector('.ai-text').textContent = result.insight;
-
-  rerenderFeedOrder();
+  renderFeed();
   updateSidebar();
 }
 
@@ -341,6 +446,8 @@ function renderCard(m) {
   const ai = m.aiResult;
   const s  = m.stats;
   const isLive = ['IN_PLAY','PAUSED','LIVE'].includes(m.status);
+  const isFuture = activeOffset > 0;
+
   const ringHTML = ai
     ? buildRing(ai.confidence, ai.verdictLevel)
     : `<div class="ring-skeleton"></div><span class="conf-label-sm">loading</span>`;
@@ -406,12 +513,13 @@ function renderCard(m) {
           <span class="ai-icon">🤖</span>
           <span class="ai-text">${ai ? ai.insight : 'AI analysis loading...'}</span>
         </div>
+        ${isFuture ? `<div class="early-note">⚠️ Early prediction — odds and lineups may change before kickoff.</div>` : ''}
       </div>
     </div>
   </article>`;
 }
 
-// ── Toggle card ───────────────────────────────────────────────────────────────
+// ── Toggle ────────────────────────────────────────────────────────────────────
 function toggleCard(id) {
   openCards.has(id) ? openCards.delete(id) : openCards.add(id);
   const body = document.getElementById('body-'+id);
@@ -453,13 +561,10 @@ function renderFeed() {
     const b = document.getElementById('body-'+id);
     if (b) b.classList.add('open');
   });
-
   const highCount = MATCHES.filter(m => m.aiResult?.verdictLevel==='high').length;
   document.getElementById('match-count-line').innerHTML =
     `Showing <strong>${filtered.length} match${filtered.length!==1?'es':''}</strong> · ${highCount} high confidence`;
 }
-
-function rerenderFeedOrder() { renderFeed(); }
 
 // ── Pills ─────────────────────────────────────────────────────────────────────
 function renderPills() {
@@ -500,6 +605,7 @@ updateSlider(50);
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 document.getElementById('nav-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+renderDateTabs();
 loadMatches();
 </script>
 </body>
