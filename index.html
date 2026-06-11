@@ -15,6 +15,7 @@
   --amber:#FF9500;--amber-bg:#FFF4E0;--amber-dk:#8A5100;
   --red:#F04438;--red-bg:#FEF3F2;--red-dk:#912018;
   --blue:#2563EB;--blue-bg:#EFF6FF;--blue-dk:#1E40AF;
+  --purple:#7C3AED;--purple-bg:#F5F3FF;--purple-dk:#5B21B6;
   --radius:14px;--radius-sm:8px;
   --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
   --font-ui:'DM Sans',system-ui,sans-serif;
@@ -86,14 +87,18 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .ring-skeleton{width:52px;height:52px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .card-body{border-top:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
-.card-body.open{max-height:900px}
+.card-body.open{max-height:1100px}
 .card-body-inner{padding:16px}
+
+/* Three signals */
 .signals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
 .signal-col{background:var(--bg);border-radius:var(--radius-sm);padding:10px 10px 8px;border:1px solid var(--border)}
 .signal-src{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:5px}
 .signal-pick{font-size:14px;font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:3px}
 .signal-sub{font-family:var(--font-data);font-size:10px;color:var(--ink3)}
 .signal-loading{font-family:var(--font-data);font-size:11px;color:var(--ink4);animation:fadepulse 1.2s ease-in-out infinite}
+
+/* Stats */
 .stats-block{margin-bottom:16px}
 .stat-row{display:grid;grid-template-columns:72px 1fr 72px;align-items:center;gap:8px;margin-bottom:6px}
 .stat-val-left{font-family:var(--font-data);font-size:12px;font-weight:500;color:var(--ink2);text-align:right}
@@ -102,6 +107,8 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .stat-bar-home{position:absolute;left:0;top:0;height:100%;background:var(--blue);border-radius:3px}
 .stat-bar-away{position:absolute;right:0;top:0;height:100%;background:var(--amber);border-radius:3px}
 .stat-name{text-align:center;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:3px}
+
+/* Form dots */
 .form-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:16px}
 .form-dots{display:flex;gap:4px}
 .form-dots.right{justify-content:flex-end}
@@ -110,17 +117,37 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .fd-d{background:#F3F4F6;color:var(--ink3)}
 .fd-l{background:var(--red-bg);color:var(--red-dk)}
 .form-vs{font-size:10px;font-weight:600;color:var(--ink4);text-align:center}
-.odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+
+/* 1X2 odds */
+.odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
 .odd-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px 7px;text-align:center;cursor:pointer;transition:all .15s}
 .odd-btn.best{background:var(--green-bg);border-color:var(--green)}
 .odd-label{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
 .odd-value{font-family:var(--font-data);font-size:16px;font-weight:500;color:var(--ink)}
 .odd-btn.best .odd-value{color:var(--green-dk)}
-.odds-source{font-size:10px;color:var(--ink4);text-align:center;margin-top:6px;font-family:var(--font-data)}
-.ai-strip{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;display:flex;align-items:flex-start;gap:8px}
+
+/* Extra markets section */
+.markets-section{margin-bottom:14px}
+.markets-title{font-family:var(--font-data);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink4);margin-bottom:8px}
+.markets-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.market-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.market-card.highlighted{border-color:var(--green);background:var(--green-bg)}
+.market-card.highlighted .mkt-pick{color:var(--green-dk)}
+.market-card.highlighted .mkt-odd{color:var(--green-dk)}
+.mkt-left{}
+.mkt-type{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
+.mkt-pick{font-size:13px;font-weight:600;color:var(--ink)}
+.mkt-prob{font-family:var(--font-data);font-size:10px;color:var(--ink3);margin-top:1px}
+.mkt-odd{font-family:var(--font-data);font-size:18px;font-weight:500;color:var(--ink2)}
+
+/* AI strip */
+.ai-strip{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:var(--radius-sm);padding:10px 12px;margin-top:2px;display:flex;align-items:flex-start;gap:8px}
 .ai-icon{font-size:14px;flex-shrink:0;margin-top:1px}
 .ai-text{font-size:12px;color:var(--blue-dk);line-height:1.5}
+.odds-source{font-size:10px;color:var(--ink4);text-align:center;margin-bottom:12px;font-family:var(--font-data)}
 .early-note{background:var(--amber-bg);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber-dk);display:flex;align-items:center;gap:6px}
+
+/* States */
 .global-loading{text-align:center;padding:60px 24px}
 .global-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -156,7 +183,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   .sc-mid{background:var(--amber-bg);color:var(--amber-dk)}
 }
 @media(max-width:899px){.sidebar-panel{display:none}}
-@media(max-width:600px){.signals{grid-template-columns:1fr}.hero-title{font-size:22px}}
+@media(max-width:600px){.signals{grid-template-columns:1fr}.markets-grid{grid-template-columns:1fr}.hero-title{font-size:22px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -211,7 +238,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   <div class="side-widget">
     <div class="side-widget-head">ℹ️ How we predict</div>
     <div class="side-widget-body">
-      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Real matches · Claude AI · Live bookmaker odds · Sorted by confidence.</p>
+      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Real matches · Claude AI · Live bookmaker odds (1X2, Over/Under, BTTS) · Sorted by confidence.</p>
     </div>
   </div>
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:11px;color:var(--ink4);line-height:1.6;box-shadow:var(--shadow)">
@@ -228,15 +255,12 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </nav>
 
 <script>
-// ── State ─────────────────────────────────────────────────────────────────────
 let MATCHES = [];
-let ODDS_MAP = {}; // key: "home_team::away_team" → odds data
 let threshold = 50;
 let activeLeague = 'all';
 let activeOffset = 0;
 let openCards = new Set();
 
-// ── Date helpers ──────────────────────────────────────────────────────────────
 function getDateStr(offset) {
   const d = new Date(); d.setDate(d.getDate() + offset);
   return d.toISOString().split('T')[0];
@@ -251,7 +275,6 @@ function tabLabel(offset) {
   const d = new Date(); d.setDate(d.getDate() + offset);
   return d.toLocaleDateString('en-GB', { weekday: 'short' });
 }
-
 function renderDateTabs() {
   document.getElementById('date-tabs').innerHTML = [0,1,2].map(o => `
     <button class="date-tab${activeOffset===o?' active':''}" onclick="selectDate(${o})">
@@ -259,36 +282,14 @@ function renderDateTabs() {
       <span class="date-tab-date">${formatTabDate(o)}</span>
     </button>`).join('');
 }
-
 function selectDate(offset) {
   if (activeOffset === offset) return;
   activeOffset = offset; activeLeague = 'all'; openCards.clear();
   renderDateTabs(); loadAll();
 }
 
-// ── Match name normalizer for odds matching ───────────────────────────────────
-function normalize(str) {
-  return str.toLowerCase()
-    .replace(/fc|afc|cf|sc|ac|as|ss|us |cd |rc |rcd |ud |sd |ca |cp |sv |vfb |bsc |tsv |tsg /g, '')
-    .replace(/[^a-z0-9]/g, '').trim();
-}
-
-function findOdds(home, away) {
-  const nh = normalize(home), na = normalize(away);
-  for (const key of Object.keys(ODDS_MAP)) {
-    const [kh, ka] = key.split('::');
-    if (normalize(kh).includes(nh) || nh.includes(normalize(kh))) {
-      if (normalize(ka).includes(na) || na.includes(normalize(ka))) {
-        return ODDS_MAP[key];
-      }
-    }
-  }
-  return null;
-}
-
-// ── Load matches + odds in parallel ──────────────────────────────────────────
 async function loadAll() {
-  MATCHES = []; ODDS_MAP = {};
+  MATCHES = [];
   document.getElementById('feed').innerHTML = `
     <div class="global-loading"><div class="spinner"></div>
     <p>Loading ${tabLabel(activeOffset).toLowerCase()}'s matches...</p></div>`;
@@ -296,57 +297,29 @@ async function loadAll() {
   document.getElementById('match-count-line').innerHTML = '';
   document.getElementById('side-best').innerHTML = `<div style="font-size:12px;color:var(--ink4);font-family:var(--font-data)">Loading...</div>`;
 
-  const date = getDateStr(activeOffset);
-
-  // Fetch matches e odds in parallelo
-  const [matchRes, oddsRes] = await Promise.allSettled([
-    fetch(`/api/matches?date=${date}`).then(r => r.json()),
-    fetch('/api/odds').then(r => r.json())
-  ]);
-
-  // Processa odds
-  if (oddsRes.status === 'fulfilled' && oddsRes.value.odds) {
-    for (const o of oddsRes.value.odds) {
-      ODDS_MAP[`${o.homeTeam}::${o.awayTeam}`] = o;
-    }
-  }
-
-  // Processa partite
-  if (matchRes.status === 'rejected' || !matchRes.value?.matches) {
+  try {
+    const res = await fetch(`/api/matches?date=${getDateStr(activeOffset)}`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    MATCHES = data.matches || [];
+    if (!MATCHES.length) { showNoMatches(); return; }
+    renderPills(); renderFeed();
+    MATCHES.forEach(async m => {
+      const result = await fetchAIPick(m);
+      applyAIResult(m, result);
+    });
+  } catch(e) {
     document.getElementById('feed').innerHTML = `
       <div class="empty-state"><div class="empty-icon">⚠️</div>
       <p>Could not load matches.<br>Please try again later.</p></div>`;
-    return;
   }
-
-  MATCHES = matchRes.value.matches || [];
-
-  // Arricchisci con odds reali dove disponibili
-  for (const m of MATCHES) {
-    const o = findOdds(m.home, m.away);
-    if (o) {
-      m.predictions.market = { pick: o.pick, sub: o.consensus };
-      m.odds = o.odds;
-      m.hasRealOdds = true;
-    }
-  }
-
-  if (!MATCHES.length) { showNoMatches(); return; }
-
-  renderPills(); renderFeed();
-
-  // AI picks in parallelo
-  MATCHES.forEach(async m => {
-    const result = await fetchAIPick(m);
-    applyAIResult(m, result);
-  });
 }
 
 function showNoMatches() {
   const msgs = {
-    0: { icon: '☀️', title: 'No matches today', sub: 'No European fixtures today. Try tomorrow.' },
-    1: { icon: '📅', title: 'No fixtures tomorrow', sub: 'Nothing scheduled yet.' },
-    2: { icon: '🔭', title: 'Nothing in 2 days', sub: 'Check back closer to the date.' }
+    0: { icon:'☀️', title:'No matches today', sub:'No fixtures scheduled. Try tomorrow.' },
+    1: { icon:'📅', title:'No fixtures tomorrow', sub:'Nothing scheduled yet.' },
+    2: { icon:'🔭', title:'Nothing in 2 days', sub:'Check back closer to the date.' }
   };
   const m = msgs[activeOffset];
   document.getElementById('feed').innerHTML = `
@@ -354,7 +327,6 @@ function showNoMatches() {
   document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> scheduled`;
 }
 
-// ── AI pick ───────────────────────────────────────────────────────────────────
 async function fetchAIPick(m) {
   try {
     const res = await fetch('/api/ai-pick', {
@@ -366,7 +338,7 @@ async function fetchAIPick(m) {
         h2hHome: m.stats.homeH2H, h2hAway: m.stats.awayH2H
       })
     });
-    if (!res.ok) throw new Error('AI error');
+    if (!res.ok) throw new Error();
     return await res.json();
   } catch(e) {
     return { pick: 'N/A', confidence: 50, insight: 'AI unavailable.', verdictLevel: 'low' };
@@ -389,7 +361,6 @@ function applyAIResult(m, result) {
   renderFeed(); updateSidebar();
 }
 
-// ── Render helpers ────────────────────────────────────────────────────────────
 function buildRing(pct, level) {
   const r=20, circ=2*Math.PI*r, offset=circ-(pct/100)*circ;
   const color=level==='high'?'var(--green)':level==='mid'?'var(--amber)':'#D1D5DB';
@@ -408,7 +379,7 @@ function formDots(str, align) {
 }
 
 function statBar(hv, av, label, unit='') {
-  const t=hv+av, hp=Math.round(hv/t*100);
+  const t=hv+av||1, hp=Math.round(hv/t*100);
   return `<div class="stat-row">
     <div class="stat-val-left">${hv}${unit}</div>
     <div><div class="stat-name">${label}</div>
@@ -416,6 +387,54 @@ function statBar(hv, av, label, unit='') {
     <div class="stat-bar-away" style="width:${100-hp}%"></div></div></div>
     <div class="stat-val-right">${av}${unit}</div>
   </div>`;
+}
+
+// Render mercati aggiuntivi (Over/Under + BTTS)
+function renderMarkets(m) {
+  const mk = m.markets;
+  if (!mk) return '';
+
+  // Trova il pick Over/Under più sicuro
+  const ouPicks = [
+    mk.over25  && mk.over25.prob  ? { label:'Over 2.5',  prob:mk.over25.prob,  odd:mk.over25.odd  } : null,
+    mk.under25 && mk.under25.prob ? { label:'Under 2.5', prob:mk.under25.prob, odd:mk.under25.odd } : null,
+    mk.over15  && mk.over15.prob  ? { label:'Over 1.5',  prob:mk.over15.prob,  odd:mk.over15.odd  } : null,
+    mk.under15 && mk.under15.prob ? { label:'Under 1.5', prob:mk.under15.prob, odd:mk.under15.odd } : null,
+  ].filter(Boolean);
+
+  const bttsPicks = [
+    mk.bttsYes && mk.bttsYes.prob ? { label:'BTTS Yes', prob:mk.bttsYes.prob, odd:mk.bttsYes.odd } : null,
+    mk.bttsNo  && mk.bttsNo.prob  ? { label:'BTTS No',  prob:mk.bttsNo.prob,  odd:mk.bttsNo.odd  } : null,
+  ].filter(Boolean);
+
+  if (!ouPicks.length && !bttsPicks.length) return '';
+
+  // Ordina per probabilità
+  ouPicks.sort((a,b) => b.prob - a.prob);
+  bttsPicks.sort((a,b) => b.prob - a.prob);
+
+  const mkCard = (item, highlight) => `
+    <div class="market-card${highlight?' highlighted':''}">
+      <div class="mkt-left">
+        <div class="mkt-type">${item.type}</div>
+        <div class="mkt-pick">${item.label}</div>
+        <div class="mkt-prob">${item.prob}% implied</div>
+      </div>
+      <div class="mkt-odd">${item.odd}</div>
+    </div>`;
+
+  const ouCards = ouPicks.slice(0,2).map((p,i) =>
+    mkCard({...p, type:'Over / Under'}, i===0 && p.prob >= 65));
+  const bttsCards = bttsPicks.slice(0,2).map((p,i) =>
+    mkCard({...p, type:'Both teams score'}, i===0 && p.prob >= 65));
+
+  return `
+    <div class="markets-section">
+      <div class="markets-title">📊 Additional markets</div>
+      <div class="markets-grid">
+        ${[...ouCards, ...bttsCards].join('')}
+      </div>
+    </div>`;
 }
 
 function renderCard(m) {
@@ -463,7 +482,7 @@ function renderCard(m) {
                  : `<div class="signal-loading">Thinking...</div>`}
           </div>
           <div class="signal-col">
-            <div class="signal-src">👥 ${m.hasRealOdds ? 'Market' : 'Signal'}</div>
+            <div class="signal-src">👥 Market</div>
             <div class="signal-pick">${m.predictions.market.pick}</div>
             <div class="signal-sub">${m.predictions.market.sub}</div>
           </div>
@@ -473,6 +492,7 @@ function renderCard(m) {
           ${statBar(s.homeGoals, s.awayGoals, 'Avg goals')}
           ${statBar(s.homeH2H, s.awayH2H, 'H2H wins')}
         </div>
+        ${renderMarkets(m)}
         <div class="odds-row">
           <div class="odd-btn${m.odds.best==='home'?' best':''}">
             <span class="odd-label">Home</span><span class="odd-value">${m.odds.home}</span></div>
@@ -481,7 +501,7 @@ function renderCard(m) {
           <div class="odd-btn${m.odds.best==='away'?' best':''}">
             <span class="odd-label">Away</span><span class="odd-value">${m.odds.away}</span></div>
         </div>
-        ${m.hasRealOdds ? `<div class="odds-source">📊 Live odds from bookmakers · ${m.predictions.market.sub}</div>` : ''}
+        <div class="odds-source">📊 Live odds from bookmakers · ${m.predictions.market.sub}</div>
         <div class="ai-strip" id="ai-strip-${m.id}">
           <span class="ai-icon">🤖</span>
           <span class="ai-text">${ai ? ai.insight : 'AI analysis loading...'}</span>
