@@ -3,12 +3,16 @@
 // Supporta today, tomorrow, e +2 giorni
 
 const COMPETITIONS = [
+  { code: 'WC',  name: 'World Cup',        color: '#B91C1C', bg: '#FFF1F2' },
   { code: 'CL',  name: 'Champions League', color: '#7C3AED', bg: '#F5F3FF' },
+  { code: 'EC',  name: 'Euro Championship',color: '#1D4ED8', bg: '#EFF6FF' },
   { code: 'PL',  name: 'Premier League',   color: '#059669', bg: '#ECFDF5' },
   { code: 'SA',  name: 'Serie A',          color: '#D97706', bg: '#FFFBEB' },
   { code: 'PD',  name: 'La Liga',          color: '#DC2626', bg: '#FEF2F2' },
   { code: 'BL1', name: 'Bundesliga',       color: '#B45309', bg: '#FFF7ED' },
   { code: 'FL1', name: 'Ligue 1',          color: '#2563EB', bg: '#EFF6FF' },
+  { code: 'DED', name: 'Eredivisie',       color: '#EA580C', bg: '#FFF7ED' },
+  { code: 'PPL', name: 'Primeira Liga',    color: '#15803D', bg: '#F0FDF4' },
 ];
 
 // Cache semplice in memoria per data
