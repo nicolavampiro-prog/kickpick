@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tomorrow's Football Predictions — KickPick</title>
+  <meta name="description" content="Early AI predictions for tomorrow's football fixtures. Get ahead with KickPick's stats model, AI tips, and tipster consensus.">
+  <link rel="canonical" href="https://kickpick.vercel.app/pages/tomorrow.html">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<section class="hero-strip">
+  <div class="container">
+    <h1>Tomorrow's <em>fixtures</em></h1>
+    <div class="hero-meta">
+      <span class="hero-date" id="tomorrow-date"></span>
+      <span class="live-dot" style="color:var(--amber);">Early picks</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="ad-slot ad-slot-leaderboard" aria-label="Advertisement">Ad</div>
+</div>
+
+<main class="page-body">
+  <div class="container">
+    <div class="two-col">
+      <div class="main-col">
+        <div class="section-heading">Early predictions — odds may shift before kickoff</div>
+
+        <div style="background:var(--navy-700);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;text-align:center;">
+          <p style="font-size:14px;color:var(--text-secondary);margin-bottom:4px;">Tomorrow's predictions refresh at</p>
+          <p style="font-family:var(--font-mono);font-size:22px;color:var(--amber);">07:00 UTC</p>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Early lines shown below are based on pre-match stats only — AI analysis and tipster consensus will be added once bookmakers open markets.</p>
+        </div>
+
+        <!-- Tomorrow's matches will render here via API in production -->
+        <div id="match-list"></div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="widget">
+          <div class="widget-header">📅 Upcoming fixtures</div>
+          <div class="widget-body">
+            <p style="font-size:12px;color:var(--text-secondary);line-height:1.7;">
+              Tomorrow's full fixture list will appear once bookmakers publish overnight odds — usually by 20:00 the evening before.
+            </p>
+          </div>
+        </div>
+        <div class="ad-slot ad-slot-sidebar" aria-label="Advertisement">Ad</div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/shared.js"></script>
+<script src="/js/matches.js"></script>
+<script>
+  injectNav('tomorrow');
+  injectFooter();
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('tomorrow-date').textContent = tomorrow.toLocaleDateString('en-GB', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  // In production: fetch /api/matches?date=tomorrow
+  // For now show a subset of mock data as placeholder
+  const placeholders = getMatches().slice(0, 3);
+  document.getElementById('match-list').innerHTML = placeholders.map(renderMatchCard).join('');
+</script>
+
+</body>
+</html>

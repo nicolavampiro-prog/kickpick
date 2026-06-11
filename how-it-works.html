@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How KickPick Works — AI Football Prediction Methodology</title>
+  <meta name="description" content="How KickPick combines live football stats, AI analysis from Claude, and tipster consensus to generate daily match predictions.">
+  <link rel="canonical" href="https://kickpick.vercel.app/pages/how-it-works.html">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div id="site-nav"></div>
+
+<section class="hero-strip">
+  <div class="container">
+    <h1>How <em>KickPick</em> works</h1>
+    <div class="hero-meta">
+      <span class="hero-date">Three signals. One verdict.</span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="ad-slot ad-slot-leaderboard" aria-label="Advertisement">Ad</div>
+</div>
+
+<main class="page-body">
+  <div class="container">
+
+    <div class="how-grid">
+      <div class="how-card">
+        <span class="how-icon">📊</span>
+        <h3>Live stats model</h3>
+        <p>We pull today's fixture list from API-Football each morning. For every match, we collect average goals scored and conceded, possession stats, shot conversion, H2H results over the last 5 seasons, and recent form (last 6 games). A probability model converts these into 1/X/2 win percentages.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-icon">🤖</span>
+        <h3>AI analysis</h3>
+        <p>Each match's stat package is sent to the Claude API with a structured prompt. Claude analyses form, momentum, tactical matchups, and injury context to generate a prediction and confidence score. This layer catches things raw stats miss — a team on a 5-game winning streak but all in weak form, for instance.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-icon">👥</span>
+        <h3>Tipster consensus</h3>
+        <p>We scrape prediction percentages from Forebet, Betensured, and Windrawwin — three of the largest public prediction engines. We weight their consensus by their historical accuracy on that specific league and time of season. The result is a crowd-wisdom signal that complements the AI view.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-icon">⚡</span>
+        <h3>The verdict</h3>
+        <p>When all three signals align — stats model, AI, and tipster consensus — we flag it as a high-confidence pick. Divergence between signals is surfaced transparently so you can make your own call. We never manufacture agreement that isn't there.</p>
+      </div>
+    </div>
+
+    <div class="ad-slot ad-slot-inline" aria-label="Advertisement">Ad</div>
+
+    <div style="max-width:680px;margin:0 auto;">
+      <h2 style="font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:16px;">
+        Data sources
+      </h2>
+
+      <div class="match-card" style="margin-bottom:14px;">
+        <div class="card-league-bar">
+          <span class="league-label">
+            <span class="league-pip" style="background:#38bdf8"></span>
+            API-Football
+          </span>
+          <span class="kickoff-time">apifootball.com</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+            Live fixture data, team stats, form, lineups, injuries, and bookmaker odds. Free tier covers 100 calls/day — enough for a daily cron job covering all major European leagues. Upgrade to paid for real-time livescores.
+          </p>
+        </div>
+      </div>
+
+      <div class="match-card" style="margin-bottom:14px;">
+        <div class="card-league-bar">
+          <span class="league-label">
+            <span class="league-pip" style="background:#a78bfa"></span>
+            Claude API (Anthropic)
+          </span>
+          <span class="kickoff-time">anthropic.com</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+            Each match gets a structured prompt including H2H records, recent form, and statistical context. Claude returns a JSON object with a prediction, confidence score, and two-sentence reasoning. Runs via a Vercel serverless function, cached per match per day to control API costs.
+          </p>
+        </div>
+      </div>
+
+      <div class="match-card" style="margin-bottom:14px;">
+        <div class="card-league-bar">
+          <span class="league-label">
+            <span class="league-pip" style="background:#f5a623"></span>
+            Tipster aggregation
+          </span>
+          <span class="kickoff-time">Forebet · Betensured · Windrawwin</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+            A lightweight Python scraper (running as a Vercel cron) collects the 1/X/2 consensus percentages from three public tipster engines each morning. Results are averaged and stored in a Vercel KV (Redis) store. Response times under 50ms.
+          </p>
+        </div>
+      </div>
+
+      <h2 style="font-family:var(--font-display);font-size:26px;font-weight:700;margin:32px 0 16px;">
+        Technical architecture
+      </h2>
+
+      <div class="match-card">
+        <div class="card-league-bar">
+          <span class="league-label">
+            <span class="league-pip" style="background:#22c55e"></span>
+            Deployment stack
+          </span>
+          <span class="kickoff-time">Vercel · GitHub</span>
+        </div>
+        <div class="card-body">
+          <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px;">
+            The site is a static HTML/CSS/JS frontend deployed on Vercel — identical architecture to MiaPensione. 
+            Data is fetched and cached by two serverless functions:
+          </p>
+          <ul style="font-size:13px;color:var(--text-secondary);line-height:1.8;padding-left:18px;">
+            <li><code style="font-family:var(--font-mono);color:var(--amber);font-size:12px;">/api/matches.js</code> — calls API-Football, runs Claude picks, returns enriched fixture JSON</li>
+            <li><code style="font-family:var(--font-mono);color:var(--amber);font-size:12px;">/api/tipsters.js</code> — scrapes consensus data, merges with match data</li>
+          </ul>
+          <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-top:12px;">
+            Both functions run once daily at 07:00 UTC via Vercel Cron. Results are stored in Vercel KV so subsequent page loads serve cached data instantly — no runtime cost per visitor.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/js/shared.js"></script>
+<script>
+  injectNav('how');
+  injectFooter();
+</script>
+
+</body>
+</html>
