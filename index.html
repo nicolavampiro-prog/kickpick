@@ -262,8 +262,13 @@ let activeOffset = 0;
 let openCards = new Set();
 
 function getDateStr(offset) {
-  const d = new Date(); d.setDate(d.getDate() + offset);
-  return d.toISOString().split('T')[0];
+  // Usa data locale del browser (non UTC) — fix timezone italiano
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  const year  = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day   = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 function formatTabDate(offset) {
   const d = new Date(); d.setDate(d.getDate() + offset);
