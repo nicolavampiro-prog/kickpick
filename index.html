@@ -458,9 +458,9 @@ function buildPickBoxes(m) {
     </div>`;
 
   return [
-    box('📐','Model','Poisson & H2H', modelPick, modelPct, 'var(--purple)'),
-    box('🤖','AI Sports','Form & context', aiPick||'Loading…', aiPct, 'var(--blue)'),
-    box('⚽','Goals','Expected goals', goalPick||'—', goalPct||null, 'var(--green)'),
+    box('📐','Model','Pure maths, no opinion', modelPick, modelPct, 'var(--purple)'),
+    box('🤖','AI Sports','Context & match dynamics', aiPick||'Loading…', aiPct, 'var(--blue)'),
+    box('⚽','Goals','Crowd wisdom in odds', goalPick||'—', goalPct||null, 'var(--green)'),
   ].join('');
 }
 
@@ -557,20 +557,20 @@ function renderCard(m) {
         <div class="signals">
           <div class="signal-col">
             <div class="signal-src" style="color:var(--purple-dk)">📐 Model</div>
-            <div class="signal-desc">Poisson model on expected goals & H2H history</div>
+            <div class="signal-desc">Uses expected goals (from odds or H2H data) and Poisson distribution to calculate outcome probabilities. Cold, objective, no opinion.</div>
             <div class="signal-pick">${modelPick}</div>
             <div class="signal-sub">${modelPct}% probability</div>
           </div>
           <div class="signal-col" id="ai-sig-${m.id}">
             <div class="signal-src" style="color:var(--blue-dk)">🤖 AI Sports</div>
-            <div class="signal-desc">AI analysis of form, context & match dynamics</div>
+            <div class="signal-desc">Reads match context like an analyst — recent form, competition stage, tactical dynamics. Can reach conclusions the model misses.</div>
             ${ai
               ? `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`
               : `<div class="signal-loading">Analysing...</div>`}
           </div>
           <div class="signal-col">
             <div class="signal-src" style="color:var(--green-dk)">👥 Market</div>
-            <div class="signal-desc">Bookmaker odds converted to implied probability</div>
+            <div class="signal-desc">The collective wisdom of thousands of professional bettors reflected in bookmaker odds. Captures what models miss — last-minute injuries, weather, motivation.</div>
             <div class="signal-pick">${m.predictions.market.pick}</div>
             <div class="signal-sub">${m.predictions.market.sub}</div>
           </div>
