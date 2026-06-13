@@ -1,149 +1,295 @@
-// matches.js — fixture data layer
-// In production: replace fetchMatches() with a real API-Football call
-// via a Vercel serverless function (see /api/matches.js)
 
-const MOCK_MATCHES = [
-  {
-    id: 'm1',
-    league: 'Champions League',
-    stage: 'Semi-finals',
-    kickoff: '20:45',
-    home: 'Arsenal',
-    away: 'PSG',
-    featured: true,
-    homeForm: 'WWWDW',
-    awayForm: 'WWWWL',
-    stats: {
-      homeGoals: 2.4, awayGoals: 2.1,
-      homePoss: 58, h2hHome: 4, h2hAway: 3
-    },
-    predictions: {
-      stats:    { pick: '1 or X',     sub: '44% home win' },
-      ai:       { pick: 'Over 2.5',   sub: '71% confidence' },
-      tipsters: { pick: 'Home win',   sub: '58% consensus' }
-    },
-    odds: { home: '2.10', draw: '3.50', away: '3.30', bestSide: 'home' }
-  },
-  {
-    id: 'm2',
-    league: 'Premier League',
-    stage: 'Matchday 38',
-    kickoff: '21:00',
-    home: 'Manchester City',
-    away: 'Liverpool',
-    featured: false,
-    homeForm: 'WWLWW',
-    awayForm: 'WWWWD',
-    stats: {
-      homeGoals: 2.2, awayGoals: 2.0,
-      homePoss: 62, h2hHome: 7, h2hAway: 5
-    },
-    predictions: {
-      stats:    { pick: 'Home win',   sub: '51% home win' },
-      ai:       { pick: 'BTTS Yes',   sub: '69% confidence' },
-      tipsters: { pick: 'BTTS Yes',   sub: '73% consensus' }
-    },
-    odds: { home: '1.95', draw: '3.60', away: '3.90', bestSide: 'home' }
-  },
-  {
-    id: 'm3',
-    league: 'Serie A',
-    stage: 'Matchday 35',
-    kickoff: '18:00',
-    home: 'Inter Milan',
-    away: 'Juventus',
-    featured: false,
-    homeForm: 'WDWWW',
-    awayForm: 'LWDWW',
-    stats: {
-      homeGoals: 1.9, awayGoals: 1.4,
-      homePoss: 55, h2hHome: 6, h2hAway: 8
-    },
-    predictions: {
-      stats:    { pick: 'Draw',       sub: '36% draw prob.' },
-      ai:       { pick: 'Under 2.5',  sub: '62% confidence' },
-      tipsters: { pick: 'Draw',       sub: '49% consensus' }
-    },
-    odds: { home: '2.30', draw: '3.10', away: '3.20', bestSide: 'draw' }
-  },
-  {
-    id: 'm4',
-    league: 'La Liga',
-    stage: 'Matchday 35',
-    kickoff: '21:00',
-    home: 'Barcelona',
-    away: 'Atletico Madrid',
-    featured: false,
-    homeForm: 'WWWWW',
-    awayForm: 'WLWWW',
-    stats: {
-      homeGoals: 2.6, awayGoals: 1.7,
-      homePoss: 64, h2hHome: 9, h2hAway: 6
-    },
-    predictions: {
-      stats:    { pick: 'Home win',   sub: '55% home win' },
-      ai:       { pick: '1 & O 1.5',  sub: '74% confidence' },
-      tipsters: { pick: 'Home win',   sub: '68% consensus' }
-    },
-    odds: { home: '1.75', draw: '3.70', away: '4.80', bestSide: 'home' }
-  },
-  {
-    id: 'm5',
-    league: 'Bundesliga',
-    stage: 'Matchday 33',
-    kickoff: '15:30',
-    home: 'Borussia Dortmund',
-    away: 'RB Leipzig',
-    featured: false,
-    homeForm: 'WDWLW',
-    awayForm: 'WWWDL',
-    stats: {
-      homeGoals: 2.1, awayGoals: 2.0,
-      homePoss: 51, h2hHome: 5, h2hAway: 6
-    },
-    predictions: {
-      stats:    { pick: 'Over 2.5',   sub: '61% o2.5 prob.' },
-      ai:       { pick: 'Over 2.5',   sub: '66% confidence' },
-      tipsters: { pick: 'Away win',   sub: '52% consensus' }
-    },
-    odds: { home: '2.60', draw: '3.30', away: '2.70', bestSide: 'away' }
-  },
-  {
-    id: 'm6',
-    league: 'Ligue 1',
-    stage: 'Matchday 32',
-    kickoff: '20:00',
-    home: 'Marseille',
-    away: 'Monaco',
-    featured: false,
-    homeForm: 'WDWWL',
-    awayForm: 'WWWDW',
-    stats: {
-      homeGoals: 1.8, awayGoals: 2.0,
-      homePoss: 49, h2hHome: 5, h2hAway: 7
-    },
-    predictions: {
-      stats:    { pick: 'Away win',   sub: '42% away win' },
-      ai:       { pick: 'Away win',   sub: '60% confidence' },
-      tipsters: { pick: 'Away win',   sub: '61% consensus' }
-    },
-    odds: { home: '2.80', draw: '3.20', away: '2.50', bestSide: 'away' }
+// api/matches.js — Vercel serverless function
+// OddsAPI: h2h (partite + odds 1X2)
+// football-data.org: form + H2H per competizione
+// Poisson model: Over/Under + BTTS calcolati da gol H2H o stima da odds
+ 
+const SPORTS = [
+  { key: 'soccer_fifa_world_cup',         name: 'World Cup',        color: '#B91C1C', bg: '#FFF1F2', fdCode: 'WC'  },
+  { key: 'soccer_uefa_champs_league',     name: 'Champions League', color: '#7C3AED', bg: '#F5F3FF', fdCode: 'CL'  },
+  { key: 'soccer_epl',                    name: 'Premier League',   color: '#059669', bg: '#ECFDF5', fdCode: 'PL'  },
+  { key: 'soccer_italy_serie_a',          name: 'Serie A',          color: '#D97706', bg: '#FFFBEB', fdCode: 'SA'  },
+  { key: 'soccer_spain_la_liga',          name: 'La Liga',          color: '#DC2626', bg: '#FEF2F2', fdCode: 'PD'  },
+  { key: 'soccer_germany_bundesliga',     name: 'Bundesliga',       color: '#B45309', bg: '#FFF7ED', fdCode: 'BL1' },
+  { key: 'soccer_france_ligue_one',       name: 'Ligue 1',          color: '#2563EB', bg: '#EFF6FF', fdCode: 'FL1' },
+  { key: 'soccer_uefa_europa_league',     name: 'Europa League',    color: '#F97316', bg: '#FFF7ED', fdCode: 'EL'  },
+];
+ 
+const cache = {};
+ 
+// ── Poisson ───────────────────────────────────────────────────────────────────
+function poisson(lambda, k) {
+  if (lambda <= 0) return k === 0 ? 1 : 0;
+  let r = Math.exp(-lambda);
+  for (let i = 1; i <= k; i++) r *= lambda / i;
+  return r;
+}
+function poissonCDF(lambda, k) {
+  let s = 0;
+  for (let i = 0; i <= k; i++) s += poisson(lambda, i);
+  return s;
+}
+function calcGoalMarkets(hg, ag) {
+  const lambda = hg + ag;
+  const pO15 = Math.round((1 - poissonCDF(lambda, 1)) * 100);
+  const pO25 = Math.round((1 - poissonCDF(lambda, 2)) * 100);
+  const pO35 = Math.round((1 - poissonCDF(lambda, 3)) * 100);
+  const pBY  = Math.round((1 - poisson(hg, 0)) * (1 - poisson(ag, 0)) * 100);
+  const toOdd = p => p > 0 ? (1 / (p / 100)).toFixed(2) : '—';
+  return {
+    over25:  { prob: pO25,     odd: toOdd(pO25),     source: 'model' },
+    under25: { prob: 100-pO25, odd: toOdd(100-pO25), source: 'model' },
+    over15:  { prob: pO15,     odd: toOdd(pO15),     source: 'model' },
+    under15: { prob: 100-pO15, odd: toOdd(100-pO15), source: 'model' },
+    over35:  { prob: pO35,     odd: toOdd(pO35),     source: 'model' },
+    under35: { prob: 100-pO35, odd: toOdd(100-pO35), source: 'model' },
+    bttsYes: { prob: pBY,      odd: toOdd(pBY),      source: 'model' },
+    bttsNo:  { prob: 100-pBY,  odd: toOdd(100-pBY),  source: 'model' },
+  };
+}
+ 
+// Stima gol attesi dalla forza relativa delle squadre (proxy quando H2H non disponibile)
+// Media europea: ~2.5 gol/partita totali, distribuiti in base alla prob di vittoria
+function estimateGoals(probHome, probAway) {
+  const totalExpected = 2.5;
+  const homeStrength = probHome / (probHome + probAway);
+  const awayStrength = probAway / (probHome + probAway);
+  const hg = +(totalExpected * homeStrength * 0.9).toFixed(1); // leggero malus casa per neutralità
+  const ag = +(totalExpected * awayStrength * 0.9).toFixed(1);
+  return { hg: Math.max(hg, 0.3), ag: Math.max(ag, 0.3) };
+}
+ 
+// ── Name matching ─────────────────────────────────────────────────────────────
+function norm(str) {
+  return (str || '').toLowerCase()
+    .replace(/\b(fc|afc|sc|ac|as|ss|us|cd|rc|ud|sv|cf|bsc|vfb|tsv|tsg|rb|fk|sk)\b/g, '')
+    .replace(/[^a-z0-9]/g, '').trim();
+}
+function teamsMatch(a, b) {
+  if (!a || !b) return false;
+  const na = norm(a), nb = norm(b);
+  if (!na || !nb) return false;
+  return na === nb || na.includes(nb) || nb.includes(na) ||
+    (na.length > 4 && nb.length > 4 && na.slice(0, 5) === nb.slice(0, 5));
+}
+ 
+// Quota media tra i bookmaker (più rappresentativa del mercato reale)
+function avgOdd(bookmakers, outcomeName) {
+  const prices = bookmakers.flatMap(bk =>
+    bk.markets?.find(m => m.key === 'h2h')?.outcomes
+      .filter(o => o.name === outcomeName).map(o => o.price) || []);
+  if (!prices.length) return '—';
+  const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+  return avg.toFixed(2);
+}
+ 
+// ── Handler ───────────────────────────────────────────────────────────────────
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+ 
+  const ODDS_KEY = process.env.ODDS_API_KEY;
+  const FD_KEY   = process.env.FOOTBALL_DATA_KEY;
+  if (!ODDS_KEY) return res.status(500).json({ error: 'ODDS_API_KEY not set' });
+ 
+  const requestedDate = req.query.date || new Date().toISOString().split('T')[0];
+ 
+  if (cache[requestedDate] && cache[requestedDate].ts > Date.now() - 7200000) {
+    return res.status(200).json({ ...cache[requestedDate].data, cached: true });
   }
-];
-
-// Top AI picks for sidebar (matches where all 3 signals agree)
-const BEST_BETS = [
-  { match: 'Barcelona vs Atletico',  pick: 'Home win',  odd: '1.75' },
-  { match: 'Marseille vs Monaco',    pick: 'Away win',  odd: '2.50' },
-  { match: 'Dortmund vs Leipzig',    pick: 'Over 2.5',  odd: '1.85' },
-  { match: 'Man City vs Liverpool',  pick: 'BTTS Yes',  odd: '1.70' },
-];
-
-// In production this would be:
-// async function fetchMatches(date) {
-//   const res = await fetch(`/api/matches?date=${date}`);
-//   return res.json();
-// }
-
-function getMatches() { return MOCK_MATCHES; }
-function getBestBets() { return BEST_BETS; }
+ 
+  // Filtro data in timezone italiano (UTC+2 estate)
+  const tzOffset = '+02:00';
+  const dayStart = new Date(requestedDate + 'T00:00:00' + tzOffset).getTime();
+  const dayEnd   = new Date(requestedDate + 'T23:59:59' + tzOffset).getTime();
+ 
+  const allMatches = [];
+ 
+  // ── STEP 1: OddsAPI h2h ───────────────────────────────────────────────────
+  for (const sport of SPORTS) {
+    try {
+      const url = `https://api.the-odds-api.com/v4/sports/${sport.key}/odds/?apiKey=${ODDS_KEY}&regions=eu&markets=h2h&oddsFormat=decimal`;
+      const resp = await fetch(url);
+      if (!resp.ok) continue;
+      const events = await resp.json();
+      if (!Array.isArray(events)) continue;
+ 
+      for (const event of events) {
+        const eventTime = new Date(event.commence_time).getTime();
+        if (eventTime < dayStart || eventTime > dayEnd) continue;
+ 
+        const bk = event.bookmakers || [];
+        let sumHome = 0, sumDraw = 0, sumAway = 0, count = 0;
+ 
+        for (const b of bk) {
+          const h2h = b.markets?.find(m => m.key === 'h2h');
+          if (!h2h) continue;
+          const home = h2h.outcomes.find(o => o.name === event.home_team);
+          const away = h2h.outcomes.find(o => o.name === event.away_team);
+          const draw = h2h.outcomes.find(o => o.name === 'Draw');
+          if (!home || !away) continue;
+          sumHome += 1 / home.price;
+          sumAway += 1 / away.price;
+          if (draw) sumDraw += 1 / draw.price;
+          count++;
+        }
+        if (!count) continue;
+ 
+        const total = sumHome + sumDraw + sumAway;
+        const pHome = Math.round(sumHome / total * 100);
+        const pDraw = Math.round(sumDraw / total * 100);
+        const pAway = Math.round(sumAway / total * 100);
+ 
+        let mktPick, mktPct, bestSide;
+        if (pHome >= pDraw && pHome >= pAway) { mktPick = 'Home win'; mktPct = pHome; bestSide = 'home'; }
+        else if (pAway >= pDraw)              { mktPick = 'Away win'; mktPct = pAway; bestSide = 'away'; }
+        else                                  { mktPick = 'Draw';     mktPct = pDraw; bestSide = 'draw'; }
+ 
+        // Quote medie per ogni outcome
+        const homeOdd = avgOdd(bk, event.home_team);
+        const awayOdd = avgOdd(bk, event.away_team);
+        const drawPrices = bk.flatMap(b =>
+          b.markets?.find(m => m.key === 'h2h')?.outcomes
+            .filter(o => o.name === 'Draw').map(o => o.price) || []);
+        const drawOdd = drawPrices.length
+          ? (drawPrices.reduce((a, b) => a + b, 0) / drawPrices.length).toFixed(2)
+          : '—';
+ 
+        // Stima gol da odds (sarà aggiornato con H2H reale se disponibile)
+        const { hg: hgEst, ag: agEst } = estimateGoals(pHome, pAway);
+ 
+        allMatches.push({
+          id: event.id,
+          sportKey: sport.key,
+          fdCode: sport.fdCode,
+          league: sport.name,
+          leagueColor: sport.color,
+          leagueBg: sport.bg,
+          kickoff: new Date(event.commence_time).toLocaleTimeString('en-GB', {
+            hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome'
+          }),
+          home: event.home_team,
+          away: event.away_team,
+          status: 'SCHEDULED',
+          homeForm: 'WWDLW',
+          awayForm: 'WWDLW',
+          stats: {
+            homePoss: pHome,
+            awayPoss: pAway,
+            homeGoals: hgEst,
+            awayGoals: agEst,
+            homeH2H: 5,
+            awayH2H: 5,
+            hasRealStats: false
+          },
+          predictions: {
+            stats:  { pick: mktPct >= 60 ? mktPick : 'Even match', sub: `${mktPct}% implied` },
+            market: { pick: mktPick, sub: `${mktPct}% implied` }
+          },
+          odds: {
+            home: homeOdd,
+            draw: drawOdd,
+            away: awayOdd,
+            best: bestSide
+          },
+          // Mercati Poisson calcolati già dalla stima odds
+          markets: calcGoalMarkets(hgEst, agEst),
+          hasRealOdds: true,
+          probHome: pHome,
+          probDraw: pDraw,
+          probAway: pAway
+        });
+      }
+    } catch (err) {
+      console.error(`${sport.key}:`, err.message);
+    }
+  }
+ 
+  if (!allMatches.length) {
+    return res.status(200).json({ date: requestedDate, matches: [], total: 0 });
+  }
+ 
+  // ── STEP 2: football-data.org per competizione — form + H2H ──────────────
+  if (FD_KEY) {
+    const byCode = {};
+    for (const m of allMatches) {
+      if (!byCode[m.fdCode]) byCode[m.fdCode] = [];
+      byCode[m.fdCode].push(m);
+    }
+ 
+    await Promise.allSettled(Object.entries(byCode).map(async ([fdCode, matches]) => {
+      try {
+        const url = `https://api.football-data.org/v4/competitions/${fdCode}/matches?dateFrom=${requestedDate}&dateTo=${requestedDate}`;
+        const resp = await fetch(url, { headers: { 'X-Auth-Token': FD_KEY } });
+        if (!resp.ok) return;
+ 
+        const fdMatches = (await resp.json()).matches || [];
+        if (!fdMatches.length) return;
+ 
+        for (const match of matches) {
+          const fd = fdMatches.find(f =>
+            teamsMatch(f.homeTeam.shortName || f.homeTeam.name, match.home) &&
+            teamsMatch(f.awayTeam.shortName || f.awayTeam.name, match.away)
+          );
+          if (!fd) continue;
+          if (fd.homeTeam.form) match.homeForm = fd.homeTeam.form;
+          if (fd.awayTeam.form) match.awayForm = fd.awayTeam.form;
+          if (fd.status) match.status = fd.status;
+          match._fdId = fd.id;
+        }
+ 
+        // H2H per le prime 5 partite trovate
+        const withFd = matches.filter(m => m._fdId).slice(0, 5);
+        await Promise.allSettled(withFd.map(async match => {
+          try {
+            const r = await fetch(
+              `https://api.football-data.org/v4/matches/${match._fdId}/head2head?limit=10`,
+              { headers: { 'X-Auth-Token': FD_KEY } }
+            );
+            if (!r.ok) return;
+            const h2h = (await r.json()).matches || [];
+            if (h2h.length < 3) return; // Almeno 3 precedenti per essere significativo
+ 
+            let hw = 0, aw = 0, hg = 0, ag = 0;
+            for (const hm of h2h) {
+              if (hm.score?.fullTime?.home == null) continue;
+              hg += hm.score.fullTime.home;
+              ag += hm.score.fullTime.away;
+              if (hm.score.fullTime.home > hm.score.fullTime.away) hw++;
+              else if (hm.score.fullTime.away > hm.score.fullTime.home) aw++;
+            }
+            const n = h2h.length;
+            const hgAvg = +(hg / n).toFixed(1);
+            const agAvg = +(ag / n).toFixed(1);
+ 
+            // Aggiorna stats con dati H2H reali
+            match.stats = {
+              homePoss:  match.probHome,
+              awayPoss:  match.probAway,
+              homeGoals: hgAvg,
+              awayGoals: agAvg,
+              homeH2H:   hw,
+              awayH2H:   aw,
+              hasRealStats: true
+            };
+ 
+            // Ricalcola mercati Poisson con gol reali
+            match.markets = calcGoalMarkets(hgAvg, agAvg);
+ 
+          } catch (e) { /* skip */ }
+        }));
+ 
+      } catch (err) {
+        console.error(`FD ${fdCode}:`, err.message);
+      }
+    }));
+  }
+ 
+  allMatches.sort((a, b) => a.kickoff.localeCompare(b.kickoff));
+  allMatches.forEach(m => { delete m.sportKey; delete m.fdCode; delete m._fdId; });
+ 
+  const payload = { date: requestedDate, matches: allMatches, total: allMatches.length };
+  cache[requestedDate] = { ts: Date.now(), data: payload };
+  return res.status(200).json(payload);
+};
