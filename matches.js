@@ -1,5 +1,5 @@
-
-// api/matches.js — Vercel serverless function v2
+xed3 · JS
+// api/matches.js — Vercel serverless function
 // OddsAPI: h2h (partite + odds 1X2)
 // football-data.org: form + H2H per competizione
 // Poisson model: Over/Under + BTTS calcolati da gol H2H o stima da odds
@@ -147,15 +147,10 @@ module.exports = async function handler(req, res) {
         else if (pAway >= pDraw)              { mktPick = 'Away win'; mktPct = pAway; bestSide = 'away'; }
         else                                  { mktPick = 'Draw';     mktPct = pDraw; bestSide = 'draw'; }
  
-        // Quote medie per ogni outcome
-        const homeOdd = avgOdd(bk, event.home_team);
-        const awayOdd = avgOdd(bk, event.away_team);
-        const drawPrices = bk.flatMap(b =>
-          b.markets?.find(m => m.key === 'h2h')?.outcomes
-            .filter(o => o.name === 'Draw').map(o => o.price) || []);
-        const drawOdd = drawPrices.length
-          ? (drawPrices.reduce((a, b) => a + b, 0) / drawPrices.length).toFixed(2)
-          : '—';
+        // Quote derivate dalla probabilità implicita (sempre coerenti con le %)
+        const homeOdd = pHome > 0 ? (1 / (pHome / 100)).toFixed(2) : '—';
+        const drawOdd = pDraw > 0 ? (1 / (pDraw / 100)).toFixed(2) : '—';
+        const awayOdd = pAway > 0 ? (1 / (pAway / 100)).toFixed(2) : '—';
  
         // Stima gol da odds (sarà aggiornato con H2H reale se disponibile)
         const { hg: hgEst, ag: agEst } = estimateGoals(pHome, pAway);
@@ -294,4 +289,3 @@ module.exports = async function handler(req, res) {
   cache[requestedDate] = { ts: Date.now(), data: payload };
   return res.status(200).json(payload);
 };
- 
