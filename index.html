@@ -18,7 +18,6 @@
   --purple:#7C3AED;--purple-bg:#F5F3FF;--purple-dk:#5B21B6;
   --radius:14px;--radius-sm:8px;
   --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md:0 4px 20px rgba(0,0,0,0.12);
   --font-ui:'DM Sans',system-ui,sans-serif;
   --font-data:'DM Mono',monospace;
 }
@@ -47,7 +46,7 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:
 .date-tab{flex:1;padding:8px 4px;border-radius:10px;border:none;background:transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center}
 .date-tab.active{background:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
 .date-tab-label{display:block;font-size:12px;font-weight:600;color:var(--ink3);transition:color .2s}
-.date-tab-date{display:block;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:2px;transition:color .2s}
+.date-tab-date{display:block;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:2px}
 .date-tab.active .date-tab-label{color:var(--white)}
 .date-tab.active .date-tab-date{color:rgba(255,255,255,.6)}
 .date-tab:hover:not(.active) .date-tab-label{color:var(--ink2)}
@@ -80,56 +79,54 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 
 /* ── Match card ── */
 .match-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;-webkit-tap-highlight-color:transparent}
-.card-header{padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;cursor:pointer;user-select:none}
+.card-header{padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;cursor:pointer;user-select:none}
 .card-left{min-width:0}
 .card-meta{display:flex;align-items:center;gap:6px;margin-bottom:6px}
 .league-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;letter-spacing:.3px;white-space:nowrap}
 .kickoff-tag{font-family:var(--font-data);font-size:11px;color:var(--ink4)}
 .status-live{font-family:var(--font-data);font-size:10px;font-weight:600;color:var(--red);background:var(--red-bg);padding:2px 7px;border-radius:5px;animation:livepulse 1.5s ease-in-out infinite}
-.teams-line{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:8px}
+.teams-line{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:10px}
 
-/* ── Pick rows nella card chiusa ── */
-.card-picks{display:flex;flex-direction:column;gap:4px}
-.pick-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.pick-row-left{display:flex;align-items:center;gap:6px;min-width:0}
-.pick-source-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.pick-source-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);flex-shrink:0}
-.pick-value{font-size:13px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pick-pct{font-family:var(--font-data);font-size:11px;font-weight:500;flex-shrink:0;padding:2px 7px;border-radius:5px}
-.pick-pct-high{background:var(--green-bg);color:var(--green-dk)}
-.pick-pct-mid{background:var(--amber-bg);color:var(--amber-dk)}
-.pick-pct-low{background:#F3F4F6;color:var(--ink3)}
-.pick-loading{font-size:11px;color:var(--ink4);font-family:var(--font-data);animation:fadepulse 1.2s ease-in-out infinite}
+/* ── Three pick boxes (card chiusa) ── */
+.card-picks-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.pick-box{border-radius:var(--radius-sm);padding:8px 8px 7px;border:1px solid var(--border);background:var(--bg)}
+.pick-box-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.pick-box-desc{font-size:9px;color:var(--ink4);margin-bottom:5px;line-height:1.3}
+.pick-box-value{font-size:13px;font-weight:700;color:var(--ink);line-height:1.1;margin-bottom:4px}
+.pick-box-pct{font-family:var(--font-data);font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;display:inline-block}
+.pct-high{background:var(--green-bg);color:var(--green-dk)}
+.pct-mid{background:var(--amber-bg);color:var(--amber-dk)}
+.pct-low{background:#F3F4F6;color:var(--ink3)}
+
+/* Loading skeleton per pick box */
+.pick-box-loading{height:60px;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius-sm)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @keyframes fadepulse{0%,100%{opacity:.4}50%{opacity:1}}
 
 /* ── Confidence ring ── */
-.conf-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
-.conf-ring{width:52px;height:52px;position:relative}
-.conf-ring svg{width:52px;height:52px;transform:rotate(-90deg)}
+.conf-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;margin-top:2px}
+.conf-ring{width:48px;height:48px;position:relative}
+.conf-ring svg{width:48px;height:48px;transform:rotate(-90deg)}
 .conf-ring .ring-bg{fill:none;stroke:var(--border);stroke-width:4}
 .conf-ring .ring-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)}
-.conf-ring .ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-data);font-size:12px;font-weight:500}
+.conf-ring .ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-data);font-size:11px;font-weight:500}
 .conf-label-sm{font-family:var(--font-data);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px}
-.ring-skeleton{width:52px;height:52px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.ring-skeleton{width:48px;height:48px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 
 /* ── Card body expanded ── */
 .card-body{border-top:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
 .card-body.open{max-height:1200px}
 .card-body-inner{padding:16px}
 
-/* ── Three signals (expanded) ── */
-.signals-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.signals-title{font-family:var(--font-data);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink4)}
-.signals-help{font-size:11px;color:var(--ink4);cursor:pointer;padding:2px 6px;border-radius:5px;background:var(--bg);border:1px solid var(--border);-webkit-tap-highlight-color:transparent}
-.signals-help:hover{background:var(--border)}
+/* ── Expanded signals ── */
+.signals-label{font-family:var(--font-data);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink4);margin-bottom:8px}
 .signals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
-.signal-col{background:var(--bg);border-radius:var(--radius-sm);padding:10px 10px 8px;border:1px solid var(--border);position:relative}
-.signal-src{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:5px;display:flex;align-items:center;gap:4px}
-.signal-src-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.signal-col{background:var(--bg);border-radius:var(--radius-sm);padding:10px 10px 8px;border:1px solid var(--border)}
+.signal-src{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.signal-desc{font-size:9px;color:var(--ink4);margin-bottom:6px;line-height:1.3}
 .signal-pick{font-size:14px;font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:3px}
 .signal-sub{font-family:var(--font-data);font-size:10px;color:var(--ink3)}
-.signal-loading{font-family:var(--font-data);font-size:11px;color:var(--ink4);animation:fadepulse 1.2s ease-in-out infinite}
+.signal-loading{font-family:var(--font-data);font-size:10px;color:var(--ink4);animation:fadepulse 1.2s ease-in-out infinite}
 
 /* ── Stats ── */
 .stats-block{margin-bottom:16px}
@@ -141,7 +138,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .stat-bar-away{position:absolute;right:0;top:0;height:100%;background:var(--amber);border-radius:3px}
 .stat-name{text-align:center;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:3px}
 
-/* ── Form dots ── */
+/* ── Form ── */
 .form-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:16px}
 .form-dots{display:flex;gap:4px}
 .form-dots.right{justify-content:flex-end}
@@ -153,7 +150,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 
 /* ── Odds ── */
 .odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
-.odd-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px 7px;text-align:center;cursor:pointer;transition:all .15s}
+.odd-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px 7px;text-align:center}
 .odd-btn.best{background:var(--green-bg);border-color:var(--green)}
 .odd-label{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
 .odd-value{font-family:var(--font-data);font-size:16px;font-weight:500;color:var(--ink)}
@@ -164,9 +161,9 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .markets-title{font-family:var(--font-data);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink4);margin-bottom:8px}
 .markets-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .market-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
-.market-card.highlighted{border-color:var(--green);background:var(--green-bg)}
-.market-card.highlighted .mkt-pick{color:var(--green-dk)}
-.market-card.highlighted .mkt-odd{color:var(--green-dk)}
+.market-card.hl{border-color:var(--green);background:var(--green-bg)}
+.market-card.hl .mkt-pick{color:var(--green-dk)}
+.market-card.hl .mkt-odd{color:var(--green-dk)}
 .mkt-type{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
 .mkt-pick{font-size:13px;font-weight:600;color:var(--ink)}
 .mkt-prob{font-family:var(--font-data);font-size:10px;color:var(--ink3);margin-top:1px}
@@ -179,25 +176,6 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .odds-source{font-size:10px;color:var(--ink4);text-align:center;margin-bottom:12px;font-family:var(--font-data)}
 .early-note{background:var(--amber-bg);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber-dk);display:flex;align-items:center;gap:6px}
 
-/* ── Bottom sheet (signals explanation) ── */
-.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s}
-.sheet-overlay.open{opacity:1;pointer-events:all}
-.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-radius:20px 20px 0 0;z-index:501;padding:0 0 max(24px,env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto}
-.sheet.open{transform:translateY(0)}
-.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
-.sheet-header{padding:16px 20px 12px;border-bottom:1px solid var(--border)}
-.sheet-title{font-size:16px;font-weight:600;color:var(--ink)}
-.sheet-subtitle{font-size:13px;color:var(--ink3);margin-top:2px}
-.sheet-body{padding:16px 20px}
-.signal-explain{padding:16px 0;border-bottom:1px solid var(--border)}
-.signal-explain:last-child{border-bottom:none}
-.se-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.se-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.se-name{font-size:14px;font-weight:600;color:var(--ink)}
-.se-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:5px;margin-top:2px;display:inline-block}
-.se-desc{font-size:13px;color:var(--ink2);line-height:1.6}
-.se-when{font-size:12px;color:var(--ink3);margin-top:6px;padding:8px 10px;background:var(--bg);border-radius:var(--radius-sm);line-height:1.5}
-
 /* ── States ── */
 .global-loading{text-align:center;padding:60px 24px}
 .global-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
@@ -208,9 +186,6 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .no-matches-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;margin-bottom:16px}
 .no-matches-box h3{font-size:18px;font-weight:600;margin-bottom:8px}
 .no-matches-box p{font-size:13px;color:var(--ink3);line-height:1.7}
-.verdict-high{background:var(--green-bg);color:var(--green-dk)}
-.verdict-mid{background:var(--amber-bg);color:var(--amber-dk)}
-.verdict-low{background:#F3F4F6;color:var(--ink3)}
 
 /* ── Bottom nav ── */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:200}
@@ -236,13 +211,15 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   .side-conf{font-family:var(--font-data);font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px}
   .sc-high{background:var(--green-bg);color:var(--green-dk)}
   .sc-mid{background:var(--amber-bg);color:var(--amber-dk)}
-  /* Desktop: tooltip instead of bottom sheet */
-  .signals-help{position:relative}
-  .sheet{display:none}
-  .sheet-overlay{display:none}
 }
 @media(max-width:899px){.sidebar-panel{display:none}}
-@media(max-width:600px){.signals{grid-template-columns:1fr}.markets-grid{grid-template-columns:1fr}.hero-title{font-size:22px}}
+@media(max-width:600px){
+  .card-picks-grid{grid-template-columns:1fr 1fr 1fr}
+  .pick-box-desc{display:none}
+  .signals{grid-template-columns:1fr}
+  .markets-grid{grid-template-columns:1fr}
+  .hero-title{font-size:22px}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
   <!-- Google AdSense — decommentare dopo approvazione Google
@@ -250,54 +227,6 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   -->
 </head>
 <body>
-
-<!-- Bottom sheet — spiegazione segnali -->
-<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
-<div class="sheet" id="signals-sheet" role="dialog" aria-modal="true" aria-label="How we predict">
-  <div class="sheet-handle"></div>
-  <div class="sheet-header">
-    <div class="sheet-title">How we predict</div>
-    <div class="sheet-subtitle">Three independent signals — the more they agree, the higher the confidence.</div>
-  </div>
-  <div class="sheet-body">
-    <div class="signal-explain">
-      <div class="se-header">
-        <div class="se-icon" style="background:var(--purple-bg)">📐</div>
-        <div>
-          <div class="se-name">Model</div>
-          <span class="se-tag" style="background:var(--purple-bg);color:var(--purple-dk)">Mathematical</span>
-        </div>
-      </div>
-      <div class="se-desc">A Poisson probability model calculates expected goals for each team based on their relative strength (derived from bookmaker odds) and historical head-to-head data. It then converts those goal expectations into win/draw/loss probabilities and goal market predictions (Over/Under, BTTS).</div>
-      <div class="se-when">💡 Trust this most when both teams have a long H2H history with consistent patterns.</div>
-    </div>
-    <div class="signal-explain">
-      <div class="se-header">
-        <div class="se-icon" style="background:var(--blue-bg)">🤖</div>
-        <div>
-          <div class="se-name">AI</div>
-          <span class="se-tag" style="background:var(--blue-bg);color:var(--blue-dk)">Claude AI</span>
-        </div>
-      </div>
-      <div class="se-desc">Claude AI analyses the match context — recent form, competition stage, tactical factors, momentum — and provides a qualitative prediction with a confidence score. Unlike the model, it can factor in context that numbers don't capture: a team playing for a draw is enough to advance, an underdog on a 5-game winning streak, etc.</div>
-      <div class="se-when">💡 Trust this most when the match context is unusual — knock-out games, relegation battles, or teams with very different form vs. historical record.</div>
-    </div>
-    <div class="signal-explain">
-      <div class="se-header">
-        <div class="se-icon" style="background:var(--green-bg)">👥</div>
-        <div>
-          <div class="se-name">Market</div>
-          <span class="se-tag" style="background:var(--green-bg);color:var(--green-dk)">Bookmaker consensus</span>
-        </div>
-      </div>
-      <div class="se-desc">The implied probability calculated from the average odds across multiple European bookmakers. This represents the collective wisdom of professional traders who factor in everything — team news, injuries, weather, travel fatigue. When the market strongly favours one outcome, there is usually a good reason.</div>
-      <div class="se-when">💡 Trust this most for high-profile matches where bookmakers have the most information. Be cautious when market odds shift dramatically in the hours before kickoff.</div>
-    </div>
-    <div style="margin-top:16px;padding:12px;background:var(--amber-bg);border-radius:var(--radius-sm);font-size:12px;color:var(--amber-dk);line-height:1.6">
-      ⚠️ All predictions are for entertainment only. Never bet more than you can afford to lose. <a href="/pages/disclaimer.html" style="color:var(--amber-dk);text-decoration:underline">Full disclaimer →</a>
-    </div>
-  </div>
-</div>
 
 <nav class="nav">
   <div class="nav-inner">
@@ -346,10 +275,11 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
     </div>
   </div>
   <div class="side-widget">
-    <div class="side-widget-head">ℹ️ How we predict</div>
-    <div class="side-widget-body">
-      <p style="font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:10px">Three independent signals: mathematical model, Claude AI, and bookmaker market consensus.</p>
-      <button onclick="openSheet()" style="font-size:12px;font-weight:500;color:var(--blue-dk);background:var(--blue-bg);border:none;padding:6px 12px;border-radius:6px;cursor:pointer;width:100%">Learn how it works →</button>
+    <div class="side-widget-head">📐 How we predict</div>
+    <div class="side-widget-body" style="font-size:12px;color:var(--ink3);line-height:1.7">
+      <p style="margin-bottom:8px"><strong style="color:var(--purple-dk)">📐 Model</strong> — Poisson maths on expected goals and H2H history.</p>
+      <p style="margin-bottom:8px"><strong style="color:var(--blue-dk)">🤖 AI Sports</strong> — AI analysis of form, context and match dynamics.</p>
+      <p><strong style="color:var(--green-dk)">👥 Market</strong> — Bookmaker consensus odds converted to probability.</p>
     </div>
   </div>
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:11px;color:var(--ink4);line-height:1.6;box-shadow:var(--shadow)">
@@ -371,43 +301,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </nav>
 
 <script>
-// ── State ─────────────────────────────────────────────────────────────────────
 let MATCHES = [];
 let threshold = 50;
 let activeLeague = 'all';
 let activeOffset = 0;
 let openCards = new Set();
 
-// ── Sheet ─────────────────────────────────────────────────────────────────────
-function openSheet() {
-  document.getElementById('signals-sheet').classList.add('open');
-  document.getElementById('sheet-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeSheet() {
-  document.getElementById('signals-sheet').classList.remove('open');
-  document.getElementById('sheet-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
 // ── Date helpers ──────────────────────────────────────────────────────────────
 function getDateStr(offset) {
   const d = new Date();
   d.setDate(d.getDate() + offset);
-  const year  = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day   = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 function formatTabDate(offset) {
   const d = new Date(); d.setDate(d.getDate() + offset);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
 }
 function tabLabel(offset) {
   if (offset === 0) return 'Today';
   if (offset === 1) return 'Tomorrow';
   const d = new Date(); d.setDate(d.getDate() + offset);
-  return d.toLocaleDateString('en-GB', { weekday: 'short' });
+  return d.toLocaleDateString('en-GB', { weekday:'short' });
 }
 function renderDateTabs() {
   document.getElementById('date-tabs').innerHTML = [0,1,2].map(o => `
@@ -422,7 +336,7 @@ function selectDate(offset) {
   renderDateTabs(); loadAll();
 }
 
-// ── Load matches ──────────────────────────────────────────────────────────────
+// ── Load ──────────────────────────────────────────────────────────────────────
 async function loadAll() {
   MATCHES = [];
   document.getElementById('feed').innerHTML = `
@@ -430,17 +344,17 @@ async function loadAll() {
     <p>Loading ${tabLabel(activeOffset).toLowerCase()}'s matches...</p></div>`;
   document.getElementById('filter-pills').innerHTML = '';
   document.getElementById('match-count-line').innerHTML = '';
-  document.getElementById('side-best').innerHTML = `<div style="font-size:12px;color:var(--ink4);font-family:var(--font-data)">Loading...</div>`;
+  document.getElementById('side-best').innerHTML = `<div style="font-size:12px;color:var(--ink4)">Loading...</div>`;
   try {
     const res = await fetch(`/api/matches?date=${getDateStr(activeOffset)}`);
-    if (!res.ok) throw new Error('API error');
+    if (!res.ok) throw new Error();
     const data = await res.json();
     MATCHES = data.matches || [];
     if (!MATCHES.length) { showNoMatches(); return; }
     renderPills(); renderFeed();
     MATCHES.forEach(async m => {
-      const result = await fetchAIPick(m);
-      applyAIResult(m, result);
+      const ai = await fetchAIPick(m);
+      applyAI(m, ai);
     });
   } catch(e) {
     document.getElementById('feed').innerHTML = `
@@ -456,8 +370,8 @@ function showNoMatches() {
     2:{ icon:'🔭', title:'Nothing in 2 days',    sub:'Check back closer to the date.' }
   };
   const m = msgs[activeOffset];
-  document.getElementById('feed').innerHTML = `
-    <div class="no-matches-box"><h3>${m.icon} ${m.title}</h3><p>${m.sub}</p></div>`;
+  document.getElementById('feed').innerHTML =
+    `<div class="no-matches-box"><h3>${m.icon} ${m.title}</h3><p>${m.sub}</p></div>`;
   document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> scheduled`;
 }
 
@@ -465,98 +379,89 @@ function showNoMatches() {
 async function fetchAIPick(m) {
   try {
     const res = await fetch('/api/ai-pick', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        home: m.home, away: m.away, league: m.league, stage: 'Match',
-        homeForm: m.homeForm, awayForm: m.awayForm,
-        homeGoals: m.stats.homeGoals, awayGoals: m.stats.awayGoals,
-        h2hHome: m.stats.homeH2H, h2hAway: m.stats.awayH2H
+        home:m.home, away:m.away, league:m.league, stage:'Match',
+        homeForm:m.homeForm, awayForm:m.awayForm,
+        homeGoals:m.stats.homeGoals, awayGoals:m.stats.awayGoals,
+        h2hHome:m.stats.homeH2H, h2hAway:m.stats.awayH2H
       })
     });
     if (!res.ok) throw new Error();
     return await res.json();
   } catch(e) {
-    return { pick: 'N/A', confidence: 50, insight: 'AI unavailable.', verdictLevel: 'low' };
+    return { pick:'N/A', confidence:50, insight:'AI unavailable.', verdictLevel:'low' };
   }
 }
 
-function applyAIResult(m, result) {
-  m.aiResult = result;
-  // Aggiorna ring
+function applyAI(m, ai) {
+  m.aiResult = ai;
+  // Ring
   const ringEl = document.getElementById('ring-'+m.id);
-  if (ringEl) ringEl.innerHTML = buildRing(result.confidence, result.verdictLevel);
-  // Aggiorna card picks (card chiusa)
-  const picksEl = document.getElementById('picks-'+m.id);
-  if (picksEl) picksEl.innerHTML = buildCardPicks(m, result);
-  // Aggiorna segnale AI (expanded)
-  const aiPickEl = document.getElementById('ai-pick-'+m.id);
-  if (aiPickEl) aiPickEl.innerHTML = buildAISignal(result);
-  // Aggiorna AI strip
-  const aiStripEl = document.getElementById('ai-strip-'+m.id);
-  if (aiStripEl) aiStripEl.querySelector('.ai-text').textContent = result.insight;
+  if (ringEl) ringEl.innerHTML = buildRing(ai.confidence, ai.verdictLevel);
+  // Pick boxes nella card chiusa
+  const boxesEl = document.getElementById('boxes-'+m.id);
+  if (boxesEl) boxesEl.innerHTML = buildPickBoxes(m);
+  // Segnale AI nell'expanded
+  const aiEl = document.getElementById('ai-sig-'+m.id);
+  if (aiEl) aiEl.innerHTML = `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`;
+  // AI strip
+  const stripEl = document.getElementById('ai-strip-'+m.id);
+  if (stripEl) stripEl.querySelector('.ai-text').textContent = ai.insight;
   renderFeed(); updateSidebar();
 }
 
-// ── Build ring ─────────────────────────────────────────────────────────────────
+// ── Confidence ring ───────────────────────────────────────────────────────────
 function buildRing(pct, level) {
-  const r=20, circ=2*Math.PI*r, offset=circ-(pct/100)*circ;
-  const color=level==='high'?'var(--green)':level==='mid'?'var(--amber)':'#D1D5DB';
-  const tc=level==='high'?'var(--green-dk)':level==='mid'?'var(--amber-dk)':'var(--ink3)';
-  return `<div class="conf-ring"><svg viewBox="0 0 52 52">
-    <circle class="ring-bg" cx="26" cy="26" r="${r}"/>
-    <circle class="ring-fill" cx="26" cy="26" r="${r}" stroke="${color}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+  const r=18, circ=2*Math.PI*r, offset=circ-(pct/100)*circ;
+  const color = level==='high'?'var(--green)':level==='mid'?'var(--amber)':'#D1D5DB';
+  const tc    = level==='high'?'var(--green-dk)':level==='mid'?'var(--amber-dk)':'var(--ink3)';
+  return `<div class="conf-ring"><svg viewBox="0 0 48 48">
+    <circle class="ring-bg" cx="24" cy="24" r="${r}"/>
+    <circle class="ring-fill" cx="24" cy="24" r="${r}" stroke="${color}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
   </svg><div class="ring-text" style="color:${tc}">${pct}%</div></div>
   <span class="conf-label-sm">conf.</span>`;
 }
 
-// ── Build card picks (card chiusa) ────────────────────────────────────────────
-function buildCardPicks(m, ai) {
-  // Modello: pick più probabile dall'insieme market + poisson
-  const modelPick = m.predictions.market.pick;
-  const modelPct  = m.probHome >= m.probDraw && m.probHome >= m.probAway ? m.probHome
-                  : m.probAway >= m.probDraw ? m.probAway : m.probDraw;
+// ── Pick boxes (card chiusa) ──────────────────────────────────────────────────
+function pctClass(p) { return p>=70?'pct-high':p>=60?'pct-mid':'pct-low'; }
 
-  // Best goal market
+function buildPickBoxes(m) {
+  const ai = m.aiResult;
   const mk = m.markets;
+
+  // Box 1 — Model (Poisson)
+  const modelPick = m.predictions.market.pick;
+  const modelPct  = Math.max(m.probHome||0, m.probDraw||0, m.probAway||0);
+
+  // Box 2 — AI Sports
+  const aiPick = ai ? ai.pick : null;
+  const aiPct  = ai ? ai.confidence : null;
+
+  // Box 3 — Goals (best market pick)
   let goalPick = null, goalPct = 0;
   if (mk) {
-    const candidates = [
-      mk.over25  && { label:'Over 2.5',  prob: mk.over25.prob  },
-      mk.under25 && { label:'Under 2.5', prob: mk.under25.prob },
-      mk.over15  && { label:'Over 1.5',  prob: mk.over15.prob  },
-    ].filter(Boolean);
-    const best = candidates.sort((a,b) => b.prob - a.prob)[0];
-    if (best && best.prob >= 55) { goalPick = best.label; goalPct = best.prob; }
+    const opts = [
+      mk.over25  ? { label:'Over 2.5',  p:mk.over25.prob  } : null,
+      mk.under25 ? { label:'Under 2.5', p:mk.under25.prob } : null,
+      mk.over15  ? { label:'Over 1.5',  p:mk.over15.prob  } : null,
+    ].filter(Boolean).sort((a,b)=>b.p-a.p);
+    if (opts[0] && opts[0].p >= 55) { goalPick = opts[0].label; goalPct = opts[0].p; }
   }
 
-  function pctClass(p) { return p >= 70 ? 'pick-pct-high' : p >= 60 ? 'pick-pct-mid' : 'pick-pct-low'; }
-
-  const row = (dot, color, label, pick, pct) => `
-    <div class="pick-row">
-      <div class="pick-row-left">
-        <div class="pick-source-dot" style="background:${color}"></div>
-        <span class="pick-source-label">${label}</span>
-        <span class="pick-value">${pick}</span>
-      </div>
-      <span class="pick-pct ${pctClass(pct)}">${pct}%</span>
+  const box = (emoji, label, desc, pick, pct, color) => `
+    <div class="pick-box" style="border-color:${color}20">
+      <div class="pick-box-label" style="color:${color}">${emoji} ${label}</div>
+      <div class="pick-box-desc">${desc}</div>
+      <div class="pick-box-value">${pick || '—'}</div>
+      ${pct ? `<span class="pick-box-pct ${pctClass(pct)}">${pct}%</span>` : ''}
     </div>`;
 
-  let html = '';
-  html += row('', 'var(--purple)', 'Model', modelPick, modelPct);
-  if (ai && ai.pick !== 'N/A') {
-    html += row('', 'var(--blue)', 'AI', ai.pick, ai.confidence);
-  }
-  if (goalPick) {
-    html += row('', 'var(--green)', 'Goals', goalPick, goalPct);
-  }
-  return html;
-}
-
-// ── Build AI signal for expanded view ─────────────────────────────────────────
-function buildAISignal(result) {
-  return `<div class="signal-src"><div class="signal-src-dot" style="background:var(--blue)"></div>🤖 AI</div>
-    <div class="signal-pick">${result.pick}</div>
-    <div class="signal-sub">${result.confidence}% confidence</div>`;
+  return [
+    box('📐','Model','Poisson & H2H', modelPick, modelPct, 'var(--purple)'),
+    box('🤖','AI Sports','Form & context', aiPick||'Loading…', aiPct, 'var(--blue)'),
+    box('⚽','Goals','Expected goals', goalPick||'—', goalPct||null, 'var(--green)'),
+  ].join('');
 }
 
 // ── Form dots ─────────────────────────────────────────────────────────────────
@@ -572,8 +477,10 @@ function statBar(hv, av, label, unit='') {
   return `<div class="stat-row">
     <div class="stat-val-left">${hv}${unit}</div>
     <div><div class="stat-name">${label}</div>
-    <div class="stat-bar-wrap"><div class="stat-bar-home" style="width:${hp}%"></div>
-    <div class="stat-bar-away" style="width:${100-hp}%"></div></div></div>
+    <div class="stat-bar-wrap">
+      <div class="stat-bar-home" style="width:${hp}%"></div>
+      <div class="stat-bar-away" style="width:${100-hp}%"></div>
+    </div></div>
     <div class="stat-val-right">${av}${unit}</div>
   </div>`;
 }
@@ -582,29 +489,29 @@ function statBar(hv, av, label, unit='') {
 function renderMarkets(m) {
   const mk = m.markets;
   if (!mk) return '';
-  const ouPicks = [
-    mk.over25  && mk.over25.prob  ? { label:'Over 2.5',  prob:mk.over25.prob,  odd:mk.over25.odd  } : null,
-    mk.under25 && mk.under25.prob ? { label:'Under 2.5', prob:mk.under25.prob, odd:mk.under25.odd } : null,
-    mk.over15  && mk.over15.prob  ? { label:'Over 1.5',  prob:mk.over15.prob,  odd:mk.over15.odd  } : null,
-    mk.under15 && mk.under15.prob ? { label:'Under 1.5', prob:mk.under15.prob, odd:mk.under15.odd } : null,
+  const ou = [
+    mk.over25  ? {label:'Over 2.5',  prob:mk.over25.prob,  odd:mk.over25.odd,  type:'Over/Under'} : null,
+    mk.under25 ? {label:'Under 2.5', prob:mk.under25.prob, odd:mk.under25.odd, type:'Over/Under'} : null,
+    mk.over15  ? {label:'Over 1.5',  prob:mk.over15.prob,  odd:mk.over15.odd,  type:'Over/Under'} : null,
   ].filter(Boolean).sort((a,b)=>b.prob-a.prob);
-  const bttsPicks = [
-    mk.bttsYes && mk.bttsYes.prob ? { label:'BTTS Yes', prob:mk.bttsYes.prob, odd:mk.bttsYes.odd } : null,
-    mk.bttsNo  && mk.bttsNo.prob  ? { label:'BTTS No',  prob:mk.bttsNo.prob,  odd:mk.bttsNo.odd  } : null,
+  const bt = [
+    mk.bttsYes ? {label:'BTTS Yes', prob:mk.bttsYes.prob, odd:mk.bttsYes.odd, type:'Both teams score'} : null,
+    mk.bttsNo  ? {label:'BTTS No',  prob:mk.bttsNo.prob,  odd:mk.bttsNo.odd,  type:'Both teams score'} : null,
   ].filter(Boolean).sort((a,b)=>b.prob-a.prob);
-  if (!ouPicks.length && !bttsPicks.length) return '';
-  const mkCard = (item, hl) => `
-    <div class="market-card${hl?' highlighted':''}">
-      <div><div class="mkt-type">${item.type}</div>
-      <div class="mkt-pick">${item.label}</div>
-      <div class="mkt-prob">${item.prob}% probability</div></div>
-      <div class="mkt-odd">${item.odd}</div>
+  if (!ou.length && !bt.length) return '';
+  const mkCard = (it, hl) => `
+    <div class="market-card${hl?' hl':''}">
+      <div><div class="mkt-type">${it.type}</div>
+      <div class="mkt-pick">${it.label}</div>
+      <div class="mkt-prob">${it.prob}% probability</div></div>
+      <div class="mkt-odd">${it.odd}</div>
     </div>`;
-  const ouCards   = ouPicks.slice(0,2).map((p,i) => mkCard({...p, type:'Over / Under'}, i===0 && p.prob>=65));
-  const bttsCards = bttsPicks.slice(0,2).map((p,i) => mkCard({...p, type:'Both teams score'}, i===0 && p.prob>=65));
   return `<div class="markets-section">
     <div class="markets-title">📊 Additional markets</div>
-    <div class="markets-grid">${[...ouCards,...bttsCards].join('')}</div>
+    <div class="markets-grid">
+      ${[...ou.slice(0,2).map((p,i)=>mkCard(p,i===0&&p.prob>=65)),
+         ...bt.slice(0,2).map((p,i)=>mkCard(p,i===0&&p.prob>=65))].join('')}
+    </div>
   </div>`;
 }
 
@@ -612,32 +519,30 @@ function renderMarkets(m) {
 function renderCard(m) {
   const ai = m.aiResult;
   const s  = m.stats;
-  const isLive = ['IN_PLAY','PAUSED','LIVE'].includes(m.status);
+  const isLive   = ['IN_PLAY','PAUSED','LIVE'].includes(m.status);
   const isFuture = activeOffset > 0;
 
-  const ringHTML = ai
+  const ringHTML  = ai
     ? buildRing(ai.confidence, ai.verdictLevel)
     : `<div class="ring-skeleton"></div><span class="conf-label-sm">loading</span>`;
 
-  const picksHTML = ai
-    ? buildCardPicks(m, ai)
-    : `<div class="pick-loading">Analysing match...</div>`;
+  const boxesHTML = `<div class="card-picks-grid" id="boxes-${m.id}">${buildPickBoxes(m)}</div>`;
 
-  // Modello: pick dal market signal (già calcolato lato server)
+  // Modello expanded
   const modelPick = m.predictions.market.pick;
-  const modelPct  = Math.max(m.probHome, m.probDraw, m.probAway);
+  const modelPct  = Math.max(m.probHome||0, m.probDraw||0, m.probAway||0);
 
-  return `<article class="match-card" id="card-${m.id}" data-id="${m.id}" data-league="${m.league}">
+  return `<article class="match-card" id="card-${m.id}" data-league="${m.league}">
     <div class="card-header" role="button" tabindex="0"
          onclick="toggleCard('${m.id}')"
          onkeydown="if(event.key==='Enter'){toggleCard('${m.id}');event.preventDefault()}">
       <div class="card-left">
         <div class="card-meta">
           <span class="league-badge" style="background:${m.leagueBg};color:${m.leagueColor}">${m.league}</span>
-          ${isLive ? `<span class="status-live">● LIVE</span>` : `<span class="kickoff-tag">${m.kickoff}</span>`}
+          ${isLive?`<span class="status-live">● LIVE</span>`:`<span class="kickoff-tag">${m.kickoff}</span>`}
         </div>
         <div class="teams-line">${m.home} vs ${m.away}</div>
-        <div class="card-picks" id="picks-${m.id}">${picksHTML}</div>
+        ${boxesHTML}
       </div>
       <div class="conf-ring-wrap" id="ring-${m.id}">${ringHTML}</div>
     </div>
@@ -648,22 +553,24 @@ function renderCard(m) {
           <div class="form-vs">Last 5</div>
           ${formDots(m.awayForm,'right')}
         </div>
-        <div class="signals-header">
-          <span class="signals-title">Three signals</span>
-          <button class="signals-help" onclick="event.stopPropagation();openSheet()">ℹ️ How this works</button>
-        </div>
+        <div class="signals-label">Three independent signals</div>
         <div class="signals">
           <div class="signal-col">
-            <div class="signal-src"><div class="signal-src-dot" style="background:var(--purple)"></div>📐 Model</div>
+            <div class="signal-src" style="color:var(--purple-dk)">📐 Model</div>
+            <div class="signal-desc">Poisson model on expected goals & H2H history</div>
             <div class="signal-pick">${modelPick}</div>
-            <div class="signal-sub">${modelPct}% Poisson</div>
+            <div class="signal-sub">${modelPct}% probability</div>
           </div>
-          <div class="signal-col" id="ai-pick-${m.id}">
-            <div class="signal-src"><div class="signal-src-dot" style="background:var(--blue)"></div>🤖 AI</div>
-            ${ai ? buildAISignal(ai) : `<div class="signal-loading">Thinking...</div>`}
+          <div class="signal-col" id="ai-sig-${m.id}">
+            <div class="signal-src" style="color:var(--blue-dk)">🤖 AI Sports</div>
+            <div class="signal-desc">AI analysis of form, context & match dynamics</div>
+            ${ai
+              ? `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`
+              : `<div class="signal-loading">Analysing...</div>`}
           </div>
           <div class="signal-col">
-            <div class="signal-src"><div class="signal-src-dot" style="background:var(--green)"></div>👥 Market</div>
+            <div class="signal-src" style="color:var(--green-dk)">👥 Market</div>
+            <div class="signal-desc">Bookmaker odds converted to implied probability</div>
             <div class="signal-pick">${m.predictions.market.pick}</div>
             <div class="signal-sub">${m.predictions.market.sub}</div>
           </div>
@@ -682,12 +589,12 @@ function renderCard(m) {
           <div class="odd-btn${m.odds.best==='away'?' best':''}">
             <span class="odd-label">Away</span><span class="odd-value">${m.odds.away}</span></div>
         </div>
-        <div class="odds-source">📊 Fair odds (no bookmaker margin) · ${m.predictions.market.sub}</div>
+        <div class="odds-source">Fair odds · ${m.predictions.market.sub}</div>
         <div class="ai-strip" id="ai-strip-${m.id}">
           <span class="ai-icon">🤖</span>
           <span class="ai-text">${ai ? ai.insight : 'AI analysis loading...'}</span>
         </div>
-        ${isFuture ? `<div class="early-note">⚠️ Early prediction — odds may change before kickoff.</div>` : ''}
+        ${isFuture?`<div class="early-note">⚠️ Early prediction — odds may change before kickoff.</div>`:''}
       </div>
     </div>
   </article>`;
