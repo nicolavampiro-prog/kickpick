@@ -18,11 +18,14 @@
   --purple:#7C3AED;--purple-bg:#F5F3FF;--purple-dk:#5B21B6;
   --radius:14px;--radius-sm:8px;
   --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:0 4px 20px rgba(0,0,0,0.12);
   --font-ui:'DM Sans',system-ui,sans-serif;
   --font-data:'DM Mono',monospace;
 }
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── Nav ── */
 .nav{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;padding:env(safe-area-inset-top) 0 0}
 .nav-inner{max-width:760px;margin:0 auto;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-0.3px}
@@ -32,10 +35,14 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:
 .nav-pill{display:inline-flex;align-items:center;gap:5px;background:var(--green-bg);color:var(--green-dk);font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px}
 .nav-pill::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:livepulse 2s ease-in-out infinite}
 @keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ── Hero ── */
 .hero{max-width:760px;margin:0 auto;padding:24px 16px 0}
 .hero-label{font-family:var(--font-data);font-size:11px;font-weight:500;color:var(--ink4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
 .hero-title{font-size:clamp(22px,5vw,28px);font-weight:600;color:var(--ink);letter-spacing:-0.5px;line-height:1.2;margin-bottom:20px}
 .hero-title span{color:var(--green)}
+
+/* ── Date tabs ── */
 .date-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:5px;box-shadow:var(--shadow)}
 .date-tab{flex:1;padding:8px 4px;border-radius:10px;border:none;background:transparent;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;text-align:center}
 .date-tab.active{background:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
@@ -44,6 +51,8 @@ body{font-family:var(--font-ui);background:var(--bg);color:var(--ink);font-size:
 .date-tab.active .date-tab-label{color:var(--white)}
 .date-tab.active .date-tab-date{color:rgba(255,255,255,.6)}
 .date-tab:hover:not(.active) .date-tab-label{color:var(--ink2)}
+
+/* ── Threshold ── */
 .threshold-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:20px;box-shadow:var(--shadow)}
 .threshold-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .threshold-label{font-size:13px;font-weight:500;color:var(--ink2)}
@@ -56,14 +65,20 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .threshold-hints{display:flex;justify-content:space-between;font-family:var(--font-data);font-size:10px;color:var(--ink4);margin-top:8px}
 .match-count-line{font-size:12px;color:var(--ink3);margin-top:8px}
 .match-count-line strong{color:var(--ink);font-weight:600}
+
+/* ── League pills ── */
 .summary-row{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
 .summary-row::-webkit-scrollbar{display:none}
 .sum-pill{flex-shrink:0;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap;box-shadow:var(--shadow);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .sum-pill.active{background:var(--ink);border-color:var(--ink);color:var(--white)}
 .sum-pill .pill-count{background:var(--border);color:var(--ink3);font-family:var(--font-data);font-size:10px;padding:1px 6px;border-radius:10px}
 .sum-pill.active .pill-count{background:rgba(255,255,255,.2);color:var(--white)}
+
+/* ── Feed ── */
 .feed{max-width:760px;margin:0 auto;padding:0 16px 100px}
 .feed-section-label{font-family:var(--font-data);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--ink4);margin-bottom:10px;padding-top:4px}
+
+/* ── Match card ── */
 .match-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s;-webkit-tap-highlight-color:transparent}
 .card-header{padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;cursor:pointer;user-select:none}
 .card-left{min-width:0}
@@ -71,12 +86,23 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .league-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;letter-spacing:.3px;white-space:nowrap}
 .kickoff-tag{font-family:var(--font-data);font-size:11px;color:var(--ink4)}
 .status-live{font-family:var(--font-data);font-size:10px;font-weight:600;color:var(--red);background:var(--red-bg);padding:2px 7px;border-radius:5px;animation:livepulse 1.5s ease-in-out infinite}
-.teams-line{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
-.verdict-line{display:flex;align-items:center;gap:6px}
-.verdict-chip{font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px}
-.verdict-reason{font-size:12px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.verdict-loading{font-size:12px;color:var(--ink4);font-family:var(--font-data);animation:fadepulse 1.2s ease-in-out infinite}
+.teams-line{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:8px}
+
+/* ── Pick rows nella card chiusa ── */
+.card-picks{display:flex;flex-direction:column;gap:4px}
+.pick-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pick-row-left{display:flex;align-items:center;gap:6px;min-width:0}
+.pick-source-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pick-source-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);flex-shrink:0}
+.pick-value{font-size:13px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pick-pct{font-family:var(--font-data);font-size:11px;font-weight:500;flex-shrink:0;padding:2px 7px;border-radius:5px}
+.pick-pct-high{background:var(--green-bg);color:var(--green-dk)}
+.pick-pct-mid{background:var(--amber-bg);color:var(--amber-dk)}
+.pick-pct-low{background:#F3F4F6;color:var(--ink3)}
+.pick-loading{font-size:11px;color:var(--ink4);font-family:var(--font-data);animation:fadepulse 1.2s ease-in-out infinite}
 @keyframes fadepulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ── Confidence ring ── */
 .conf-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
 .conf-ring{width:52px;height:52px;position:relative}
 .conf-ring svg{width:52px;height:52px;transform:rotate(-90deg)}
@@ -86,19 +112,26 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .conf-label-sm{font-family:var(--font-data);font-size:9px;color:var(--ink4);text-transform:uppercase;letter-spacing:.4px}
 .ring-skeleton{width:52px;height:52px;border-radius:50%;background:linear-gradient(90deg,var(--border) 25%,#F3F4F6 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── Card body expanded ── */
 .card-body{border-top:1px solid var(--border);overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
-.card-body.open{max-height:1100px}
+.card-body.open{max-height:1200px}
 .card-body-inner{padding:16px}
 
-/* Three signals */
+/* ── Three signals (expanded) ── */
+.signals-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.signals-title{font-family:var(--font-data);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink4)}
+.signals-help{font-size:11px;color:var(--ink4);cursor:pointer;padding:2px 6px;border-radius:5px;background:var(--bg);border:1px solid var(--border);-webkit-tap-highlight-color:transparent}
+.signals-help:hover{background:var(--border)}
 .signals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
-.signal-col{background:var(--bg);border-radius:var(--radius-sm);padding:10px 10px 8px;border:1px solid var(--border)}
-.signal-src{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:5px}
+.signal-col{background:var(--bg);border-radius:var(--radius-sm);padding:10px 10px 8px;border:1px solid var(--border);position:relative}
+.signal-src{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:5px;display:flex;align-items:center;gap:4px}
+.signal-src-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .signal-pick{font-size:14px;font-weight:600;color:var(--ink);line-height:1.1;margin-bottom:3px}
 .signal-sub{font-family:var(--font-data);font-size:10px;color:var(--ink3)}
 .signal-loading{font-family:var(--font-data);font-size:11px;color:var(--ink4);animation:fadepulse 1.2s ease-in-out infinite}
 
-/* Stats */
+/* ── Stats ── */
 .stats-block{margin-bottom:16px}
 .stat-row{display:grid;grid-template-columns:72px 1fr 72px;align-items:center;gap:8px;margin-bottom:6px}
 .stat-val-left{font-family:var(--font-data);font-size:12px;font-weight:500;color:var(--ink2);text-align:right}
@@ -108,7 +141,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .stat-bar-away{position:absolute;right:0;top:0;height:100%;background:var(--amber);border-radius:3px}
 .stat-name{text-align:center;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink4);margin-bottom:3px}
 
-/* Form dots */
+/* ── Form dots ── */
 .form-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:16px}
 .form-dots{display:flex;gap:4px}
 .form-dots.right{justify-content:flex-end}
@@ -118,7 +151,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .fd-l{background:var(--red-bg);color:var(--red-dk)}
 .form-vs{font-size:10px;font-weight:600;color:var(--ink4);text-align:center}
 
-/* 1X2 odds */
+/* ── Odds ── */
 .odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
 .odd-btn{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px 7px;text-align:center;cursor:pointer;transition:all .15s}
 .odd-btn.best{background:var(--green-bg);border-color:var(--green)}
@@ -126,7 +159,7 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .odd-value{font-family:var(--font-data);font-size:16px;font-weight:500;color:var(--ink)}
 .odd-btn.best .odd-value{color:var(--green-dk)}
 
-/* Extra markets section */
+/* ── Additional markets ── */
 .markets-section{margin-bottom:14px}
 .markets-title{font-family:var(--font-data);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--ink4);margin-bottom:8px}
 .markets-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -134,20 +167,38 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .market-card.highlighted{border-color:var(--green);background:var(--green-bg)}
 .market-card.highlighted .mkt-pick{color:var(--green-dk)}
 .market-card.highlighted .mkt-odd{color:var(--green-dk)}
-.mkt-left{}
 .mkt-type{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-bottom:3px}
 .mkt-pick{font-size:13px;font-weight:600;color:var(--ink)}
 .mkt-prob{font-family:var(--font-data);font-size:10px;color:var(--ink3);margin-top:1px}
 .mkt-odd{font-family:var(--font-data);font-size:18px;font-weight:500;color:var(--ink2)}
 
-/* AI strip */
+/* ── AI strip ── */
 .ai-strip{background:var(--blue-bg);border:1px solid #BFDBFE;border-radius:var(--radius-sm);padding:10px 12px;margin-top:2px;display:flex;align-items:flex-start;gap:8px}
 .ai-icon{font-size:14px;flex-shrink:0;margin-top:1px}
 .ai-text{font-size:12px;color:var(--blue-dk);line-height:1.5}
 .odds-source{font-size:10px;color:var(--ink4);text-align:center;margin-bottom:12px;font-family:var(--font-data)}
 .early-note{background:var(--amber-bg);border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px;font-size:12px;color:var(--amber-dk);display:flex;align-items:center;gap:6px}
 
-/* States */
+/* ── Bottom sheet (signals explanation) ── */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s}
+.sheet-overlay.open{opacity:1;pointer-events:all}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-radius:20px 20px 0 0;z-index:501;padding:0 0 max(24px,env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:85vh;overflow-y:auto}
+.sheet.open{transform:translateY(0)}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0}
+.sheet-header{padding:16px 20px 12px;border-bottom:1px solid var(--border)}
+.sheet-title{font-size:16px;font-weight:600;color:var(--ink)}
+.sheet-subtitle{font-size:13px;color:var(--ink3);margin-top:2px}
+.sheet-body{padding:16px 20px}
+.signal-explain{padding:16px 0;border-bottom:1px solid var(--border)}
+.signal-explain:last-child{border-bottom:none}
+.se-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.se-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.se-name{font-size:14px;font-weight:600;color:var(--ink)}
+.se-tag{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:5px;margin-top:2px;display:inline-block}
+.se-desc{font-size:13px;color:var(--ink2);line-height:1.6}
+.se-when{font-size:12px;color:var(--ink3);margin-top:6px;padding:8px 10px;background:var(--bg);border-radius:var(--radius-sm);line-height:1.5}
+
+/* ── States ── */
 .global-loading{text-align:center;padding:60px 24px}
 .global-loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -160,10 +211,14 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 .verdict-high{background:var(--green-bg);color:var(--green-dk)}
 .verdict-mid{background:var(--amber-bg);color:var(--amber-dk)}
 .verdict-low{background:#F3F4F6;color:var(--ink3)}
+
+/* ── Bottom nav ── */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:200}
 .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;color:var(--ink4);font-size:10px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s}
 .bn-item.active{color:var(--green-dk)}
 .bn-icon{font-size:20px;line-height:1}
+
+/* ── Desktop ── */
 @media(min-width:900px){
   .layout{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:24px;padding:0 24px;align-items:start}
   .hero,.feed{max-width:none;padding-left:0;padding-right:0}
@@ -181,6 +236,10 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   .side-conf{font-family:var(--font-data);font-size:12px;font-weight:500;padding:2px 8px;border-radius:6px}
   .sc-high{background:var(--green-bg);color:var(--green-dk)}
   .sc-mid{background:var(--amber-bg);color:var(--amber-dk)}
+  /* Desktop: tooltip instead of bottom sheet */
+  .signals-help{position:relative}
+  .sheet{display:none}
+  .sheet-overlay{display:none}
 }
 @media(max-width:899px){.sidebar-panel{display:none}}
 @media(max-width:600px){.signals{grid-template-columns:1fr}.markets-grid{grid-template-columns:1fr}.hero-title{font-size:22px}}
@@ -191,6 +250,54 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   -->
 </head>
 <body>
+
+<!-- Bottom sheet — spiegazione segnali -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+<div class="sheet" id="signals-sheet" role="dialog" aria-modal="true" aria-label="How we predict">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title">How we predict</div>
+    <div class="sheet-subtitle">Three independent signals — the more they agree, the higher the confidence.</div>
+  </div>
+  <div class="sheet-body">
+    <div class="signal-explain">
+      <div class="se-header">
+        <div class="se-icon" style="background:var(--purple-bg)">📐</div>
+        <div>
+          <div class="se-name">Model</div>
+          <span class="se-tag" style="background:var(--purple-bg);color:var(--purple-dk)">Mathematical</span>
+        </div>
+      </div>
+      <div class="se-desc">A Poisson probability model calculates expected goals for each team based on their relative strength (derived from bookmaker odds) and historical head-to-head data. It then converts those goal expectations into win/draw/loss probabilities and goal market predictions (Over/Under, BTTS).</div>
+      <div class="se-when">💡 Trust this most when both teams have a long H2H history with consistent patterns.</div>
+    </div>
+    <div class="signal-explain">
+      <div class="se-header">
+        <div class="se-icon" style="background:var(--blue-bg)">🤖</div>
+        <div>
+          <div class="se-name">AI</div>
+          <span class="se-tag" style="background:var(--blue-bg);color:var(--blue-dk)">Claude AI</span>
+        </div>
+      </div>
+      <div class="se-desc">Claude AI analyses the match context — recent form, competition stage, tactical factors, momentum — and provides a qualitative prediction with a confidence score. Unlike the model, it can factor in context that numbers don't capture: a team playing for a draw is enough to advance, an underdog on a 5-game winning streak, etc.</div>
+      <div class="se-when">💡 Trust this most when the match context is unusual — knock-out games, relegation battles, or teams with very different form vs. historical record.</div>
+    </div>
+    <div class="signal-explain">
+      <div class="se-header">
+        <div class="se-icon" style="background:var(--green-bg)">👥</div>
+        <div>
+          <div class="se-name">Market</div>
+          <span class="se-tag" style="background:var(--green-bg);color:var(--green-dk)">Bookmaker consensus</span>
+        </div>
+      </div>
+      <div class="se-desc">The implied probability calculated from the average odds across multiple European bookmakers. This represents the collective wisdom of professional traders who factor in everything — team news, injuries, weather, travel fatigue. When the market strongly favours one outcome, there is usually a good reason.</div>
+      <div class="se-when">💡 Trust this most for high-profile matches where bookmakers have the most information. Be cautious when market odds shift dramatically in the hours before kickoff.</div>
+    </div>
+    <div style="margin-top:16px;padding:12px;background:var(--amber-bg);border-radius:var(--radius-sm);font-size:12px;color:var(--amber-dk);line-height:1.6">
+      ⚠️ All predictions are for entertainment only. Never bet more than you can afford to lose. <a href="/pages/disclaimer.html" style="color:var(--amber-dk);text-decoration:underline">Full disclaimer →</a>
+    </div>
+  </div>
+</div>
 
 <nav class="nav">
   <div class="nav-inner">
@@ -241,7 +348,8 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
   <div class="side-widget">
     <div class="side-widget-head">ℹ️ How we predict</div>
     <div class="side-widget-body">
-      <p style="font-size:12px;color:var(--ink3);line-height:1.7">Real matches · Claude AI · Live bookmaker odds (1X2, Over/Under, BTTS) · Sorted by confidence.</p>
+      <p style="font-size:12px;color:var(--ink3);line-height:1.7;margin-bottom:10px">Three independent signals: mathematical model, Claude AI, and bookmaker market consensus.</p>
+      <button onclick="openSheet()" style="font-size:12px;font-weight:500;color:var(--blue-dk);background:var(--blue-bg);border:none;padding:6px 12px;border-radius:6px;cursor:pointer;width:100%">Learn how it works →</button>
     </div>
   </div>
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;font-size:11px;color:var(--ink4);line-height:1.6;box-shadow:var(--shadow)">
@@ -263,14 +371,27 @@ input[type=range].slider::-moz-range-thumb{width:20px;height:20px;border-radius:
 </nav>
 
 <script>
+// ── State ─────────────────────────────────────────────────────────────────────
 let MATCHES = [];
 let threshold = 50;
 let activeLeague = 'all';
 let activeOffset = 0;
 let openCards = new Set();
 
+// ── Sheet ─────────────────────────────────────────────────────────────────────
+function openSheet() {
+  document.getElementById('signals-sheet').classList.add('open');
+  document.getElementById('sheet-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSheet() {
+  document.getElementById('signals-sheet').classList.remove('open');
+  document.getElementById('sheet-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Date helpers ──────────────────────────────────────────────────────────────
 function getDateStr(offset) {
-  // Usa data locale del browser (non UTC) — fix timezone italiano
   const d = new Date();
   d.setDate(d.getDate() + offset);
   const year  = d.getFullYear();
@@ -301,6 +422,7 @@ function selectDate(offset) {
   renderDateTabs(); loadAll();
 }
 
+// ── Load matches ──────────────────────────────────────────────────────────────
 async function loadAll() {
   MATCHES = [];
   document.getElementById('feed').innerHTML = `
@@ -309,7 +431,6 @@ async function loadAll() {
   document.getElementById('filter-pills').innerHTML = '';
   document.getElementById('match-count-line').innerHTML = '';
   document.getElementById('side-best').innerHTML = `<div style="font-size:12px;color:var(--ink4);font-family:var(--font-data)">Loading...</div>`;
-
   try {
     const res = await fetch(`/api/matches?date=${getDateStr(activeOffset)}`);
     if (!res.ok) throw new Error('API error');
@@ -330,9 +451,9 @@ async function loadAll() {
 
 function showNoMatches() {
   const msgs = {
-    0: { icon:'☀️', title:'No matches today', sub:'No fixtures scheduled. Try tomorrow.' },
-    1: { icon:'📅', title:'No fixtures tomorrow', sub:'Nothing scheduled yet.' },
-    2: { icon:'🔭', title:'Nothing in 2 days', sub:'Check back closer to the date.' }
+    0:{ icon:'☀️', title:'No matches today',    sub:'No fixtures scheduled. Try tomorrow.' },
+    1:{ icon:'📅', title:'No fixtures tomorrow', sub:'Nothing scheduled yet.' },
+    2:{ icon:'🔭', title:'Nothing in 2 days',    sub:'Check back closer to the date.' }
   };
   const m = msgs[activeOffset];
   document.getElementById('feed').innerHTML = `
@@ -340,6 +461,7 @@ function showNoMatches() {
   document.getElementById('match-count-line').innerHTML = `<strong>0 matches</strong> scheduled`;
 }
 
+// ── AI pick ───────────────────────────────────────────────────────────────────
 async function fetchAIPick(m) {
   try {
     const res = await fetch('/api/ai-pick', {
@@ -360,20 +482,22 @@ async function fetchAIPick(m) {
 
 function applyAIResult(m, result) {
   m.aiResult = result;
-  const ringEl    = document.getElementById('ring-'+m.id);
-  const verdictEl = document.getElementById('verdict-'+m.id);
-  const aiPickEl  = document.getElementById('ai-pick-'+m.id);
+  // Aggiorna ring
+  const ringEl = document.getElementById('ring-'+m.id);
+  if (ringEl) ringEl.innerHTML = buildRing(result.confidence, result.verdictLevel);
+  // Aggiorna card picks (card chiusa)
+  const picksEl = document.getElementById('picks-'+m.id);
+  if (picksEl) picksEl.innerHTML = buildCardPicks(m, result);
+  // Aggiorna segnale AI (expanded)
+  const aiPickEl = document.getElementById('ai-pick-'+m.id);
+  if (aiPickEl) aiPickEl.innerHTML = buildAISignal(result);
+  // Aggiorna AI strip
   const aiStripEl = document.getElementById('ai-strip-'+m.id);
-  if (ringEl)    ringEl.innerHTML    = buildRing(result.confidence, result.verdictLevel);
-  if (verdictEl) verdictEl.innerHTML = `<span class="verdict-chip verdict-${result.verdictLevel}">${result.pick}</span>
-    <span class="verdict-reason">${result.insight}</span>`;
-  if (aiPickEl)  aiPickEl.innerHTML  = `<div class="signal-src">🤖 AI pick</div>
-    <div class="signal-pick">${result.pick}</div>
-    <div class="signal-sub">${result.confidence}% confidence</div>`;
   if (aiStripEl) aiStripEl.querySelector('.ai-text').textContent = result.insight;
   renderFeed(); updateSidebar();
 }
 
+// ── Build ring ─────────────────────────────────────────────────────────────────
 function buildRing(pct, level) {
   const r=20, circ=2*Math.PI*r, offset=circ-(pct/100)*circ;
   const color=level==='high'?'var(--green)':level==='mid'?'var(--amber)':'#D1D5DB';
@@ -385,12 +509,64 @@ function buildRing(pct, level) {
   <span class="conf-label-sm">conf.</span>`;
 }
 
+// ── Build card picks (card chiusa) ────────────────────────────────────────────
+function buildCardPicks(m, ai) {
+  // Modello: pick più probabile dall'insieme market + poisson
+  const modelPick = m.predictions.market.pick;
+  const modelPct  = m.probHome >= m.probDraw && m.probHome >= m.probAway ? m.probHome
+                  : m.probAway >= m.probDraw ? m.probAway : m.probDraw;
+
+  // Best goal market
+  const mk = m.markets;
+  let goalPick = null, goalPct = 0;
+  if (mk) {
+    const candidates = [
+      mk.over25  && { label:'Over 2.5',  prob: mk.over25.prob  },
+      mk.under25 && { label:'Under 2.5', prob: mk.under25.prob },
+      mk.over15  && { label:'Over 1.5',  prob: mk.over15.prob  },
+    ].filter(Boolean);
+    const best = candidates.sort((a,b) => b.prob - a.prob)[0];
+    if (best && best.prob >= 55) { goalPick = best.label; goalPct = best.prob; }
+  }
+
+  function pctClass(p) { return p >= 70 ? 'pick-pct-high' : p >= 60 ? 'pick-pct-mid' : 'pick-pct-low'; }
+
+  const row = (dot, color, label, pick, pct) => `
+    <div class="pick-row">
+      <div class="pick-row-left">
+        <div class="pick-source-dot" style="background:${color}"></div>
+        <span class="pick-source-label">${label}</span>
+        <span class="pick-value">${pick}</span>
+      </div>
+      <span class="pick-pct ${pctClass(pct)}">${pct}%</span>
+    </div>`;
+
+  let html = '';
+  html += row('', 'var(--purple)', 'Model', modelPick, modelPct);
+  if (ai && ai.pick !== 'N/A') {
+    html += row('', 'var(--blue)', 'AI', ai.pick, ai.confidence);
+  }
+  if (goalPick) {
+    html += row('', 'var(--green)', 'Goals', goalPick, goalPct);
+  }
+  return html;
+}
+
+// ── Build AI signal for expanded view ─────────────────────────────────────────
+function buildAISignal(result) {
+  return `<div class="signal-src"><div class="signal-src-dot" style="background:var(--blue)"></div>🤖 AI</div>
+    <div class="signal-pick">${result.pick}</div>
+    <div class="signal-sub">${result.confidence}% confidence</div>`;
+}
+
+// ── Form dots ─────────────────────────────────────────────────────────────────
 function formDots(str, align) {
   return `<div class="form-dots${align==='right'?' right':''}">` +
     str.split('').map(c=>`<span class="form-dot ${c==='W'?'fd-w':c==='D'?'fd-d':'fd-l'}">${c}</span>`).join('') +
   `</div>`;
 }
 
+// ── Stat bar ──────────────────────────────────────────────────────────────────
 function statBar(hv, av, label, unit='') {
   const t=hv+av||1, hp=Math.round(hv/t*100);
   return `<div class="stat-row">
@@ -402,65 +578,54 @@ function statBar(hv, av, label, unit='') {
   </div>`;
 }
 
-// Render mercati aggiuntivi (Over/Under + BTTS)
+// ── Additional markets ────────────────────────────────────────────────────────
 function renderMarkets(m) {
   const mk = m.markets;
   if (!mk) return '';
-
-  // Trova il pick Over/Under più sicuro
   const ouPicks = [
     mk.over25  && mk.over25.prob  ? { label:'Over 2.5',  prob:mk.over25.prob,  odd:mk.over25.odd  } : null,
     mk.under25 && mk.under25.prob ? { label:'Under 2.5', prob:mk.under25.prob, odd:mk.under25.odd } : null,
     mk.over15  && mk.over15.prob  ? { label:'Over 1.5',  prob:mk.over15.prob,  odd:mk.over15.odd  } : null,
     mk.under15 && mk.under15.prob ? { label:'Under 1.5', prob:mk.under15.prob, odd:mk.under15.odd } : null,
-  ].filter(Boolean);
-
+  ].filter(Boolean).sort((a,b)=>b.prob-a.prob);
   const bttsPicks = [
     mk.bttsYes && mk.bttsYes.prob ? { label:'BTTS Yes', prob:mk.bttsYes.prob, odd:mk.bttsYes.odd } : null,
     mk.bttsNo  && mk.bttsNo.prob  ? { label:'BTTS No',  prob:mk.bttsNo.prob,  odd:mk.bttsNo.odd  } : null,
-  ].filter(Boolean);
-
+  ].filter(Boolean).sort((a,b)=>b.prob-a.prob);
   if (!ouPicks.length && !bttsPicks.length) return '';
-
-  // Ordina per probabilità
-  ouPicks.sort((a,b) => b.prob - a.prob);
-  bttsPicks.sort((a,b) => b.prob - a.prob);
-
-  const mkCard = (item, highlight) => `
-    <div class="market-card${highlight?' highlighted':''}">
-      <div class="mkt-left">
-        <div class="mkt-type">${item.type}</div>
-        <div class="mkt-pick">${item.label}</div>
-        <div class="mkt-prob">${item.prob}% implied</div>
-      </div>
+  const mkCard = (item, hl) => `
+    <div class="market-card${hl?' highlighted':''}">
+      <div><div class="mkt-type">${item.type}</div>
+      <div class="mkt-pick">${item.label}</div>
+      <div class="mkt-prob">${item.prob}% probability</div></div>
       <div class="mkt-odd">${item.odd}</div>
     </div>`;
-
-  const ouCards = ouPicks.slice(0,2).map((p,i) =>
-    mkCard({...p, type:'Over / Under'}, i===0 && p.prob >= 65));
-  const bttsCards = bttsPicks.slice(0,2).map((p,i) =>
-    mkCard({...p, type:'Both teams score'}, i===0 && p.prob >= 65));
-
-  return `
-    <div class="markets-section">
-      <div class="markets-title">📊 Additional markets</div>
-      <div class="markets-grid">
-        ${[...ouCards, ...bttsCards].join('')}
-      </div>
-    </div>`;
+  const ouCards   = ouPicks.slice(0,2).map((p,i) => mkCard({...p, type:'Over / Under'}, i===0 && p.prob>=65));
+  const bttsCards = bttsPicks.slice(0,2).map((p,i) => mkCard({...p, type:'Both teams score'}, i===0 && p.prob>=65));
+  return `<div class="markets-section">
+    <div class="markets-title">📊 Additional markets</div>
+    <div class="markets-grid">${[...ouCards,...bttsCards].join('')}</div>
+  </div>`;
 }
 
+// ── Render card ───────────────────────────────────────────────────────────────
 function renderCard(m) {
   const ai = m.aiResult;
   const s  = m.stats;
   const isLive = ['IN_PLAY','PAUSED','LIVE'].includes(m.status);
   const isFuture = activeOffset > 0;
+
   const ringHTML = ai
     ? buildRing(ai.confidence, ai.verdictLevel)
     : `<div class="ring-skeleton"></div><span class="conf-label-sm">loading</span>`;
-  const verdictHTML = ai
-    ? `<span class="verdict-chip verdict-${ai.verdictLevel}">${ai.pick}</span><span class="verdict-reason">${ai.insight}</span>`
-    : `<span class="verdict-loading">AI analysing...</span>`;
+
+  const picksHTML = ai
+    ? buildCardPicks(m, ai)
+    : `<div class="pick-loading">Analysing match...</div>`;
+
+  // Modello: pick dal market signal (già calcolato lato server)
+  const modelPick = m.predictions.market.pick;
+  const modelPct  = Math.max(m.probHome, m.probDraw, m.probAway);
 
   return `<article class="match-card" id="card-${m.id}" data-id="${m.id}" data-league="${m.league}">
     <div class="card-header" role="button" tabindex="0"
@@ -472,7 +637,7 @@ function renderCard(m) {
           ${isLive ? `<span class="status-live">● LIVE</span>` : `<span class="kickoff-tag">${m.kickoff}</span>`}
         </div>
         <div class="teams-line">${m.home} vs ${m.away}</div>
-        <div class="verdict-line" id="verdict-${m.id}">${verdictHTML}</div>
+        <div class="card-picks" id="picks-${m.id}">${picksHTML}</div>
       </div>
       <div class="conf-ring-wrap" id="ring-${m.id}">${ringHTML}</div>
     </div>
@@ -483,26 +648,29 @@ function renderCard(m) {
           <div class="form-vs">Last 5</div>
           ${formDots(m.awayForm,'right')}
         </div>
+        <div class="signals-header">
+          <span class="signals-title">Three signals</span>
+          <button class="signals-help" onclick="event.stopPropagation();openSheet()">ℹ️ How this works</button>
+        </div>
         <div class="signals">
           <div class="signal-col">
-            <div class="signal-src">📊 Stats</div>
-            <div class="signal-pick">${m.predictions.stats.pick}</div>
-            <div class="signal-sub">${m.predictions.stats.sub}</div>
+            <div class="signal-src"><div class="signal-src-dot" style="background:var(--purple)"></div>📐 Model</div>
+            <div class="signal-pick">${modelPick}</div>
+            <div class="signal-sub">${modelPct}% Poisson</div>
           </div>
           <div class="signal-col" id="ai-pick-${m.id}">
-            <div class="signal-src">🤖 AI pick</div>
-            ${ai ? `<div class="signal-pick">${ai.pick}</div><div class="signal-sub">${ai.confidence}% confidence</div>`
-                 : `<div class="signal-loading">Thinking...</div>`}
+            <div class="signal-src"><div class="signal-src-dot" style="background:var(--blue)"></div>🤖 AI</div>
+            ${ai ? buildAISignal(ai) : `<div class="signal-loading">Thinking...</div>`}
           </div>
           <div class="signal-col">
-            <div class="signal-src">👥 Market</div>
+            <div class="signal-src"><div class="signal-src-dot" style="background:var(--green)"></div>👥 Market</div>
             <div class="signal-pick">${m.predictions.market.pick}</div>
             <div class="signal-sub">${m.predictions.market.sub}</div>
           </div>
         </div>
         <div class="stats-block">
-          ${statBar(s.homePoss, s.awayPoss, 'Possession', '%')}
-          ${statBar(s.homeGoals, s.awayGoals, 'Avg goals')}
+          ${statBar(s.homePoss, s.awayPoss, 'Win probability', '%')}
+          ${statBar(s.homeGoals, s.awayGoals, 'Exp. goals')}
           ${statBar(s.homeH2H, s.awayH2H, 'H2H wins')}
         </div>
         ${renderMarkets(m)}
@@ -514,7 +682,7 @@ function renderCard(m) {
           <div class="odd-btn${m.odds.best==='away'?' best':''}">
             <span class="odd-label">Away</span><span class="odd-value">${m.odds.away}</span></div>
         </div>
-        <div class="odds-source">📊 Live odds from bookmakers · ${m.predictions.market.sub}</div>
+        <div class="odds-source">📊 Fair odds (no bookmaker margin) · ${m.predictions.market.sub}</div>
         <div class="ai-strip" id="ai-strip-${m.id}">
           <span class="ai-icon">🤖</span>
           <span class="ai-text">${ai ? ai.insight : 'AI analysis loading...'}</span>
@@ -525,6 +693,7 @@ function renderCard(m) {
   </article>`;
 }
 
+// ── Toggle ────────────────────────────────────────────────────────────────────
 function toggleCard(id) {
   openCards.has(id) ? openCards.delete(id) : openCards.add(id);
   const body = document.getElementById('body-'+id);
@@ -533,12 +702,12 @@ function toggleCard(id) {
   hdr.setAttribute('aria-expanded', openCards.has(id));
 }
 
+// ── Render feed ───────────────────────────────────────────────────────────────
 function renderFeed() {
   const filtered = MATCHES
     .filter(m => activeLeague==='all' || m.league===activeLeague)
     .sort((a,b) => (b.aiResult?.confidence||0) - (a.aiResult?.confidence||0))
     .filter(m => !m.aiResult || m.aiResult.confidence >= threshold);
-
   const feed = document.getElementById('feed');
   if (!filtered.length) {
     feed.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div>
@@ -564,6 +733,7 @@ function renderFeed() {
     `Showing <strong>${filtered.length} match${filtered.length!==1?'es':''}</strong> · ${highCount} high confidence`;
 }
 
+// ── Pills ─────────────────────────────────────────────────────────────────────
 function renderPills() {
   const leagues = ['all', ...new Set(MATCHES.map(m=>m.league))];
   document.getElementById('filter-pills').innerHTML = leagues.map(l => {
@@ -572,9 +742,9 @@ function renderPills() {
       ${l==='all'?'All':l}<span class="pill-count">${count}</span></button>`;
   }).join('');
 }
-
 function setLeague(l) { activeLeague=l; renderPills(); renderFeed(); }
 
+// ── Sidebar ───────────────────────────────────────────────────────────────────
 function updateSidebar() {
   const best = MATCHES.filter(m=>m.aiResult).sort((a,b)=>b.aiResult.confidence-a.aiResult.confidence).slice(0,5);
   if (!best.length) return;
@@ -586,6 +756,7 @@ function updateSidebar() {
     </div>`).join('');
 }
 
+// ── Slider ────────────────────────────────────────────────────────────────────
 const slider = document.getElementById('thresh-slider');
 const fill   = document.getElementById('thresh-fill');
 const disp   = document.getElementById('thresh-display');
@@ -598,6 +769,7 @@ function updateSlider(val) {
 slider.addEventListener('input', e => updateSlider(e.target.value));
 updateSlider(50);
 
+// ── Init ──────────────────────────────────────────────────────────────────────
 document.getElementById('nav-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
 renderDateTabs();
 loadAll();
