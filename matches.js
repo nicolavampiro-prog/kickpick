@@ -15,7 +15,7 @@ const SPORTS = [
   { key: 'soccer_uefa_europa_league',     name: 'Europa League',    color: '#F97316', bg: '#FFF7ED', fdCode: 'EL'  },
 ];
  
-const cache = {};
+const cache = {}; // v2
  
 // ── Poisson ───────────────────────────────────────────────────────────────────
 function poisson(lambda, k) {
