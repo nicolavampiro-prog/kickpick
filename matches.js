@@ -95,7 +95,8 @@ module.exports = async function handler(req, res) {
  
   const requestedDate = req.query.date || new Date().toISOString().split('T')[0];
  
-  if (cache[requestedDate] && cache[requestedDate].ts > Date.now() - 7200000) {
+  const forceRefresh = req.query.nocache === '1';
+  if (!forceRefresh && cache[requestedDate] && cache[requestedDate].ts > Date.now() - 7200000) {
     return res.status(200).json({ ...cache[requestedDate].data, cached: true });
   }
  
@@ -293,3 +294,4 @@ module.exports = async function handler(req, res) {
   cache[requestedDate] = { ts: Date.now(), data: payload };
   return res.status(200).json(payload);
 };
+ 
