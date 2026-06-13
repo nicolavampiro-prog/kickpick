@@ -1,5 +1,5 @@
 
-// api/matches.js — Vercel serverless function
+// api/matches.js — Vercel serverless function v2
 // OddsAPI: h2h (partite + odds 1X2)
 // football-data.org: form + H2H per competizione
 // Poisson model: Over/Under + BTTS calcolati da gol H2H o stima da odds
