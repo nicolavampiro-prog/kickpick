@@ -1,83 +1,65 @@
 // api/matches.js — Vercel serverless function
 // OddsAPI: h2h (partite + odds 1X2)
-// football-data.org: form + H2H stats
-// Poisson model: Over/Under 1.5 / 2.5 / 3.5 + BTTS calcolati da gol H2H
+// football-data.org: form + H2H per competizione (fix matching nazionali)
+// Poisson model: Over/Under + BTTS calcolati da gol H2H
 
 const SPORTS = [
-  { key: 'soccer_fifa_world_cup',         name: 'World Cup',        color: '#B91C1C', bg: '#FFF1F2' },
-  { key: 'soccer_uefa_champs_league',     name: 'Champions League', color: '#7C3AED', bg: '#F5F3FF' },
-  { key: 'soccer_epl',                    name: 'Premier League',   color: '#059669', bg: '#ECFDF5' },
-  { key: 'soccer_italy_serie_a',          name: 'Serie A',          color: '#D97706', bg: '#FFFBEB' },
-  { key: 'soccer_spain_la_liga',          name: 'La Liga',          color: '#DC2626', bg: '#FEF2F2' },
-  { key: 'soccer_germany_bundesliga',     name: 'Bundesliga',       color: '#B45309', bg: '#FFF7ED' },
-  { key: 'soccer_france_ligue_one',       name: 'Ligue 1',          color: '#2563EB', bg: '#EFF6FF' },
-  { key: 'soccer_uefa_europa_league',     name: 'Europa League',    color: '#F97316', bg: '#FFF7ED' },
+  { key: 'soccer_fifa_world_cup',     name: 'World Cup',        color: '#B91C1C', bg: '#FFF1F2', fdCode: 'WC'  },
+  { key: 'soccer_uefa_champs_league', name: 'Champions League', color: '#7C3AED', bg: '#F5F3FF', fdCode: 'CL'  },
+  { key: 'soccer_epl',                name: 'Premier League',   color: '#059669', bg: '#ECFDF5', fdCode: 'PL'  },
+  { key: 'soccer_italy_serie_a',      name: 'Serie A',          color: '#D97706', bg: '#FFFBEB', fdCode: 'SA'  },
+  { key: 'soccer_spain_la_liga',      name: 'La Liga',          color: '#DC2626', bg: '#FEF2F2', fdCode: 'PD'  },
+  { key: 'soccer_germany_bundesliga', name: 'Bundesliga',       color: '#B45309', bg: '#FFF7ED', fdCode: 'BL1' },
+  { key: 'soccer_france_ligue_one',   name: 'Ligue 1',          color: '#2563EB', bg: '#EFF6FF', fdCode: 'FL1' },
+  { key: 'soccer_uefa_europa_league', name: 'Europa League',    color: '#F97316', bg: '#FFF7ED', fdCode: 'EL'  },
 ];
 
 const cache = {};
 
-// ── Poisson helpers ───────────────────────────────────────────────────────────
-
-// P(X = k) con media lambda
+// ── Poisson ───────────────────────────────────────────────────────────────────
 function poisson(lambda, k) {
   if (lambda <= 0) return k === 0 ? 1 : 0;
-  let result = Math.exp(-lambda);
-  for (let i = 1; i <= k; i++) result *= lambda / i;
-  return result;
+  let r = Math.exp(-lambda);
+  for (let i = 1; i <= k; i++) r *= lambda / i;
+  return r;
 }
-
-// P(X <= k)
 function poissonCDF(lambda, k) {
-  let sum = 0;
-  for (let i = 0; i <= k; i++) sum += poisson(lambda, i);
-  return sum;
+  let s = 0;
+  for (let i = 0; i <= k; i++) s += poisson(lambda, i);
+  return s;
 }
-
-// Calcola tutti i mercati goals da media gol attesa home + away
-function calcGoalMarkets(homeGoals, awayGoals) {
-  const lambda = homeGoals + awayGoals; // media totale gol per partita
-
-  const pOver15  = Math.round((1 - poissonCDF(lambda, 1)) * 100);
-  const pUnder15 = 100 - pOver15;
-  const pOver25  = Math.round((1 - poissonCDF(lambda, 2)) * 100);
-  const pUnder25 = 100 - pOver25;
-  const pOver35  = Math.round((1 - poissonCDF(lambda, 3)) * 100);
-  const pUnder35 = 100 - pOver35;
-
-  // BTTS: P(home scores >= 1) * P(away scores >= 1)
-  const pHomeSc = Math.round((1 - poisson(homeGoals, 0)) * 100);
-  const pAwaySc = Math.round((1 - poisson(awayGoals, 0)) * 100);
-  const pBttsYes = Math.round((pHomeSc / 100) * (pAwaySc / 100) * 100);
-  const pBttsNo  = 100 - pBttsYes;
-
-  // Converti probabilità in quota indicativa (senza margine bookmaker)
-  const toOdd = (pct) => pct > 0 ? (1 / (pct / 100)).toFixed(2) : '—';
-
+function calcGoalMarkets(hg, ag) {
+  const lambda = hg + ag;
+  const pO15 = Math.round((1 - poissonCDF(lambda, 1)) * 100);
+  const pO25 = Math.round((1 - poissonCDF(lambda, 2)) * 100);
+  const pO35 = Math.round((1 - poissonCDF(lambda, 3)) * 100);
+  const pBY  = Math.round((1 - poisson(hg, 0)) * (1 - poisson(ag, 0)) * 100);
+  const toOdd = p => p > 0 ? (1/(p/100)).toFixed(2) : '—';
   return {
-    over25:  { prob: pOver25,  odd: toOdd(pOver25),  source: 'model' },
-    under25: { prob: pUnder25, odd: toOdd(pUnder25), source: 'model' },
-    over15:  { prob: pOver15,  odd: toOdd(pOver15),  source: 'model' },
-    under15: { prob: pUnder15, odd: toOdd(pUnder15), source: 'model' },
-    over35:  { prob: pOver35,  odd: toOdd(pOver35),  source: 'model' },
-    under35: { prob: pUnder35, odd: toOdd(pUnder35), source: 'model' },
-    bttsYes: { prob: pBttsYes, odd: toOdd(pBttsYes), source: 'model' },
-    bttsNo:  { prob: pBttsNo,  odd: toOdd(pBttsNo),  source: 'model' },
+    over25:  { prob: pO25,       odd: toOdd(pO25),       source: 'model' },
+    under25: { prob: 100-pO25,   odd: toOdd(100-pO25),   source: 'model' },
+    over15:  { prob: pO15,       odd: toOdd(pO15),       source: 'model' },
+    under15: { prob: 100-pO15,   odd: toOdd(100-pO15),   source: 'model' },
+    over35:  { prob: pO35,       odd: toOdd(pO35),       source: 'model' },
+    under35: { prob: 100-pO35,   odd: toOdd(100-pO35),   source: 'model' },
+    bttsYes: { prob: pBY,        odd: toOdd(pBY),        source: 'model' },
+    bttsNo:  { prob: 100-pBY,    odd: toOdd(100-pBY),    source: 'model' },
   };
 }
 
-// ── Name matching helpers ─────────────────────────────────────────────────────
+// ── Name matching ─────────────────────────────────────────────────────────────
 function norm(str) {
-  return str.toLowerCase()
-    .replace(/\bfc\b|\baf\b|\bsc\b|\bac\b|\bas\b|\bss\b|\bus\b|\bcd\b|\brc\b|\bud\b|\bsv\b|\bcf\b/g, '')
+  return (str || '').toLowerCase()
+    .replace(/\b(fc|afc|sc|ac|as|ss|us|cd|rc|ud|sv|cf|bsc|vfb|tsv|tsg|rb|1\.|fk|sk)\b/g, '')
     .replace(/[^a-z0-9]/g, '').trim();
 }
-
 function teamsMatch(a, b) {
+  if (!a || !b) return false;
   const na = norm(a), nb = norm(b);
+  if (!na || !nb) return false;
   return na === nb || na.includes(nb) || nb.includes(na) ||
     (na.length > 4 && nb.length > 4 && na.slice(0,5) === nb.slice(0,5));
 }
-
 function bestOdd(bookmakers, outcomeName) {
   const prices = bookmakers.flatMap(bk =>
     bk.markets?.find(m => m.key === 'h2h')?.outcomes
@@ -85,7 +67,7 @@ function bestOdd(bookmakers, outcomeName) {
   return prices.length ? Math.max(...prices).toFixed(2) : '—';
 }
 
-// Controlla se una data è in ora legale italiana (ultima dom. marzo → ultima dom. ottobre)
+// Controlla ora legale italiana
 function isDST(date) {
   const jan = new Date(date.getFullYear(), 0, 1).getTimezoneOffset();
   const jul = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
@@ -108,8 +90,8 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ ...cache[requestedDate].data, cached: true });
   }
 
-  // Timezone italiano (UTC+2 estate, UTC+1 inverno)
-  const tzOffset = isDST(new Date(requestedDate)) ? '+02:00' : '+01:00';
+  // Filtro data in timezone italiano
+  const tzOffset = '+02:00'; // UTC+2 estate (ora legale)
   const dayStart = new Date(requestedDate + 'T00:00:00' + tzOffset).getTime();
   const dayEnd   = new Date(requestedDate + 'T23:59:59' + tzOffset).getTime();
 
@@ -130,7 +112,6 @@ module.exports = async function handler(req, res) {
 
         const bk = event.bookmakers || [];
         let sumHome=0, sumDraw=0, sumAway=0, count=0;
-
         for (const b of bk) {
           const h2h = b.markets?.find(m => m.key === 'h2h');
           if (!h2h) continue;
@@ -138,8 +119,7 @@ module.exports = async function handler(req, res) {
           const away = h2h.outcomes.find(o => o.name === event.away_team);
           const draw = h2h.outcomes.find(o => o.name === 'Draw');
           if (!home || !away) continue;
-          sumHome += 1/home.price;
-          sumAway += 1/away.price;
+          sumHome += 1/home.price; sumAway += 1/away.price;
           if (draw) sumDraw += 1/draw.price;
           count++;
         }
@@ -159,13 +139,10 @@ module.exports = async function handler(req, res) {
           b.markets?.find(m => m.key==='h2h')?.outcomes
             .filter(o => o.name==='Draw').map(o => o.price) || []);
 
-        // Calcola mercati gol con media di default (1.2 + 1.2 = partita normale)
-        // Verrà aggiornato con dati H2H reali nello Step 2
-        const defaultMarkets = calcGoalMarkets(1.2, 1.2);
-
         allMatches.push({
           id: event.id,
           sportKey: sport.key,
+          fdCode: sport.fdCode,
           league: sport.name,
           leagueColor: sport.color,
           leagueBg: sport.bg,
@@ -177,12 +154,7 @@ module.exports = async function handler(req, res) {
           status: 'SCHEDULED',
           homeForm: 'WWDLW',
           awayForm: 'WWDLW',
-          stats: {
-            homePoss: 50, awayPoss: 50,
-            homeGoals: 1.2, awayGoals: 1.2,
-            homeH2H: 5, awayH2H: 5,
-            hasRealStats: false
-          },
+          stats: { homePoss:50, awayPoss:50, homeGoals:1.2, awayGoals:1.2, homeH2H:5, awayH2H:5, hasRealStats:false },
           predictions: {
             stats:  { pick: mktPct >= 60 ? mktPick : 'Even match', sub: `${mktPct}% implied` },
             market: { pick: mktPick, sub: `${mktPct}% implied` }
@@ -193,7 +165,7 @@ module.exports = async function handler(req, res) {
             away: bestOdd(bk, event.away_team),
             best: bestSide
           },
-          markets: defaultMarkets,
+          markets: calcGoalMarkets(1.2, 1.2), // default, aggiornato dopo
           hasRealOdds: true,
           probHome: pHome, probDraw: pDraw, probAway: pAway
         });
@@ -207,18 +179,26 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ date: requestedDate, matches: [], total: 0 });
   }
 
-  // ── STEP 2: football-data.org — form + H2H → aggiorna mercati Poisson ─────
+  // ── STEP 2: football-data.org per competizione (fix matching nazionali) ────
   if (FD_KEY) {
-    try {
-      const fdResp = await fetch(
-        `https://api.football-data.org/v4/matches?dateFrom=${requestedDate}&dateTo=${requestedDate}`,
-        { headers: { 'X-Auth-Token': FD_KEY } }
-      );
+    // Raggruppa partite per fdCode
+    const byCode = {};
+    for (const m of allMatches) {
+      if (!byCode[m.fdCode]) byCode[m.fdCode] = [];
+      byCode[m.fdCode].push(m);
+    }
 
-      if (fdResp.ok) {
-        const fdMatches = (await fdResp.json()).matches || [];
+    await Promise.allSettled(Object.entries(byCode).map(async ([fdCode, matches]) => {
+      try {
+        // Fetch per competizione specifica — molto più affidabile del fetch globale
+        const url = `https://api.football-data.org/v4/competitions/${fdCode}/matches?dateFrom=${requestedDate}&dateTo=${requestedDate}`;
+        const resp = await fetch(url, { headers: { 'X-Auth-Token': FD_KEY } });
+        if (!resp.ok) return;
 
-        for (const match of allMatches) {
+        const fdMatches = (await resp.json()).matches || [];
+        if (!fdMatches.length) return;
+
+        for (const match of matches) {
           const fd = fdMatches.find(f =>
             teamsMatch(f.homeTeam.shortName || f.homeTeam.name, match.home) &&
             teamsMatch(f.awayTeam.shortName || f.awayTeam.name, match.away)
@@ -231,9 +211,8 @@ module.exports = async function handler(req, res) {
           match._fdId = fd.id;
         }
 
-        // H2H per le prime 6 partite con match trovato
-        const withFd = allMatches.filter(m => m._fdId).slice(0, 6);
-
+        // H2H per le prime 5 partite trovate
+        const withFd = matches.filter(m => m._fdId).slice(0, 5);
         await Promise.allSettled(withFd.map(async match => {
           try {
             const r = await fetch(
@@ -247,39 +226,31 @@ module.exports = async function handler(req, res) {
             let hw=0, aw=0, hg=0, ag=0;
             for (const hm of h2h) {
               if (hm.score?.fullTime?.home == null) continue;
-              hg += hm.score.fullTime.home;
-              ag += hm.score.fullTime.away;
+              hg += hm.score.fullTime.home; ag += hm.score.fullTime.away;
               if (hm.score.fullTime.home > hm.score.fullTime.away) hw++;
               else if (hm.score.fullTime.away > hm.score.fullTime.home) aw++;
             }
             const n = h2h.length;
-            const homeGoalsAvg = +(hg/n).toFixed(1);
-            const awayGoalsAvg = +(ag/n).toFixed(1);
+            const hgAvg = +(hg/n).toFixed(1);
+            const agAvg = +(ag/n).toFixed(1);
 
-            // Aggiorna stats con dati reali
             match.stats = {
-              homePoss:  match.probHome,
-              awayPoss:  match.probAway,
-              homeGoals: homeGoalsAvg,
-              awayGoals: awayGoalsAvg,
-              homeH2H:   hw,
-              awayH2H:   aw,
-              hasRealStats: true
+              homePoss: match.probHome, awayPoss: match.probAway,
+              homeGoals: hgAvg, awayGoals: agAvg,
+              homeH2H: hw, awayH2H: aw, hasRealStats: true
             };
-
-            // Ricalcola mercati Poisson con gol H2H reali
-            match.markets = calcGoalMarkets(homeGoalsAvg, awayGoalsAvg);
-
-          } catch(e) { /* skip */ }
+            match.markets = calcGoalMarkets(hgAvg, agAvg);
+          } catch(e) {}
         }));
+
+      } catch(err) {
+        console.error(`FD ${fdCode}:`, err.message);
       }
-    } catch(err) {
-      console.error('football-data:', err.message);
-    }
+    }));
   }
 
   allMatches.sort((a,b) => a.kickoff.localeCompare(b.kickoff));
-  allMatches.forEach(m => { delete m.sportKey; delete m._fdId; });
+  allMatches.forEach(m => { delete m.sportKey; delete m.fdCode; delete m._fdId; });
 
   const payload = { date: requestedDate, matches: allMatches, total: allMatches.length };
   cache[requestedDate] = { ts: Date.now(), data: payload };
