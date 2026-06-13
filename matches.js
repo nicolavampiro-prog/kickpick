@@ -1,4 +1,3 @@
-xed3 · JS
 // api/matches.js — Vercel serverless function
 // OddsAPI: h2h (partite + odds 1X2)
 // football-data.org: form + H2H per competizione
@@ -15,7 +14,7 @@ const SPORTS = [
   { key: 'soccer_uefa_europa_league',     name: 'Europa League',    color: '#F97316', bg: '#FFF7ED', fdCode: 'EL'  },
 ];
  
-const cache = {}; // v2
+const cache = {};
  
 // ── Poisson ───────────────────────────────────────────────────────────────────
 function poisson(lambda, k) {
@@ -289,3 +288,4 @@ module.exports = async function handler(req, res) {
   cache[requestedDate] = { ts: Date.now(), data: payload };
   return res.status(200).json(payload);
 };
+ 
